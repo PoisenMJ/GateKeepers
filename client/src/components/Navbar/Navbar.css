@@ -1,0 +1,74 @@
+.toggle{
+    position: fixed;
+    top: 10px;
+    left: 20px;
+    z-index: 1001;
+}
+.toggle a{
+    text-decoration: none;
+    color: #262626;
+    font-size: 24px;
+    cursor: pointer;
+}
+#menu{
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: #FFF;
+    z-index: 1000;
+    transition: 0.5s;
+}
+.creator {
+    cursor: pointer;
+    padding: .5rem .5rem .5rem .5rem;
+}
+.creator:hover {
+    color: rgb(240,240,240)!important;
+    background-color: black;
+}
+#creator-list{
+    display: none;
+    height: auto;
+    position: relative;
+    place-items: center;
+}
+#creator-list.open{
+    display: grid;
+}
+ul{
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+ul li{
+    list-style: none;
+}
+
+ul li a{
+    padding: 10px;
+    display: inline-block;
+    font-size: 2em;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #262626;
+}
+ul li a.active{
+    background: black;
+    color: rgb(150,150,150);
+}
+ul li a:hover{
+    background: #000000;
+    color: rgb(240,240,240);
+}
+#menu.active{
+    left: 0;
+    overflow: auto;
+}
