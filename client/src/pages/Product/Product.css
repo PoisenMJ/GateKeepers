@@ -1,0 +1,30 @@
+#product-parent{
+    height: 100%;
+    overflow-x: hidden;
+    display: grid;
+    grid-template-rows: 75% 25%;
+    
+}
+#product-image{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+#product-info{
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+.product-price{
+    align-self: center;
+    justify-self: end;
+}
+
+.item{
+    width: 100vw;
+    height: 50vh;
+}
+.carousel{
+    height: auto!important;
+}

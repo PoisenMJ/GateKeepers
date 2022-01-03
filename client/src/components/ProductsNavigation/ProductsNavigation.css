@@ -1,3 +1,9 @@
+#parent{
+    position: absolute;
+    top: 12%;
+    max-width: 100vw;
+    width: 100vw;
+}
 #creator-nav{
     background-color: rgb(10,10,10);
     width: 77.5%;
@@ -17,6 +23,7 @@
     text-transform: uppercase;
     padding: 1rem;
     cursor: pointer;
+    text-decoration: none;
 }
 .creator-nav-link.active{
     background-color: rgb(230,230,230);

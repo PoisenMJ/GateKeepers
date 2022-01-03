@@ -4,14 +4,14 @@ async function getCreatorPosts(){
     return json;
 }
 
-async function getWornByProducts(creatorTag){
-    var res = await fetch(`/creator/products/worn-by/${creatorTag}`);
+async function getOwnProducts(creatorTag){
+    var res = await fetch(`/creator/products/own/${creatorTag}`);
     var json = await res.json();
     return json;
 }
 
 async function getMadeProducts(creatorTag){
-    var res = await fetch(`/creator/made/${creatorTag}`);
+    var res = await fetch(`/creator/products/made/${creatorTag}`);
     var json = await res.json();
     return json;
 }
@@ -22,4 +22,10 @@ async function getCreators(){
     return json;
 }
 
-export { getCreatorPosts, getWornByProducts, getMadeProducts, getCreators };
+async function getProduct(productID){
+    var res = await fetch(`/creator/products/${productID}`);
+    var json = await res.json();
+    return json;
+}
+
+export { getCreatorPosts, getOwnProducts, getMadeProducts, getCreators, getProduct };

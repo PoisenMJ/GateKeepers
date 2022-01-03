@@ -4,6 +4,7 @@ import Mobile from '../../components/Mobile';
 import { getCreatorPosts } from '../../controllers/creators';
 import { Button } from 'react-bootstrap';
 import { FaShoppingBag } from 'react-icons/fa';
+import Navbar from '../../components/Navbar/Navbar';
 
 const Home = () => {
     const [creatorPosts, setCreatorPosts] = useState([]);
@@ -23,6 +24,7 @@ const Home = () => {
     return(
         <div id="home-page">
             <Mobile>
+                <Navbar/>
                 <div id="home-page-first-slide">
                     <div className="home-page-initial-content">
                         <span className="fs-1 fw-bold">GateKeepers Inc.</span>
@@ -86,6 +88,6 @@ const Home = () => {
             </Mobile>
         </div>
     )
-}
+};
 
 export default Home;

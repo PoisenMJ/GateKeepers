@@ -1,23 +1,26 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home/Home';
-import CreatorsOwnPage from './pages/CreatorsOwnPage/CreatorsOwnPage';
 import Navbar from './components/Navbar/Navbar';
-import CreatorNavbar from './components/CreatorNavbar/CreatorNavbar';
-import MadeProductsPage from './pages/MadeProductsPage/MadeProductsPage';
+import ProductsNavbar from './components/ProductsNavigation/ProductsNavigation';
+import ProductsPage from './pages/ProductList/ProductList';
+import ProductPage from './pages/Product/Product';
+import CustomsPage from './pages/Customs/Customs';
 
-// data types for products: types (creator, product, custom)
+import Header from './components/Header/Header';
+import PageLayout from './components/PageLayout/PageLayout';
+
+// data types for products: types (own, made, custom)
 
 function App() {
   return (
     <Routes>
-      <Route element={<Navbar/>}>
-        <Route path="/">
-          <Route index element={<Home/>}/>
-          <Route path=":creator" element={<CreatorNavbar/>}>
-            <Route path="own" element={<CreatorsOwnPage/>}/>
-            <Route path="products" element={<MadeProductsPage/>}/>
-            <Route path="customs"/>
-          </Route>
+      <Route path="/">
+        <Route index element={<Home/>}/>
+        <Route path=":creator" element={ <PageLayout header={<Header navbar={<Navbar/>} navigation={<ProductsNavbar/>} />} />}>
+          <Route path="own" element={<ProductsPage type="own"/>}/>
+          <Route path="made" element={<ProductsPage type="made"/>}/>
+          <Route path="customs" element={<CustomsPage/>}/>
+          <Route path=":productName" element={<ProductPage/>}/>
         </Route>
       </Route>
     </Routes>

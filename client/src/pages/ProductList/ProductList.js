@@ -1,21 +1,26 @@
 import { React, useState, useEffect } from 'react';
-import './ProductsPage.css';
-import { getWornByProducts, getMadeProducts } from '../../controllers/creators';
-import { useParams } from 'react-router-dom';
+import './ProductList.css';
+import { getOwnProducts, getMadeProducts } from '../../controllers/creators';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const ProductsPage = ({ type }) => {
     const [products, setProducts] = useState(null);
     const {creator} = useParams();
+    let navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
             var products;
-            if(type == "own") products = await getWornByProducts(creator);
+            if(type == "own") products = await getOwnProducts(creator);
             else if(type == "made") products = await getMadeProducts(creator);
             setProducts(products);
         }
         fetchData();
-    })
+    }, [type, creator])
+
+    const viewProduct = (path) => {
+        navigate('../'+encodeURIComponent(path));
+    }
 
     return (
         <div id="products-page">
@@ -30,7 +35,7 @@ const ProductsPage = ({ type }) => {
             <div id="products">
                 {products && products.map((product, index) => {
                     return (
-                        <div key={product._id} className="product mb-4">
+                        <div key={product.name} className="product mb-4" onClick={() => viewProduct(product.name)}>
                             <img src={`/images/products/${product.images[0]}`} className="product-image"/>
                             <div className="product-info">
                                 <span className="fs-4 text-muted fw-light">{product.name}</span>
@@ -39,6 +44,9 @@ const ProductsPage = ({ type }) => {
                         </div>
                     )
                 })}
+                {products && products.length == 0 &&
+                    <span className="text-center fs-1">No Products Available</span>
+                }
             </div>
         </div>
     )

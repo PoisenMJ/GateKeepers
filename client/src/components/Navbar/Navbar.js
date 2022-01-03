@@ -1,13 +1,12 @@
 import { React, useState, useEffect } from 'react';
 import './Navbar.css';
 import { FaBars, FaSortDown } from 'react-icons/fa';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, NavLink } from 'react-router-dom';
 import { getCreators } from '../../controllers/creators';
 
 const Navbar = () => {
     const [creators, setCreators] = useState(null);
-    const [currentlySelected, setCurrentlySelected] = useState('home');
-    let navigate = useNavigate();
+    
     useEffect(() => {
         const fetchData = async () => {
             var creators = await getCreators();
@@ -16,52 +15,35 @@ const Navbar = () => {
         fetchData();
     }, []);
 
-    const getActive = (name) => {
-        if(name == currentlySelected) return "active";
-    }
-
-    const changeActive = (name) => {
-        setCurrentlySelected(name);
-    }
+    const toggleNavbar = () => document.getElementById("menu").classList.toggle("active");
 
     return (
         <div>
-            <div className="toggle" onClick={() => {
-                document.getElementById("menu").classList.toggle("active");
-            }}>
+            <div className="toggle" onClick={toggleNavbar}>
                 <FaBars style={{cursor: 'pointer', top: '10px', position: 'relative'}} size={30}/>
             </div>
+
             <div id="menu">
                 <ul>
-                    <li><a className={"mb2 "+getActive("home")} href="/" onClick={() => changeActive("home")}>Home</a></li>
-                    <li><a href="#" className={"d-flex "+getActive("creators")} style={{marginLeft: '40px'}}
-                        onClick={() => {
-                            document.getElementById("creator-list").classList.toggle("open");
-                        }}>
-                        Creators
+                    <li><NavLink to="/" className={"mb-2"} onClick={toggleNavbar}>Home</NavLink></li>
+                    <li><a href="#" className={"d-flex"} style={{marginLeft: '40px'}}
+                        onClick={() => document.getElementById("creator-list").classList.toggle("open")}>
+                        Gatekeepers
                         <FaSortDown style={{marginLeft: '4px', marginBottom: '3px'}}/></a>
                         <div id="creator-list">
                             {creators && creators.map((creator, index) => (
-                                    <span key={creator.tag}
-                                        className="mb-1 text-secondary creator"
-                                        onClick={() => {
-                                            changeActive("creators");
-                                            navigate(`/${creator.tag}`);
-                                        }}>
-                                        {creator.tag}
-                                    </span>
+                                    <NavLink key={creator.tag} onClick={toggleNavbar} to={`/${creator.tag}/own`} className="mb-1 text-secondary creator">{creator.tag}</NavLink>
                                 ))
                             }
                         </div>
                     </li>
-                    <li><a className={"mb-2 "+getActive("about")} onClick={() => changeActive("about")} href="#">About</a></li>
-                    <li><a className={"mb-2 "+getActive("contact")} onClick={() => changeActive("contact")} href="#">Contact Us</a></li>
+                    <li><NavLink to="about" className={"mb-2"} onClick={toggleNavbar}>About</NavLink></li>
+                    <li><NavLink to="contact-us" className={"mb-2"}>Contact Us</NavLink></li>
                 </ul>
             </div>
-            <Outlet/>
         </div>
 
     )
-}
+};
 
 export default Navbar;
