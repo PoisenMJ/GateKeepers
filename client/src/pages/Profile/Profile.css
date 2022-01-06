@@ -1,0 +1,7 @@
+#profile{
+    height: 90vh;
+    width: 100vw;
+    display: grid;
+    align-content: center;
+    padding: 3rem;
+}

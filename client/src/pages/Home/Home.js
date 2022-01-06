@@ -4,9 +4,10 @@ import Mobile from '../../components/Mobile';
 import { getCreatorPosts } from '../../controllers/creators';
 import { Button } from 'react-bootstrap';
 import { FaShoppingBag } from 'react-icons/fa';
-import Navbar from '../../components/Navbar/Navbar';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+    let navigate = useNavigate();
     const [creatorPosts, setCreatorPosts] = useState([]);
 
     useEffect(() => {
@@ -21,15 +22,18 @@ const Home = () => {
         document.getElementById(id).scrollIntoView();
     }
 
+    const exploreButton = () => {
+        navigate('/maksie_aki/own');
+    }
+
     return(
         <div id="home-page">
             <Mobile>
-                <Navbar/>
                 <div id="home-page-first-slide">
                     <div className="home-page-initial-content">
                         <span className="fs-1 fw-bold">GateKeepers Inc.</span>
                         <span className="text-lead mb-3 fw-light">Fashion Collection</span>
-                        <Button variant="outline-dark" style={{paddingBottom: '7.5px'}}>
+                        <Button onClick={exploreButton} variant="outline-dark" style={{paddingBottom: '7.5px'}} className="explore-button">
                             Explore
                             <span className="arrow"></span>
                         </Button>
@@ -43,7 +47,7 @@ const Home = () => {
                     {creatorPosts && creatorPosts.map((post, index) => {
                         var socialsHTML = (post.creator.links.length > 0) ?
                         (
-                            <div className="socials" key={index}>
+                            <div className="socials">
                                 {post.creator.links.map((link, index2) => {
                                     if(link.instagram){
                                         return(
@@ -58,7 +62,7 @@ const Home = () => {
                             </div>
                         ) : '';
                         return(
-                            <div className="slide" id={`slide-${index+1}`}>
+                            <div className="slide" id={`slide-${index+1}`} key={index}>
                                 <div className="slide-info">
                                     {socialsHTML}
                                     <div className="slide-creator">

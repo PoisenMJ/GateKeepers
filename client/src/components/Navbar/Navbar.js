@@ -3,11 +3,14 @@ import './Navbar.css';
 import { FaBars, FaSortDown } from 'react-icons/fa';
 import { Outlet, NavLink } from 'react-router-dom';
 import { getCreators } from '../../controllers/creators';
+import { checkLoggedIn } from '../../services/auth';
 
 const Navbar = () => {
     const [creators, setCreators] = useState(null);
-    
+    var loggedIn = false;
+
     useEffect(() => {
+        var loggedIn = checkLoggedIn();
         const fetchData = async () => {
             var creators = await getCreators();
             setCreators(creators);
@@ -37,8 +40,13 @@ const Navbar = () => {
                             }
                         </div>
                     </li>
-                    <li><NavLink to="about" className={"mb-2"} onClick={toggleNavbar}>About</NavLink></li>
-                    <li><NavLink to="contact-us" className={"mb-2"}>Contact Us</NavLink></li>
+                    <li><NavLink to="/about" className={"mb-2"} onClick={toggleNavbar}>About</NavLink></li>
+                    <li><NavLink to="/contact-us" className={"mb-2"}>Contact Us</NavLink></li>
+                    {loggedIn ? 
+                        <li><NavLink to="/login" onClick={toggleNavbar} className={"mb-2"}>Login</NavLink></li>
+                        :
+                        <li><NavLink to="/profile" onClick={toggleNavbar} className={"mb-2"}>Profile</NavLink></li>
+                    }
                 </ul>
             </div>
         </div>

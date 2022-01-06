@@ -1,0 +1,10 @@
+#create-account{
+    height: 90vh;
+    padding: 3rem;
+    align-content: center;
+    display: grid;
+}
+#create-account-header{
+    width: 100%;
+    text-align: center;
+}

@@ -1,0 +1,19 @@
+#login{
+    width: 100vw;
+    height: 90vh;
+    display: grid;
+    align-content: center;
+    padding: 3rem;
+}
+#no-account{
+    width: 100%;
+    text-align: center;
+}
+#create-account-link{
+    color: rgb(202, 0, 0);
+    cursor: pointer;
+    transition: .15s;
+}
+#create-account-link:hover{
+    color: rgb(140,0,0);
+}
