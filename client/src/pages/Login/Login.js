@@ -1,28 +1,37 @@
-import { React, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './Login.css';
 import { Form, Button } from 'react-bootstrap';
 import { login, saveUser } from '../../controllers/auth';
 import { Flash } from '../../components/FlashMessage/FlashMessage';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../services/AuthContext';
 
 const Login = () => {
 
+    const { setLoggedIn, setUsername } = useContext(AuthContext);
+
     let navigate = useNavigate();
 
-    const [username, setUsername] = useState('');
+    const [inputUsername, setInputUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleUsernameChange = event => setUsername(event.target.value);
+    const handleUsernameChange = event => setInputUsername(event.target.value);
     const handlePasswordChange = event => setPassword(event.target.value);
 
     const sendLogin = async event => {
         event.preventDefault();
-        if(username && password){
-            var res = await login(username, password);
+        if(inputUsername && password){
+            var res = await login(inputUsername, password);
             if(res.success){
-                saveUser(res.token, username);
-                navigate('/', { state: 'logged-in' });
+                saveUser(res.token, inputUsername);
+
+                setUsername(inputUsername);
+                setLoggedIn(true);
+                if(res.type == 'user')
+                    navigate('/', { state: 'logged-in' });
+                else if(res.type == 'creator')
+                    navigate('/creators/upload', { state: 'logged-in' });
             }
             else Flash(res.message, "danger");
         } else Flash("Enter Username & Password", "dark");

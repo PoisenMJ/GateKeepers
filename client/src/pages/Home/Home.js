@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./Home.css";
 import Mobile from '../../components/Mobile';
 import { getCreatorPosts } from '../../controllers/creators';

@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ProductList.css';
 import { getOwnProducts, getMadeProducts } from '../../controllers/creators';
 import { useParams, useNavigate } from 'react-router-dom';

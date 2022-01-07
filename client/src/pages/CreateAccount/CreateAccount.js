@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import React, { useState } from 'react';
 import './CreateAccount.css';
 import { Form, Button } from 'react-bootstrap';
 import { Flash } from '../../components/FlashMessage/FlashMessage';

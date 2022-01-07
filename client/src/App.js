@@ -13,32 +13,43 @@ import Header from './components/Header/Header';
 import PageLayout from './components/PageLayout/PageLayout';
 
 import ProtectedRoute from './routes/ProtectedRoute';
+import CreatorRoute from './routes/CreatorRoute';
+import Upload from './pages/CreatorPortal/Upload/Upload';
+import CreatorNavbar from './pages/CreatorPortal/Navbar/CreatorNavbar';
+
+import { AuthProvider } from './services/AuthContext';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/">
-        // index route (home)
-        <Route index element={<PageLayout header={<Header navbar={<Navbar/>}/>} body={<Home/>}/>}/>
-        // products routes
-        <Route path=":creator" element={ <PageLayout header={<Header navbar={<Navbar/>} navigation={<ProductsNavbar/>} />} />}>
-          <Route path="own" element={<ProductsPage type="own"/>}/>
-          <Route path="made" element={<ProductsPage type="made"/>}/>
-          <Route path="customs" element={<CustomsPage/>}/>
-          <Route path=":productName" element={<ProductPage/>}/>
+    <AuthProvider>
+      <Routes>
+        <Route path="/">
+          // index route (home)
+          <Route index element={<PageLayout header={<Header navbar={<Navbar/>}/>} body={<Home/>}/>}/>
+          // products routes
+          <Route path=":creator" element={ <PageLayout header={<Header navbar={<Navbar/>} navigation={<ProductsNavbar/>} />} />}>
+            <Route path="own" element={<ProductsPage type="own"/>}/>
+            <Route path="made" element={<ProductsPage type="made"/>}/>
+            <Route path="customs" element={<CustomsPage/>}/>
+            <Route path=":productName" element={<ProductPage/>}/>
+          </Route>
+
+          <Route element={<PageLayout header={<Header navbar={<Navbar/>}/>} body={<ProtectedRoute/>}/>}>
+            <Route path="profile" element={<Profile/>}/>
+          </Route>
+
+          <Route element={<PageLayout header={<Header navbar={<Navbar/>}/>}/>}>
+            <Route path="create-account" element={<CreateAccount/>}/>
+            <Route path="login" element={<Login/>}/>
+          </Route>
+
         </Route>
 
-        <Route element={<PageLayout header={<Header navbar={<Navbar/>}/>} body={<ProtectedRoute/>}/>}>
-          <Route path="profile" element={<Profile/>}/>
+        <Route path="/creators" element={<PageLayout header={<Header navbar={<CreatorNavbar/>} body={<CreatorRoute/>}/>} />}>
+          <Route path="upload" element={<Upload/>}/>
         </Route>
-
-        <Route element={<PageLayout header={<Header navbar={<Navbar/>}/>}/>}>
-          <Route path="create-account" element={<CreateAccount/>}/>
-          <Route path="login" element={<Login/>}/>
-        </Route>
-        
-      </Route>
-    </Routes>
+      </Routes>
+    </AuthProvider>
   );
 }
 

@@ -1,16 +1,19 @@
-import { React, useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './Navbar.css';
-import { FaBars, FaSortDown } from 'react-icons/fa';
-import { Outlet, NavLink } from 'react-router-dom';
+import { FaBars, FaSignOutAlt, FaSortDown } from 'react-icons/fa';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { getCreators } from '../../controllers/creators';
-import { checkLoggedIn } from '../../services/auth';
+import { LogOut } from '../../services/auth';
+
+import { AuthContext } from '../../services/AuthContext';
 
 const Navbar = () => {
+    let navigate = useNavigate();
     const [creators, setCreators] = useState(null);
-    var loggedIn = false;
+
+    const { loggedIn, setLoggedIn, username, setUsername, setToken } = useContext(AuthContext);
 
     useEffect(() => {
-        var loggedIn = checkLoggedIn();
         const fetchData = async () => {
             var creators = await getCreators();
             setCreators(creators);
@@ -19,6 +22,13 @@ const Navbar = () => {
     }, []);
 
     const toggleNavbar = () => document.getElementById("menu").classList.toggle("active");
+    const logOutButton = () => {
+        setLoggedIn(false);
+        setUsername('');
+        setToken('');
+        LogOut();
+        navigate('/login');
+    }
 
     return (
         <div>
@@ -43,11 +53,15 @@ const Navbar = () => {
                     <li><NavLink to="/about" className={"mb-2"} onClick={toggleNavbar}>About</NavLink></li>
                     <li><NavLink to="/contact-us" className={"mb-2"}>Contact Us</NavLink></li>
                     {loggedIn ? 
-                        <li><NavLink to="/login" onClick={toggleNavbar} className={"mb-2"}>Login</NavLink></li>
-                        :
                         <li><NavLink to="/profile" onClick={toggleNavbar} className={"mb-2"}>Profile</NavLink></li>
+                        :
+                        <li><NavLink to="/login" onClick={toggleNavbar} className={"mb-2"}>Login</NavLink></li>
                     }
                 </ul>
+                {loggedIn &&
+                    <span onClick={() => { toggleNavbar(); logOutButton(); }} className="sign-out">Sign Out<FaSignOutAlt style={{marginBottom: '4px', marginLeft: '8px'}}/></span>
+                }
+                <span style={{position: 'absolute', bottom: 'calc(.5rem + 10px)', left: 'calc(.5rem + 10px)'}}>{username}</span>
             </div>
         </div>
 

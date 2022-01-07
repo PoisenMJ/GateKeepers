@@ -18,7 +18,12 @@ var userSchema = mongoose.Schema({
         required: true,
         unqiue: true
     },
-    image: String
+    image: String,
+    type: {
+        type: String,
+        default: 'user',
+        enum: ['user, creator']
+    }
 });
 
 userSchema.methods.encryptPassword = function(password){

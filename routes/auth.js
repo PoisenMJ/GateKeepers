@@ -20,10 +20,12 @@ router.post('/login', async (req, res, next) => {
     if(!user) return res.json({ success: false, message: 'Username or password incorrect' })
     else if(!(user.checkPassword(password))) return res.json({ success: false, message: 'Username or password incorrect' });
 
+    var scope = user.type == 'user' ? 'user' : 'creator';
+
     var signingKey = secureRandom(256, {type: 'Buffer'});
     var claims = {
         iss: 'http://localhost:2999',
-        scope: 'login'
+        scope: scope
     };
     var jwt = nJwt.create(claims, signingKey);
     var token = jwt.compact();
@@ -38,7 +40,7 @@ router.post('/login', async (req, res, next) => {
     if(result){
         key.updateOne({ user: user.username }, { $set: { key: b64SigningKey } }, (err, updatedDoc) => {
             if(err) return res.status(400).json(err);
-            else return res.json({ success: true, token });
+            else return res.json({ success: true, token, type: user.type });
         });
     } else {
         var newKey = new key({
@@ -47,7 +49,7 @@ router.post('/login', async (req, res, next) => {
         });
         newKey.save((err, key) => {
             if(err) return res.status(400).json(err);
-            else return res.json({ success: true, token });
+            else return res.json({ success: true, token, type: user.type });
         })
     }
 });
@@ -75,17 +77,39 @@ router.post('/create-account', async (req, res, next) => {
     }
 });
 
+// route to check token for normal user
 router.post('/check-token', async (req, res, next) => {
     var signingKeyb64;
     try{
         signingKeyb64 = await key.findOne({ user: req.body.username });
     } catch(err) {
-        return res.status(400);
+        return res.json({ success: false });
     }
     // change key back into buffer
     var signingKey = Buffer.from(signingKeyb64.key, 'base64');
 
     nJwt.verify(req.body.token, signingKey, function(err, verifiedJwt) {
+        if(err) return res.json({ success: false });
+        if(verifiedJwt) return res.json({ success: true });
+    })
+});
+
+// route to check token for creator
+router.post('/check-creator-token', async (req, res, next) => {
+    var username = req.body.username;
+    var token = req.body.token;
+
+    var signingKeyb64;
+    try {
+        signingKeyb64 = await key.findOne({ user: username });
+    } catch(err) {
+        return res.json({ success: false });
+    }
+
+    var signingKey = Buffer.from(signingKeyb64.key, 'base64');
+
+    nJwt.verify(token, signingKey, function(err, verifiedJwt) {
+        console.log(verifiedJwt);
         if(err) return res.json({ success: false });
         if(verifiedJwt) return res.json({ success: true });
     })
