@@ -16,8 +16,10 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import CreatorRoute from './routes/CreatorRoute';
 import Upload from './pages/CreatorPortal/Upload/Upload';
 import CreatorNavbar from './pages/CreatorPortal/Navbar/CreatorNavbar';
+import CreatorProducts from './pages/CreatorPortal/Products/Products';
 
 import { AuthProvider } from './services/AuthContext';
+import EditProduct from './pages/CreatorPortal/EditProduct/EditProduct';
 
 function App() {
   return (
@@ -47,6 +49,8 @@ function App() {
 
         <Route path="/creators" element={<PageLayout header={<Header navbar={<CreatorNavbar/>} body={<CreatorRoute/>}/>} />}>
           <Route path="upload" element={<Upload/>}/>
+          <Route path="products" element={<CreatorProducts/>}/>
+          <Route path="products/edit/:productID" element={<EditProduct/>}/>
         </Route>
       </Routes>
     </AuthProvider>

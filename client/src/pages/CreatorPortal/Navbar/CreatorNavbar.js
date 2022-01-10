@@ -27,8 +27,8 @@ const CreatorNavbar = () => {
 
             <div id="menu">
                 <ul>
-                    <li><NavLink to="/" className={"mb-2"} onClick={toggleNavbar}>Upload</NavLink></li>
-                    <li><NavLink to="/about" className={"mb-2"} onClick={toggleNavbar}>Products</NavLink></li>
+                    <li><NavLink to="upload" className={"mb-2"} onClick={toggleNavbar}>Upload</NavLink></li>
+                    <li><NavLink to="products" className={"mb-2"} onClick={toggleNavbar}>Products</NavLink></li>
                     <li><NavLink to="/contact-us" className={"mb-2"}>Profile</NavLink></li>
                     {/* {loggedIn ? 
                         <li><NavLink to="/login" onClick={toggleNavbar} className={"mb-2"}>Login</NavLink></li>

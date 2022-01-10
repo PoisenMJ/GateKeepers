@@ -12,12 +12,13 @@
     padding: .5rem;
     transition: .5s;
     cursor: pointer;
-}
-.product:hover {
     background-color: rgb(230,230,230);
     box-shadow: 10px 10px 0px 0px rgba(10,10,10,0.75);
     -webkit-box-shadow: 10px 10px 0px 0px rgba(10,10,10,0.75);
     -moz-box-shadow: 10px 10px 0px 0px rgba(10,10,10,0.75);
+}
+.product:hover {
+    background-color: rgb(220,220,220);
 }
 .product-image{
     padding-top: 1rem;

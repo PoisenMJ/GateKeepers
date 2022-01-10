@@ -22,6 +22,7 @@ const ProductPage = () => {
             {product &&
                 <div id="product-parent">
                     <Carousel
+                        dragging
                         className='carousel mb-3'
                     >
                         {product.images.map((image, index) => (

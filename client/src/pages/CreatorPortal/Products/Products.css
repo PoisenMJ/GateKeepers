@@ -1,0 +1,11 @@
+#creator-products-portal{
+    padding: 0rem 2rem 2rem 2rem;
+}
+.creator-portal-product-edit-group{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 50% 50%;
+}
+.border2{
+    border-width: 3px!important;
+}

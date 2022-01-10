@@ -1,0 +1,33 @@
+#upload{
+    height: 90vh;
+    padding: 3rem;
+}
+#no-images{
+    width: 100%!important;
+    height: 100%;
+    background-color: rgb(220,220,220);
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+    transition: .15s;
+}
+#no-images:hover{ background-color: rgb(205,205,205); }
+#product-images {
+    display: grid;
+    width: 100%;
+    height: 30vh;
+    grid-auto-flow: row;
+}
+
+.product-upload-image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.product-upload-remove{
+    position: relative;
+    top: calc(0px - 30vh / 2);
+    left: 0;
+    z-index: 100;
+    background-color: white!important;
+}

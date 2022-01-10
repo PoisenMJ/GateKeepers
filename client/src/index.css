@@ -38,11 +38,14 @@ body {
   border-radius: 0!important;
   border-color: rgb(10,10,10)!important;
   font-size: .9rem!important;
+  border-width: 1px!important;
+  padding: .4rem .8rem .4rem .8rem;
 }
 .custom-input:focus{
   box-shadow: 0px 0px 0px 3px rgba(10,10,10,0.76)!important;
   -webkit-box-shadow: 0px 0px 0px 3px rgba(10,10,10,0.76)!important;
   -moz-box-shadow: 0px 0px 0px 3px rgba(10,10,10,0.76)!important;
+  border-color: black!important;
 }
 
 .simple-page-parent{

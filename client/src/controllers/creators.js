@@ -28,4 +28,32 @@ async function getProduct(productID){
     return json;
 }
 
-export { getCreatorPosts, getOwnProducts, getMadeProducts, getCreators, getProduct };
+async function getCreatorPortalProduct(productID, username){
+    var res = await fetch(`/creator/products/portal/${productID}`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username: username,
+            productID: productID
+        })
+    })
+    var json = await res.json();
+    return json;
+}
+
+async function getCreatorProducts(creatorTag){
+    var res = await fetch(`/creator/products/all/${creatorTag}`);
+    var json = await res.json();
+    return json;
+}
+
+async function addProduct(data){
+    var res = await fetch('/creator/products/add', {
+        method: "POST",
+        body: new FormData(data)
+    });
+    var json = await res.json();
+    return json;
+}
+
+export { getCreatorPortalProduct, getCreatorPosts, getOwnProducts, getMadeProducts, getCreators, getProduct, getCreatorProducts, addProduct };
