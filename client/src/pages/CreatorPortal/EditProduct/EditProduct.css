@@ -1,5 +1,11 @@
 #edit-product{
-    height: 90vh;
-    padding: 2rem;
+    height: fit-content;
+    padding: 0rem 1rem 2rem 1rem;
     width: 100%;   
+}
+#creator-portal-images{
+    height: auto;
+}
+.creator-portalproduct-upload-image{
+    width: 100%;
 }

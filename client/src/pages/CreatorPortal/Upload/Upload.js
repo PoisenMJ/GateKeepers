@@ -16,7 +16,6 @@ const Upload = () => {
     const { username } = useContext(AuthContext);
 
     const handleInputChange = event => {
-        console.log(event.target.value);
         switch(event.target.name){
             case 'name': setName(event.target.value);
             case 'description': setDescription(event.target.value);

@@ -8,4 +8,5 @@
 }
 .border2{
     border-width: 3px!important;
+    border-color: rgba(10, 10, 10, 0.75)!important;
 }

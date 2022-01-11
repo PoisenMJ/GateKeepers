@@ -2,6 +2,7 @@ const express = require('express');
 const creator = require('../client/src/models/creator');
 const creatorPost = require('../client/src/models/creatorPost');
 const creatorProduct = require('../client/src/models/creatorProduct');
+const fs = require('fs');
 var router = express.Router();
 
 var multer = require('multer');
@@ -75,6 +76,56 @@ router.post('/products/add', upload.array('images'), (req, res, next) => {
             else return res.json({ success: true });
         })
     })
+});
+
+// TODO: add middleware to check token sent in each request
+router.post('/products/remove', (req, res, next) => {
+    var productID = req.body.productID;
+    creatorProduct.deleteOne({ _id: productID }).then((deleted, err) => {
+        if(err) return res.json({ success: false });
+        else return res.json({ success: true });
+    })
+});
+
+router.post('/products/update', upload.array('images'), (req, res, next) => {
+    var fileNames = [];
+    var productID = req.body.productID;
+    var imagesChanged = req.body.imagesChanged == 'true';
+    var imagesCleared = req.body.imagesCleared == 'true';
+    var originalImages = [];
+
+    creatorProduct.findOne({ _id: productID }, (err, product) => {
+        if(err) return res.json({ success: false });
+        originalImages = product.images;
+        if(imagesChanged){
+            for(var i = 0; i < req.files.length; i++){
+                fileNames.push(req.files[i].filename)
+            }
+            if(imagesCleared){
+                // remove old product images
+                for(var i = 0; i < product.images.length; i++){
+                    fs.unlink(`./client/public/images/products/${product.images[i]}`, function(err) {
+                        if(err) console.log('Err removing old product images');
+                    });
+                }
+            } else originalImages = originalImages.concat(fileNames);
+        }
+        
+        creatorProduct.findOneAndUpdate({ _id: productID }, {
+            $set: {
+                name: req.body.name,
+                description: req.body.description,
+                price: req.body.price,
+                count: req.body.count,
+                images: (imagesChanged && imagesCleared) ? fileNames : originalImages,
+                type: req.body.type
+            }
+        }, (err, docs) => {
+            if(err) return res.json({ success: false });
+            else return res.json({ success: true });
+        })
+    })
+
 })
 
 router.get('/all-creators', (req, res, next) => {

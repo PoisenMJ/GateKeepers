@@ -56,4 +56,34 @@ async function addProduct(data){
     return json;
 }
 
-export { getCreatorPortalProduct, getCreatorPosts, getOwnProducts, getMadeProducts, getCreators, getProduct, getCreatorProducts, addProduct };
+async function removeProduct(productID){
+    var res = await fetch('/creator/products/remove', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productID: productID })
+    });
+    var json = await res.json();
+    return json;
+}
+
+async function updateProduct(formData){
+    var res = await fetch('/creator/products/update', {
+        method: "POST",
+        body: formData
+    });
+    var json = await res.json();
+    return json;
+}
+
+export { 
+    getCreatorPortalProduct,
+    getCreatorPosts,
+    getOwnProducts,
+    getMadeProducts,
+    getCreators,
+    getProduct,
+    getCreatorProducts,
+    addProduct,
+    removeProduct,
+    updateProduct
+};
