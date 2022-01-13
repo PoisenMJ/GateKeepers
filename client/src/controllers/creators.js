@@ -22,8 +22,8 @@ async function getCreators(){
     return json;
 }
 
-async function getProduct(productID){
-    var res = await fetch(`/creator/products/${productID}`);
+async function getProduct(productURI){
+    var res = await fetch(`/creator/products/${productURI}`);
     var json = await res.json();
     return json;
 }

@@ -34,7 +34,7 @@ router.get('/products/made/:creatorTag', (req, res, next) => {
 });
 
 router.get('/products/:productURI', (req, res, next) => {
-    creatorProduct.find({ uri: req.params.productURI }).then((product, err) => {
+    creatorProduct.findOne({ uri: req.params.productURI }).then((product, err) => {
         if(err) return res.json({ success: false });
         if(product) return res.json({ success: true, product });
         else return res.json({ success: false });

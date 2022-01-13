@@ -4,15 +4,18 @@ import { useParams } from 'react-router-dom';
 import { getProduct } from '../../controllers/creators';
 import { Button } from 'react-bootstrap';
 import Carousel from 'nuka-carousel';
+import { useNavigate } from 'react-router';
 
 const ProductPage = () => {
+    let navigate = useNavigate();
     const [product, setProduct] = useState(null);
-    const {productName} = useParams();
+    const {productURI} = useParams();
 
     useEffect(() => {
         const fetchProduct = async () => {
-            var product = await getProduct(productName);
-            setProduct(product);
+            var res = await getProduct(productURI);
+            if(res.success) setProduct(res.product);
+            else navigate('/');
         }
         fetchProduct();
     }, [])
@@ -26,7 +29,7 @@ const ProductPage = () => {
                         className='carousel mb-3'
                     >
                         {product.images.map((image, index) => (
-                            <div className="item">
+                            <div key={index} className="item">
                                 <img key={index} id="product-image" src={`/images/products/${image}`}/> 
                             </div>
                         ))}

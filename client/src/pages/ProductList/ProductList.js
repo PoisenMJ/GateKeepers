@@ -35,7 +35,7 @@ const ProductsPage = ({ type }) => {
             <div id="products">
                 {products && products.map((product, index) => {
                     return (
-                        <div key={product.name} className="product mb-4" onClick={() => viewProduct(product.name)}>
+                        <div key={product.name} className="product mb-4" onClick={() => viewProduct(product.uri)}>
                             <img src={`/images/products/${product.images[0]}`} className="product-image"/>
                             <div className="product-info">
                                 <span className="fs-4 text-muted fw-light">{product.name}</span>

@@ -15,9 +15,9 @@ const Navbar = () => {
     const { loggedIn, setLoggedIn, username, setUsername, setToken } = useContext(AuthContext);
 
     useEffect(() => {
-        if(!loggedIn){
-            navigate('/login');
-        }
+        // if(!loggedIn){
+        //     navigate('/login');
+        // }
         const fetchData = async () => {
             var creators = await getCreators();
             setCreators(creators);
@@ -63,9 +63,11 @@ const Navbar = () => {
                     }
                 </ul>
                 {loggedIn &&
+                <div>
                     <span onClick={() => { toggleNavbar(); logOutButton(); }} className="sign-out">Sign Out<FaSignOutAlt style={{marginBottom: '4px', marginLeft: '8px'}}/></span>
+                    <span style={{position: 'absolute', bottom: 'calc(.5rem + 10px)', left: 'calc(.5rem + 10px)'}}>{username}</span>
+                </div>
                 }
-                <span style={{position: 'absolute', bottom: 'calc(.5rem + 10px)', left: 'calc(.5rem + 10px)'}}>{username}</span>
             </div>
         </div>
 

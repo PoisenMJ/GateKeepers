@@ -41,7 +41,7 @@ function App() {
             <Route path="own" element={<ProductsPage type="own"/>}/>
             <Route path="made" element={<ProductsPage type="made"/>}/>
             <Route path="customs" element={<CustomsPage/>}/>
-            <Route path=":productName" element={<ProductPage/>}/>
+            <Route path=":productURI" element={<ProductPage/>}/>
           </Route>
 
           <Route element={<PageLayout header={<Header navbar={<Navbar/>}/>} body={<ProtectedRoute/>}/>}>

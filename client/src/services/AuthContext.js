@@ -12,7 +12,7 @@ const AuthContext = React.createContext({
 const AuthProvider = ({ children }) => { 
     const localLoggedIn  = JSON.parse(localStorage.getItem('auth')) || false;
     const localToken = localStorage.getItem('token') || null;
-    const localUsername = localStorage.getItem('username') || null;
+    const localUsername = localStorage.getItem('username') || '';
 
     const [token, setToken] = useState(localToken);
     const [username, setUsername] = useState(localUsername);
