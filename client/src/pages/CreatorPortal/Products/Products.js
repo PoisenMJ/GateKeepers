@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../../services/AuthContext';
-import { getCreatorProducts, removeProduct } from '../../../controllers/creators';
+import { getProducts, removeProduct } from '../../../controllers/gatekeepers';
 import './Products.css';
 import { useNavigate } from 'react-router';
 import { Button, Form, Modal } from 'react-bootstrap';
@@ -8,7 +8,7 @@ import { Flash } from '../../../components/FlashMessage/FlashMessage';
 
 const CreatorProducts = () => {
     let navigate = useNavigate();
-    const { username } = useContext(AuthContext);
+    const { username, token } = useContext(AuthContext);
     const [products, setProducts] = useState(null);
     const [filteredProducts, setFilteredProducts] = useState(null)
     const [showRemoveProductModal, setShowRemoveProductModal] = useState(false);
@@ -16,7 +16,7 @@ const CreatorProducts = () => {
 
     useEffect(() => {
         const fetch = async () => {
-            var data = await getCreatorProducts(username);
+            var data = await getProducts(username, token);
             if(data.success){
                 setProducts(data.products);
                 setFilteredProducts(data.products);
@@ -35,7 +35,7 @@ const CreatorProducts = () => {
     }
 
     const confirmRemoveProduct = async () => {
-        var data = await removeProduct(focusedProduct);
+        var data = await removeProduct(focusedProduct, username, token);
         setShowRemoveProductModal(false);
         setProducts(products.filter(e => e._id != focusedProduct));
         if(data.success) Flash("Product Removed", "dark");

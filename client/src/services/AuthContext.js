@@ -10,7 +10,7 @@ const AuthContext = React.createContext({
 });
 
 const AuthProvider = ({ children }) => { 
-    const localLoggedIn  = localStorage.getItem('auth') || false;
+    const localLoggedIn  = JSON.parse(localStorage.getItem('auth')) || false;
     const localToken = localStorage.getItem('token') || null;
     const localUsername = localStorage.getItem('username') || null;
 
@@ -22,7 +22,7 @@ const AuthProvider = ({ children }) => {
         localStorage.setItem('auth', loggedIn);
         localStorage.setItem('token', token);
         localStorage.setItem('username', username);
-    }, []);
+    }, [token, username, loggedIn]);
 
     return (
         <AuthContext.Provider value={{

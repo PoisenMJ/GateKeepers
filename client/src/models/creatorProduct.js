@@ -28,6 +28,10 @@ const creatorProductSchema = mongoose.Schema({
     type: {
         type: String,
         required: true
+    },
+    uri: {
+        type: String,
+        required: true
     }
 });
 

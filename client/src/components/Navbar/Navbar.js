@@ -6,6 +6,7 @@ import { getCreators } from '../../controllers/creators';
 import { LogOut } from '../../services/auth';
 
 import { AuthContext } from '../../services/AuthContext';
+import Event from '../../utils/events';
 
 const Navbar = () => {
     let navigate = useNavigate();
@@ -14,6 +15,9 @@ const Navbar = () => {
     const { loggedIn, setLoggedIn, username, setUsername, setToken } = useContext(AuthContext);
 
     useEffect(() => {
+        if(!loggedIn){
+            navigate('/login');
+        }
         const fetchData = async () => {
             var creators = await getCreators();
             setCreators(creators);
@@ -29,7 +33,7 @@ const Navbar = () => {
         LogOut();
         navigate('/login');
     }
-
+    
     return (
         <div>
             <div className="toggle" onClick={toggleNavbar}>
@@ -51,8 +55,8 @@ const Navbar = () => {
                         </div>
                     </li>
                     <li><NavLink to="/about" className={"mb-2"} onClick={toggleNavbar}>About</NavLink></li>
-                    <li><NavLink to="/contact-us" className={"mb-2"}>Contact Us</NavLink></li>
-                    {loggedIn ? 
+                    <li><NavLink to="/contact-us" className={"mb-2"} onClick={toggleNavbar}>Contact Us</NavLink></li>
+                    {loggedIn ?
                         <li><NavLink to="/profile" onClick={toggleNavbar} className={"mb-2"}>Profile</NavLink></li>
                         :
                         <li><NavLink to="/login" onClick={toggleNavbar} className={"mb-2"}>Login</NavLink></li>

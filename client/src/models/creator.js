@@ -15,7 +15,13 @@ const creatorSchema = mongoose.Schema({
         unique: true
     },
     links: {
-        type: {}
+        type: {},
+        default: [
+            {"instagram": ""},
+            {"tiktok": ""},
+            {"twitter": ""},
+            {"twitch": ""}
+        ]
     },
     image: {
         type: String,

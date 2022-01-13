@@ -3,7 +3,7 @@ import { Button, Form, CloseButton } from 'react-bootstrap';
 import CurrencyInput from 'react-currency-input-field';
 import Carousel from 'nuka-carousel';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
-import { addProduct } from '../../../controllers/creators';
+import { addProduct } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext';
 import './Upload.css';
 

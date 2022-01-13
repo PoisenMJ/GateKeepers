@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router';
 import { Navigate } from 'react-router-dom';
+
 import { checkCreatorToken } from '../services/auth';
 
 const CreatorRoute = () => {
@@ -9,8 +10,10 @@ const CreatorRoute = () => {
 
     useEffect(() => {
         checkCreatorToken().then(result => {
-            if(result){
+            if(result) {
                 setIsCreator(true);
+            } else {
+                setIsCreator(false);
             }
         }).then(() => {
             setIsTokenValidated(true);

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import "./Home.css";
 import Mobile from '../../components/Mobile';
 import { getCreatorPosts } from '../../controllers/creators';
 import { Button } from 'react-bootstrap';
-import { FaShoppingBag } from 'react-icons/fa';
+import { FaInstagram, FaShoppingBag, FaTiktok, FaTwitch, FaTwitter } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
@@ -25,7 +25,7 @@ const Home = () => {
     const exploreButton = () => {
         navigate('/maksie_aki/own');
     }
-
+    
     return(
         <div id="home-page">
             <Mobile>
@@ -45,25 +45,24 @@ const Home = () => {
                     </div>
                 </div>
                     {creatorPosts && creatorPosts.map((post, index) => {
-                        var socialsHTML = (post.creator.links.length > 0) ?
+                        var lastPost = index == creatorPosts.length - 1;
+                        var socialsHTML = (post.creator.links) ?
                         (
                             <div className="socials">
-                                {post.creator.links.map((link, index2) => {
-                                    if(link.instagram){
-                                        return(
-                                            <img key={link.instagram} className="socials-icon" href={link.instagram} src="/images/socials/instagram.png"/>
-                                        )
-                                    } else if(link.tiktok){
-                                        return(
-                                            <img key={link.tiktok} className="socials-icon" href={link.tiktok} src="/images/socials/tiktok.png"/>
-                                        )
-                                    }
-                                })}
+                                {post.creator.links.instagram &&
+                                    <a key={post.creator.links.instagram} className="socials-icon" href={post.creator.links.instagram}><FaInstagram size={35} color='#fff'/></a>
+                                }{post.creator.links.tiktok &&
+                                    <a key={post.creator.links.tiktok} className="socials-icon mb-1" href={post.creator.links.tiktok}><FaTiktok size={35} color='#fff'/></a>
+                                }{post.creator.links.twitch &&
+                                    <a key={post.creator.links.twitch} className="socials-icon" href={post.creator.links.twitch}><FaTwitch size={35} color='#fff'/></a>
+                                }{post.creator.links.twitter &&
+                                    <a key={post.creator.links.twitter} className="socials-icon" href={post.creator.links.twitter}><FaTwitter size={35} color='#fff'/></a>
+                                }
                             </div>
                         ) : '';
                         return(
                             <div className="slide" id={`slide-${index+1}`} key={index}>
-                                <div className="slide-info">
+                                <div className={`slide-info ${(lastPost)?" last-slide":""}`}>
                                     {socialsHTML}
                                     <div className="slide-creator">
                                         <span className="fs-1 slide-tag">{post.creator.tag.toUpperCase()}</span>
@@ -81,11 +80,13 @@ const Home = () => {
                                         top: `calc(100vh * ${index+1})`
                                     }}
                                 />
-                                <div onClick={() => nextSlide(`slide-${index+2}`)} className="arrow-down-container">
-                                    <div className="chevron white"></div>
-                                    <div className="chevron white"></div>
-                                    <div className="chevron white"></div>
-                                </div>
+                                {!lastPost &&
+                                    <div onClick={() => nextSlide(`slide-${index+2}`)} className="arrow-down-container">
+                                        <div className="chevron white"></div>
+                                        <div className="chevron white"></div>
+                                        <div className="chevron white"></div>
+                                    </div>
+                                }
                             </div>
                         )
                     })}

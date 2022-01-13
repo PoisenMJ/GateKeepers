@@ -23,9 +23,7 @@
     place-items: center;
 }
 .socials-icon{
-    width: 50px;
-    height: 50px;
-    filter: grayscale(1);
+    padding: 2px;
     margin-left: 0rem;
     margin-right: 1rem;
 }
@@ -51,7 +49,7 @@
     position: absolute;
 }
 .slide-info{
-    z-index: 200;
+    z-index: 0;
     top: 40%;
     max-width: 90vw;
     width: min-content;
@@ -73,6 +71,9 @@
 }
 .slide-tag{
     font-weight: 100;
+}
+.last-slide{
+    top: 0!important;
 }
 /*  arrow animation css  */
 .arrow {

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { getCreatorPortalProduct, updateProduct } from '../../../controllers/creators.js';
+import { getProduct, updateProduct } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext.js';
 import { Form, Button } from 'react-bootstrap';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
@@ -11,13 +11,13 @@ import './EditProduct.css';
 const EditProduct = () => {
     var {productID} = useParams();
     const [product, setProduct] = useState(null);
-    const { username } = useContext(AuthContext);
+    const { username, token } = useContext(AuthContext);
     const [images, setImages] = useState(null);
     const [cleared, setCleared] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
-            var data = await getCreatorPortalProduct(productID, username);
+            var data = await getProduct(productID, username, token);
             setProduct(data.product);
             setImages(data.product.images);
         }
@@ -60,7 +60,7 @@ const EditProduct = () => {
         data.append('images', images);
         data.append('imagesCleared', cleared);
 
-        var res = await updateProduct(data);
+        var res = await updateProduct(data, username, token);
         if(res.success) Flash("Product Updated", "dark");
         else Flash("Product failed to update", "danger");
     }
@@ -91,6 +91,7 @@ const EditProduct = () => {
                             <Form.Control name="name" type="text" defaultValue={product.name} className="mb-2 custom-input"/>
                             <CurrencyInput allowNegativeValue={false} defaultValue={product.price} id="edit-money-input" prefix='$' className="custom-input mb-2 w-100" placeholder="Enter Price" decimalsLimit={2}/>
                             <Form.Control name="description" as="textarea" defaultValue={product.description} placeholder="Enter description..." className="custom-input mb-2"/>
+                            <Form.Control name="count" type="number" defaultValue={product.count} className="custom-input mb-2"/>
                             <Form.Select name="type" className="custom-input mb-2" defaultValue={product.type}>
                                 <option value="made">Made By</option>
                                 <option value="own">Creator's Own</option>

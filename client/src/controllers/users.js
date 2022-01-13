@@ -1,10 +1,10 @@
-async function getProfile(){
-    var username = localStorage.getItem("username");
+async function getProfile(username, token){
     var res = await fetch('/user/profile', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            username: username,
+            token: token,
+            username: username
         })
     });
     var json = await res.json();
@@ -12,13 +12,12 @@ async function getProfile(){
     else return { success: false };
 }
 
-async function updatePassword(password){
-    //TODO: check if username has been altered
-    var username = localStorage.getItem('username');
+async function updatePassword(password, username, token){
     var res = await fetch('/user/update-password', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+            token: token,
             username: username,
             password: password
         })

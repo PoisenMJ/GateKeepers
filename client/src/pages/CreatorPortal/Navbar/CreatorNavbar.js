@@ -29,7 +29,7 @@ const CreatorNavbar = () => {
                 <ul>
                     <li><NavLink to="upload" className={"mb-2"} onClick={toggleNavbar}>Upload</NavLink></li>
                     <li><NavLink to="products" className={"mb-2"} onClick={toggleNavbar}>Products</NavLink></li>
-                    <li><NavLink to="/contact-us" className={"mb-2"}>Profile</NavLink></li>
+                    <li><NavLink to="profile" className={"mb-2"} onClick={toggleNavbar}>Profile</NavLink></li>
                     {/* {loggedIn ? 
                         <li><NavLink to="/login" onClick={toggleNavbar} className={"mb-2"}>Login</NavLink></li>
                         :

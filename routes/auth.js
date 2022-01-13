@@ -86,11 +86,13 @@ router.post('/check-token', async (req, res, next) => {
         return res.json({ success: false });
     }
     // change key back into buffer
-    var signingKey = Buffer.from(signingKeyb64.key, 'base64');
+    if(signingKeyb64) var signingKey = Buffer.from(signingKeyb64.key, 'base64');
+    else return res.json({ success: false });
 
     nJwt.verify(req.body.token, signingKey, function(err, verifiedJwt) {
         if(err) return res.json({ success: false });
-        if(verifiedJwt) return res.json({ success: true });
+        if(verifiedJwt.body.scope == 'user') return res.json({ success: true });
+        else return res.json({ success: false });
     })
 });
 
@@ -106,12 +108,14 @@ router.post('/check-creator-token', async (req, res, next) => {
         return res.json({ success: false });
     }
 
-    var signingKey = Buffer.from(signingKeyb64.key, 'base64');
+    var signingKey;
+    if(signingKeyb64) signingKey = Buffer.from(signingKeyb64.key, 'base64');
+    else return res.json({ success: false });
 
     nJwt.verify(token, signingKey, function(err, verifiedJwt) {
-        console.log(verifiedJwt);
         if(err) return res.json({ success: false });
-        if(verifiedJwt) return res.json({ success: true });
+        if(verifiedJwt.body.scope == 'creator') return res.json({ success: true });
+        else return res.json({ success: false });
     })
 })
 
