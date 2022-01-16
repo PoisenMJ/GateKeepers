@@ -23,6 +23,11 @@ var userSchema = mongoose.Schema({
         type: String,
         default: 'user',
         enum: ['user, creator']
+    },
+    customerID: {
+        type: String,
+        required: true,
+        default: ''
     }
 });
 

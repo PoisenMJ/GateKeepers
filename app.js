@@ -14,6 +14,7 @@ var creatorRouter = require('./routes/creator');
 var authRouter = require('./routes/auth');
 var userRouter = require('./routes/user');
 var gatekeeperRouter = require('./routes/gatekeeper');
+var paymentRouter = require('./routes/payment');
 
 require('./client/src/models/index');
 
@@ -31,6 +32,7 @@ app.use('/creator', creatorRouter);
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/gatekeeper', gatekeeperRouter);
+app.use('/payment', paymentRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

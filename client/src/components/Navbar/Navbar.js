@@ -3,6 +3,7 @@ import './Navbar.css';
 import { FaBars, FaSignOutAlt, FaSortDown } from 'react-icons/fa';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { getCreators } from '../../controllers/creators';
+import Cart from '../Cart/Cart';
 import { LogOut } from '../../services/auth';
 
 import { AuthContext } from '../../services/AuthContext';
@@ -41,6 +42,7 @@ const Navbar = () => {
             </div>
 
             <div id="menu">
+                <Cart clicked={toggleNavbar}/>
                 <ul>
                     <li><NavLink to="/" className={"mb-2"} onClick={toggleNavbar}>Home</NavLink></li>
                     <li><a href="#" className={"d-flex"} style={{marginLeft: '40px'}}

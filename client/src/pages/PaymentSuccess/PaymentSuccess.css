@@ -1,0 +1,10 @@
+#payment-success{
+    height: 70vh;
+    display: grid;
+    place-content: center;
+    padding: 2rem;
+}
+#payment-success-confirm{
+    font-size: .95rem;
+    color: rgb(100,100,100);
+}

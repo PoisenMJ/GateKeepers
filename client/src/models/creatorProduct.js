@@ -32,6 +32,13 @@ const creatorProductSchema = mongoose.Schema({
     uri: {
         type: String,
         required: true
+    },
+    sizes: {
+        type: [String],
+        required: true
+    },
+    color: {
+        type: String
     }
 });
 
