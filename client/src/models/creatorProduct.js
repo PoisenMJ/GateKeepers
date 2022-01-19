@@ -39,6 +39,10 @@ const creatorProductSchema = mongoose.Schema({
     },
     color: {
         type: String
+    },
+    dateToPost: {
+        type: String,
+        required: true
     }
 });
 

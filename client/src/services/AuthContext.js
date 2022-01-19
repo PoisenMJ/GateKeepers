@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useLocation } from 'react-router';
+import { LogOut } from './auth';
 
 const AuthContext = React.createContext({
     token: null,
@@ -38,4 +40,39 @@ const AuthProvider = ({ children }) => {
     )
 }
 
-export { AuthProvider, AuthContext };
+const parseJwt = (token) => {
+    try {
+        return JSON.parse(atob(token.split(".")[1]));
+    } catch(err) {
+        return null;
+    }
+}
+
+const AuthVerify = (props) => {
+    const {username, token, loggedIn,
+            setUsername, setToken, setLoggedIn} = useContext(AuthContext);
+    var location = useLocation();
+
+    useEffect(() => {
+        if(username && token && loggedIn){
+            const decodedJwt = parseJwt(token);
+            if(decodedJwt.exp * 1000 < Date.now()) {
+                setUsername(null);
+                setToken(null);
+                setLoggedIn(false);
+                LogOut();
+            } else {
+                console.log('valid');
+            }
+        } else {
+            setUsername(null);
+            setToken(null);
+            setLoggedIn(false);
+            LogOut();
+        }
+    }, [location])
+
+    return <div></div>
+}
+
+export { AuthProvider, AuthContext, AuthVerify };

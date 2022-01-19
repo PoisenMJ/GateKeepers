@@ -7,7 +7,7 @@ var orderSchema = mongoose.Schema({
     },
     items: {
         //[item_id]
-        type: [String],
+        type: [{}],
         required: true
     },
     date: {

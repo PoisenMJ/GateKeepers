@@ -7,10 +7,13 @@ import { FaArrowRight } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import { decrementProductBeforeCheckout, getCheckoutUrl } from '../../controllers/payment';
 import { Flash } from '../../components/FlashMessage/FlashMessage';
+import { AuthContext } from '../../services/AuthContext';
 
 const ShoppingBasket = () => {
     let navigate = useNavigate();
+    
     const { products, total, removeFromCart } = useContext(CartContext);
+    const { username } = useContext(AuthContext);
     const [productsData, setProductsData] = useState(null);
 
     // localStorage.removeItem('cart');
@@ -56,10 +59,9 @@ const ShoppingBasket = () => {
             })
         }
         var res = await decrementProductBeforeCheckout(productsData.map((d, i) =>  {return {uri:d.uri, name:d.name}} ));
-        console.log(res);
         if(res.outOfStock) Flash(`${res.name} is out of stock.`);
         else {
-            var checkoutUrl = await getCheckoutUrl(data);
+            var checkoutUrl = await getCheckoutUrl(data, username);
             window.location.href = checkoutUrl;
         }
         

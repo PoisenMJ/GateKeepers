@@ -6,6 +6,7 @@ import { Form, Button } from 'react-bootstrap';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
 import CurrencyInput from 'react-currency-input-field';
 import Carousel from 'nuka-carousel';
+import DateTime from 'react-datetime';
 import './EditProduct.css';
 
 const EditProduct = () => {
@@ -88,14 +89,25 @@ const EditProduct = () => {
                     </div>
                     {product &&
                         <div>
-                            <Form.Control name="name" type="text" defaultValue={product.name} className="mb-2 custom-input"/>
-                            <CurrencyInput allowNegativeValue={false} defaultValue={product.price} id="edit-money-input" prefix='$' className="custom-input mb-2 w-100" placeholder="Enter Price" decimalsLimit={2}/>
-                            <Form.Control name="description" as="textarea" defaultValue={product.description} placeholder="Enter description..." className="custom-input mb-2"/>
-                            <Form.Control name="count" type="number" defaultValue={product.count} className="custom-input mb-2"/>
-                            <Form.Select name="type" className="custom-input mb-2" defaultValue={product.type}>
+                            <Form.Control required name="name" type="text" defaultValue={product.name} className="mb-2 custom-input"/>
+                            <CurrencyInput required allowNegativeValue={false} defaultValue={product.price} id="edit-money-input" prefix='$' className="custom-input mb-2 w-100" placeholder="Enter Price" decimalsLimit={2}/>
+                            <Form.Control required name="description" as="textarea" defaultValue={product.description} placeholder="Enter description..." className="custom-input mb-2"/>
+                            <Form.Control required name="count" min="0" type="number" defaultValue={product.count} className="custom-input mb-2"/>
+                            <Form.Control required name="sizes" placeholder="'Small, Medium, Large', or '1 Size' ..." className="custom-input mb-2" defaultValue={product.sizes}/>
+                            <Form.Select required name="type" className="custom-input mb-2" defaultValue={product.type}>
                                 <option value="made">Made By</option>
                                 <option value="own">Creator's Own</option>
                             </Form.Select>
+                            <DateTime
+                                initialValue={new Date(product.dateToPost)}
+                                closeOnSelect={true}
+                                className="mb-2 mt-2 w-100"
+                                inputProps={{placeholder: 'Upload Date...',
+                                            className: "date-input-upload-form",
+                                            readOnly: true,
+                                            name: 'dateToPost'
+                                }}
+                            />
                             <Button variant="success" type="submit" className="w-100">UPDATE</Button>
                         </div>
                     }

@@ -1,6 +1,7 @@
 #upload{
-    height: 90vh;
+    height: auto;
     padding: 3rem;
+    overflow: scroll;
 }
 #no-images{
     width: 100%!important;
@@ -15,7 +16,6 @@
 #product-images {
     display: grid;
     width: 100%;
-    height: 30vh;
     grid-auto-flow: row;
 }
 
@@ -24,10 +24,25 @@
     height: 100%;
     object-fit: cover;
 }
+.no-outline{
+    outline: none!important;
+}
 .product-upload-remove{
     position: relative;
     top: calc(0px - 30vh / 2);
     left: 0;
     z-index: 100;
     background-color: white!important;
+}
+.date-input-upload-form{
+    border: 1px solid black!important;
+    border-radius: 0px;
+    font-size: .9rem!important;
+    padding: .4rem .8rem .4rem .8rem;
+    width: 100%;
+    box-shadow: none!important;
+    outline: none!important;
+}
+.date-input-upload-form:focus{
+    border-width: 3px!important;
 }

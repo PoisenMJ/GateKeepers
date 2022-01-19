@@ -34,11 +34,38 @@ const ProductsPage = ({ type }) => {
             <hr className="mx-5"/>
             <div id="products">
                 {products && products.map((product, index) => {
+                    var date = new Date(product.dateToPost);
+                    var available = (new Date() < date);
+                    // if not ready yet change class
+                    var c = (available) ? ' unavailable-product' : '';
+                    var imageC = (available) ? ' unavailable-product-image': '';
+                    
+                    // time format
+                    var hours = date.getHours();
+                    var minutes = date.getMinutes();
+                    minutes = ('0'+minutes).slice(-2);
+                    var ampm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12;
+                    hours = hours ? hours : 12; // the hour '0' should be '12'
+                    var strTime = hours + ':' + minutes + ' ' + ampm;
+
+                    console.log(date.getMinutes());
                     return (
-                        <div key={product.name} className="product mb-4" onClick={() => viewProduct(product.uri)}>
-                            <img src={`/images/products/${product.images[0]}`} className="product-image"/>
+                        <div key={product.name} className={"product mb-4"+c} onClick={() => viewProduct(product.uri)}>
+                            <div className="product-image-parent">
+                                <img src={`/images/products/${product.images[0]}`} className={"product-image"+imageC}/>
+                                {available &&
+                                        <span className="product-image-text">
+                                            RELEASING SOON
+                                            <br/>
+                                            {date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()}
+                                            <br/>
+                                            <span style={{fontSize: '.9rem', color: 'rgb(200,200,200)'}}>{strTime}</span>
+                                        </span>
+                                }
+                            </div>
                             <div className="product-info">
-                                <span className="fs-4 text-muted fw-light">{product.name}</span>
+                                <span className="fs-4 fw-light">{product.name}</span>
                                 <span className="fs-5">${product.price}</span>
                             </div>
                         </div>

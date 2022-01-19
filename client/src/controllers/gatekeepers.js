@@ -2,9 +2,15 @@ async function addProduct(data, username, token){
     var data = new FormData(data);
     data.append('username', username);
     data.append('token', token);
+
+    var moneyInput = data.get('price');
+    data.set('price', moneyInput.substring(1, moneyInput.length))
+    var uri = data.get('name').toLowerCase().replace(' ', '_').concat('_').concat(username);
+    data.append('uri', uri);
+
     var res = await fetch('/gatekeeper/products/add', {
         method: "POST",
-        body: new FormData(data)
+        body: data
     });
     var json = await res.json();
     return json;

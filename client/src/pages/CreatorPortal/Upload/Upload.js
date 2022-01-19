@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Button, Form, CloseButton } from 'react-bootstrap';
+import { Button, Form, CloseButton, FormText } from 'react-bootstrap';
 import CurrencyInput from 'react-currency-input-field';
 import Carousel from 'nuka-carousel';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
 import { addProduct } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext';
+import DateTime from 'react-datetime';
+import 'react-datetime/css/react-datetime.css';
 import './Upload.css';
 
 const Upload = () => {
@@ -13,14 +15,29 @@ const Upload = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [type, setType] = useState(null);
-    const { username } = useContext(AuthContext);
+    const [count, setCount] = useState(null);
+    const [sizes, setSizes] = useState(null);
+    const { username, token } = useContext(AuthContext);
 
     const handleInputChange = event => {
         switch(event.target.name){
-            case 'name': setName(event.target.value);
-            case 'description': setDescription(event.target.value);
-            case 'type': setType(event.target.value);
+            case 'name':
+                setName(event.target.value);
+                break;
+            case 'description':
+                setDescription(event.target.value);
+                break;
+            case 'type':
+                setType(event.target.value);
+                break;
+            case 'count':
+                setCount(event.target.value);
+                break;
+            case 'sizes':
+                setSizes(event.target.value);
+                break;
         }
+        console.log(event.target);
     }
 
     const openFileInput = () => {
@@ -44,13 +61,10 @@ const Upload = () => {
 
     const sendAddProduct = async event => {
         event.preventDefault();
-
-        var m = document.getElementById("money-input");
-        m.value = m.value.substring(1, m.value.length);
         var formdata = document.getElementById('upload-form');
         
-        if(images && price && name && description && type){
-            var res = await addProduct(formdata);
+        if(images && price && name && description && type && count && sizes){
+            var res = await addProduct(formdata, username, token);
             if(res.success) Flash("Successfully added", "success");
             else Flash("Failed", "dark");
         } else {
@@ -67,7 +81,7 @@ const Upload = () => {
             <Form onSubmit={sendAddProduct} id="upload-form">
                 <Form.Control onChange={handleInputChange} name="name" type="text" placeholder="Product Name" className="mb-2 custom-input"/>
                 <Form.Control multiple name="images" id="image-input" type="file" className="mb-2 visually-hidden"/>
-                <div id="product-images" className="mb-4">
+                <div id="product-images" className="mb-2">
                     <Carousel className="carousel mb-1" width={'100%'} height='100%' dragging>
                         {images ?
                             images.map((image, index) => (
@@ -79,12 +93,36 @@ const Upload = () => {
                     </Carousel>
                     <Button onClick={openFileInput} variant="outline-secondary" className="w-100">Add Image</Button>
                 </div>
-                <CurrencyInput name="price" allowNegativeValue={false} id="money-input" prefix='$' className="custom-input mb-2 w-100" placeholder="Enter Price" decimalsLimit={2} onValueChange={(value, name) => setPrice(value)}/>
+                <Form.Group>
+                    <Form.Text>Price</Form.Text>
+                    <CurrencyInput onChange={handleInputChange} name="price" allowNegativeValue={false} id="money-input" prefix='$' className="no-outline custom-input mb-2 w-100" placeholder="Enter Price" decimalsLimit={2} onValueChange={(value, name) => setPrice(value)}/>
+                </Form.Group>
                 <Form.Control onChange={handleInputChange} name="description" as="textarea" placeholder="Enter description..." className="custom-input mb-2"/>
-                <Form.Select onChange={handleInputChange} name="type" className="custom-input mb-2">
-                    <option value="made">Own Product</option>
-                    <option value="own">Re-Sell</option>
-                </Form.Select>
+                <Form.Group>
+                    <Form.Text>Product Count</Form.Text>
+                    <Form.Control onChange={handleInputChange} name="count" type="number" min="1" placeholder="Number of products" className="custom-input mb-1"/>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Text>Enter Sizes</Form.Text>
+                    <Form.Control onChange={handleInputChange} name="sizes" placeholder="'Small, Medium, Large', or '1 Size' ..." className="custom-input mb-2"/>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Text>Type</Form.Text>
+                    <Form.Select onChange={handleInputChange} name="type" className="custom-input">
+                        <option value="made">Made To Order</option>
+                        <option value="own">Creator's Own</option>
+                    </Form.Select>
+                </Form.Group>
+                <DateTime
+                    initialValue={new Date()}
+                    closeOnSelect={true}
+                    className="mb-2 mt-2 w-100"
+                    inputProps={{placeholder: 'Upload Date...',
+                                className: "date-input-upload-form",
+                                readOnly: true,
+                                name: 'dateToPost'
+                    }}
+                />
                 <Button variant="secondary" type="submit" className="w-100">ADD</Button>
             </Form>
         </div>

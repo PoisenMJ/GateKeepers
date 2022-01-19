@@ -1,6 +1,7 @@
 const express = require('express');
 var router = express.Router();
 var User = require('../client/src/models/user');
+var Order = require('../client/src/models/order');
 var { userCheck } = require('../middleware/auth');
 
 router.post('/profile', userCheck, (req, res, next) => {
@@ -14,8 +15,6 @@ router.post('/profile', userCheck, (req, res, next) => {
 router.post('/update-password', userCheck, async (req, res, next) => {
     var password = req.body.password;
     var username = req.body.username;
-    console.log(username);
-    console.log(User.encryptPassword(password));
     try{
         await User.updateOne({ username: username }, { $set: { password: User.encryptPassword(password) }});
         console.log('success');
@@ -25,6 +24,23 @@ router.post('/update-password', userCheck, async (req, res, next) => {
         return res.json({ success: false });
     }
     
+})
+
+router.post('/orders', userCheck, async (req, res, next) => {
+    var username = req.body.username;
+    try {
+        var orders = await Order.find({ user: username });
+        var ordersData = orders.map((order, index) => {
+            var d = new Date(order.date);
+            var date = d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
+            return { items: order.items.map((o, i) => o.name), date, total: order.total };
+        });
+        
+        // orders into array
+        return res.json({ orders: ordersData })
+    } catch(err) {
+        return res.json({ orders: null });
+    }
 })
 
 module.exports = router;

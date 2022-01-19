@@ -12,6 +12,7 @@ const Profile = () => {
     const { token, username } = useContext(AuthContext);
 
     const [profileData, setProfileData] = useState({});
+    const [orders, setOrders] = useState(null);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -21,16 +22,20 @@ const Profile = () => {
     useEffect(() => {
         const fetchData = async () => {
             var response = await getProfile(username, token);
-            if(response.success) setProfileData(response.user);
+            if(response.success){
+                setProfileData(response.profile);
+                setOrders(response.orders);
+            }
             else navigate("/login");
         }
         fetchData();
+
     }, [])
 
     const sendUpdatePassword = async event => {
         event.preventDefault();
         if(password !== confirmPassword) Flash("Passwords don't match", "dark");
-        else {
+        else{
             var res = await updatePassword(password, username, token);
             if(res.success) Flash("Password updated", "success");
             else Flash("Password failed to update", "dark");
@@ -44,7 +49,7 @@ const Profile = () => {
                     <span className="fs-3">◑ PROFILE ◐</span>
                 </div>
                 <hr className="mb-4"/>
-                <Form onSubmit={sendUpdatePassword}>
+                <Form onSubmit={sendUpdatePassword} className="mb-5">
                     <span>INFO</span>
                     <Form.Control className="custom-input mb-2" type="text" disabled defaultValue={profileData ? profileData.username : 'username'}/>
                     <Form.Control className="custom-input mb-2" type="text" disabled defaultValue={profileData ? profileData.email : 'email'}/>
@@ -54,6 +59,22 @@ const Profile = () => {
                     <Form.Control className="custom-input mb-2" onChange={handleConfirmPasswordChange} type="password" placeholder="Confirm Password"/>
                     <Button className="w-100" variant="dark" type="submit">UPDATE</Button>
                 </Form>
+                <span>ORDERS</span>
+                <div id="profile-page-order-history">
+                    {orders && orders.map((order, index) => {
+                        var hr = (index < orders.length-1) ? <hr style={{margin: '2px 30px 2px 30px'}}/> : "";
+                        return (
+                            <div>
+                                <div key={index} className="profile-page-order">
+                                    <span className="order-names">{order.items.join(', ')}</span>
+                                    <span className="text-muted">{order.date}</span>
+                                    <span>${order.total}</span>
+                                </div>
+                                {hr}
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
         </div>
     )

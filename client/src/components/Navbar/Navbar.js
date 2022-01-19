@@ -13,7 +13,7 @@ const Navbar = () => {
     let navigate = useNavigate();
     const [creators, setCreators] = useState(null);
 
-    const { loggedIn, setLoggedIn, username, setUsername, setToken } = useContext(AuthContext);
+    const { loggedIn, token, setLoggedIn, username, setUsername, setToken } = useContext(AuthContext);
 
     useEffect(() => {
         // if(!loggedIn){

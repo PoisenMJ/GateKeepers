@@ -13,12 +13,16 @@ const ProductPage = () => {
     const [product, setProduct] = useState(null);
     const [size, setSize] = useState(null);
     const {productURI} = useParams();
+    const [purchasable, setPurchasable] = useState(false);
     const { addToCart } = useContext(CartContext);
 
     useEffect(() => {
         const fetchProduct = async () => {
             var res = await getProduct(productURI);
-            if(res.success) setProduct(res.product);
+            if(res.success){
+                setPurchasable(new Date(res.product.dateToPost) < new Date());
+                setProduct(res.product);
+            }
             else navigate('/');
         }
         fetchProduct();
@@ -28,9 +32,10 @@ const ProductPage = () => {
         setSize(_size);
     }
 
-    const AddToCart = (_uri, _size, _price) => {
+    const AddToCart = (_uri, _size, _price, _name) => {
         var productJSON = {
             uri: _uri,
+            name: _name,
             size: _size,
             price: _price
         };
@@ -38,6 +43,7 @@ const ProductPage = () => {
         Flash("Added to cart", "dark");
     }
 
+    var addToCartDisabled = (purchasable) ? false : true;
     return (
         <div id="product">
             {product &&
@@ -62,11 +68,11 @@ const ProductPage = () => {
                                 )
                             })}
                         </div>
-                        <div style={{display: 'grid', placeContent: 'center'}}>
-                            <span className="fs-3 mb-2 product-price">${product.price} <span className="text-muted fs-5">: {product.count} LEFT</span></span>
+                        <div style={{display: 'grid', alignContent: 'center', width: '100vw', paddingLeft: '10px', paddingRight: '10px'}}>
+                            <span className="fs-3 mb-2 product-price">${product.price} <span className="text-muted fs-5">: {product.count >= 0 ? product.count : 0} {purchasable ? 'LEFT' : 'AVAILABLE'}</span></span>
                             <span className="fs-2 fw-bold">{product.name}</span>
                             <span className="fs-6 fw-light mb-4">{product.description}</span>
-                            <Button onClick={() => AddToCart(product.uri, size, product.price)} variant={"dark"} className="w-100" style={{alignSelf: 'end'}}>Add To Cart</Button>
+                            <Button disabled={addToCartDisabled} onClick={() => AddToCart(product.uri, size, product.price, product.name)} variant={"dark"} className="w-100" style={{alignSelf: 'end'}}>Add To Cart</Button>
                         </div>
                     </div>
                 </div>

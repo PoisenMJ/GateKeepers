@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import './PaymentSuccess.css';
 import { CartContext } from '../../services/CartContext';
 import { AuthContext } from '../../services/AuthContext';
+import { saveOrder } from '../../controllers/payment';
 
 const PaymentSuccess = () => {
     let navigate = useNavigate();
@@ -24,12 +25,11 @@ const PaymentSuccess = () => {
             d['email'] = res.email;
             setData(d);
             
-            var items = products.map((item, index) => item.uri);
-            var username = (loggedIn) ? username : '';
-            // saveOrder(res.customerID, res.orderID, items, total, username);
+            // set items into [ {uri, name} ]
+            var items = products.map((item, index) => { return { uri: item.uri, name: item.name } });
+            saveOrder(res.customerID, res.orderID, items, total, username);
         }
         fetchSessionData();
-
         
         clearCart();
     }, [])

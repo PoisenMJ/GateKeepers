@@ -1,21 +1,18 @@
-import Order from '../models/order';
-import CreatorProduct from '../models/creatorProduct';
-
-async function getCheckoutUrl(products){
+async function getCheckoutUrl(products, username){
     var res = await fetch('/payment/checkout',{
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({products})
+        body: JSON.stringify({products, username})
     });
     var json = await res.json();
     return json.url;
 }
 
-async function getSessionData(sessionID){
+async function getSessionData(sessionID, username ){
     var res = await fetch('/payment/session-data',{
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionID })
+        body: JSON.stringify({ sessionID, username })
     })
     var json = await res.json();
     return json;
@@ -32,28 +29,30 @@ async function decrementProductBeforeCheckout(urisAndNames){
 }
 
 async function saveOrder(customerID, orderID, items, total, username){
-    var order = new Order({
-        orderID,
-        items,
-        date: new Date().toString(),
-        total,
-        customerID,
-        username
+    var res = await fetch('/payment/save-order', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            orderID,
+            customerID,
+            items,
+            username,
+            date: new Date(),
+            total
+        })
     });
-
-    for(var i = 0; i < items.length; i++){
-        // CreatorProduct.updateOne({ uri: items[i], count: { $gt: 0 } }, { $inc: { count: -1 }}).then((updated, err) => {
-        //     if(!updated)
-        // })
-    }
-
-    try{
-        await order.save();
-        return true;
-    } catch(err) {
-        console.log(err);
-        return false;
-    }
+    var json = await res.json();
+    return json;
 }
 
-export { getCheckoutUrl, getSessionData, saveOrder, decrementProductBeforeCheckout };
+async function cancelOrder(items){
+    var res = await fetch('/payment/cancel-order', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items })
+    });
+    var json = await res.json();
+    return json;
+}
+
+export { getCheckoutUrl, getSessionData, saveOrder, decrementProductBeforeCheckout, cancelOrder };

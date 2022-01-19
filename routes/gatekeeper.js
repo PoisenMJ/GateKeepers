@@ -18,24 +18,29 @@ var storage = multer.diskStorage({
 })
 var upload = multer({ storage: storage });
 
-router.post('/products/add', gatekeeperCheck, upload.array('images'), (req, res, next) => {
+router.post('/products/add', upload.array('images'), gatekeeperCheck, (req, res, next) => {
     var creatorUsername = req.body.username;
     var imageNameList = [];
     for(var i = 0; i < req.files.length; i++){
         imageNameList.push(req.files[i].filename)
     }
-    
+    var sizes = req.body.sizes.replace(`'`, '').split(',').filter((e) => e.trim());
+
     Creator.findOne({ username: creatorUsername }).then((user, err) => {
-        var newProduct = new creatorProduct({
+        var newProduct = new CreatorProduct({
             creator: user._id,
             name: req.body.name,
             description: req.body.description,
+            uri: req.body.uri,
             price: req.body.price,
-            count: 1,
+            count: parseInt(req.body.count),
             images: imageNameList,
-            type: req.body.type
+            type: req.body.type,
+            dateToPost: req.body.dateToPost,
+            sizes: sizes
         });
         newProduct.save((err) => {
+            console.log(err);
             if(err) return res.json({ success: false });
             else return res.json({ success: true });
         })
@@ -81,7 +86,9 @@ router.post('/products/update', upload.array('images'), gatekeeperCheck, (req, r
                 price: req.body.price,
                 count: req.body.count,
                 images: (imagesChanged && imagesCleared) ? fileNames : originalImages,
-                type: req.body.type
+                type: req.body.type,
+                sizes: req.body.sizes,
+                dateToPost: req.body.dateToPost
             }
         }, (err, docs) => {
             if(err) return res.json({ success: false });

@@ -8,3 +8,12 @@
     font-size: .95rem;
     color: rgb(100,100,100);
 }
+#profile-page-order-history{
+    border: 4px solid black;
+}
+.profile-page-order{
+    padding: .5rem .75rem .5rem .75rem;
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: space-between;
+}

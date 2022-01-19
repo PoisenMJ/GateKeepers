@@ -50,7 +50,7 @@ const CreatorProducts = () => {
 
     return (
         <div id="creator-products-portal">
-            <Form>
+            <Form className="mb-3">
                 <Form.Control onChange={searchInputChange} type="text" placeholder="Search for product name..." className="custom-input mb-2 border2"/>
             </Form>
             <Modal show={showRemoveProductModal} onHide={() => setShowRemoveProductModal(false)} centered>
@@ -66,7 +66,9 @@ const CreatorProducts = () => {
             {filteredProducts && filteredProducts.map((product, index) => {
                 return (
                     <div key={product.name} className="product mb-4">
-                        <img src={`/images/products/${product.images[0]}`} className="product-image"/>
+                        <div className="product-image-parent">
+                            <img src={`/images/products/${product.images[0]}`} className="product-image"/>
+                        </div>
                         <div className="product-info w-100">
                             <span className="fs-4 text-muted fw-light">{product.name}</span>
                             <div className="creator-portal-product-edit-group">

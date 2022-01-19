@@ -2,7 +2,7 @@ import React from 'react';
 import './PageLayout.css';
 import { Outlet } from 'react-router';
 import FlashMessage from '../FlashMessage/FlashMessage';
-import AuthProvider from '../../services/AuthContext';
+import AuthProvider, { AuthVerify } from '../../services/AuthContext';
 
 const PageLayout = ({ header, body, footer}) => {
     return (
@@ -14,6 +14,7 @@ const PageLayout = ({ header, body, footer}) => {
             {!body &&
                 <Outlet/>
             }
+            <AuthVerify/>
         </div>
     )
 }
