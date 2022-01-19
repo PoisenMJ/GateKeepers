@@ -2,9 +2,22 @@
     height: 80vh;
     padding: 0rem 3rem 2rem 3rem;
     display: grid;
-    place-content: center;
+    align-items: center;
 }
 #about-content{
     font-weight: 100;
     font-size: .85rem;
+}
+.about-accordion-item{
+    border-radius: 0!important;
+}
+.about-accordion-header, .about-accordion-header > *{
+    background-color: white!important;
+    color: black!important;
+    border-radius: 0!important;
+    box-shadow: none!important;
+}
+.about-accordion-body{
+    background-color: black;
+    color: white;
 }

@@ -67,7 +67,7 @@ const Home = () => {
                                     <div className="slide-creator">
                                         <span className="fs-1 slide-tag">{post.creator.tag.toUpperCase()}</span>
                                         <hr/>
-                                        <Button variant="light" className="shop-creator">
+                                        <Button variant="light" className="shop-creator" onClick={() => navigate(`/${post.creator.tag}`)}>
                                             SHOP
                                             <FaShoppingBag style={{marginLeft: '6px', marginBottom: '4px'}}/>
                                         </Button>

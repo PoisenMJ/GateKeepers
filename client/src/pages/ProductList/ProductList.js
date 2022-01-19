@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './ProductList.css';
 import { getOwnProducts, getMadeProducts } from '../../controllers/creators';
 import { useParams, useNavigate } from 'react-router-dom';
+import { LocaleContext, ConvertPrice } from '../../services/LocaleContext';
 
 const ProductsPage = ({ type }) => {
     const [products, setProducts] = useState(null);
     const {creator} = useParams();
     let navigate = useNavigate();
+    const { currency, locale } = useContext(LocaleContext);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -66,7 +68,7 @@ const ProductsPage = ({ type }) => {
                             </div>
                             <div className="product-info">
                                 <span className="fs-4 fw-light">{product.name}</span>
-                                <span className="fs-5">${product.price}</span>
+                                <span className="fs-5">{currency}{ConvertPrice(locale, product.price)}</span>
                             </div>
                         </div>
                     )
