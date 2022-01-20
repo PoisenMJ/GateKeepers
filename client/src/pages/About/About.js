@@ -17,9 +17,20 @@ const About = () => {
                     <Accordion.Header className="about-accordion-header">FAQ</Accordion.Header>
                     <Accordion.Body className="about-accordion-body">
                             <span>COUNTRIES:</span><br/>
-                            <span style={{fontSize: '.95rem'}} className="text-muted">Currently shipping to GB, US and EU. Planning to expand soon.</span><br/><br/>
+                            <span style={{fontSize: '.95rem'}} className="text-muted">Currently shipping to:
+                                    <br/>■ Austria<br/>
+                                    ■ Canada<br/>
+                                    ■ France<br/>
+                                    ■ Germany<br/>
+                                    ■ Hong Kong<br/>
+                                    ■ Italy<br/>
+                                    ■ Netherlands<br/>
+                                    ■ Singapore<br/>
+                                    ■ South Korea<br/>
+                                    ■ United Kingdom<br/>
+                                    ■ United States<br/></span><br/>
                             <span>DELIVERY:</span><br/>
-                            <span style={{fontSize: '.95rem'}} className="text-muted">Delivery times depend on each creator you will recieve an email with an estimate.</span><br/><br/>
+                            <span style={{fontSize: '.95rem'}} className="text-muted">Delivery times is roughly a week you will recieve an email with the tracking number when it has been posted.</span><br/><br/>
                             <span>AVAILABILITY:</span><br/>
                             <span style={{fontSize: '.95rem'}} className="text-muted">Product availability depends on each creator they will post a date for when products will be available or restocked.</span>
                     </Accordion.Body>

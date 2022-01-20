@@ -3,6 +3,7 @@ var router = express.Router();
 const Creator = require('../client/src/models/creator');
 const CreatorProduct = require('../client/src/models/creatorProduct');
 const User = require('../client/src/models/user');
+const Order = require('../client/src/models/order');
 var { gatekeeperCheck } = require('../middleware/auth');
 
 var multer = require('multer');
@@ -17,6 +18,38 @@ var storage = multer.diskStorage({
     }
 })
 var upload = multer({ storage: storage });
+
+router.post('/orders', gatekeeperCheck, async (req, res, next) => {
+    var creatorUsername = req.body.username;
+    try {
+        var orders = await Order.find({ creators: { $in: creatorUsername }});
+        if(orders) {
+            return res.json({ success: true, orders: orders.map((order, index) => {
+                return {
+                    id: order._id,
+                    sent: order.sent,
+                    address: order.address,
+                    user: order.user,
+                    total: order.total,
+                    date: order.date,
+                    items: order.items
+                }
+            })})
+        } else { return res.json({ success: true, orders: null })}
+    } catch(err) {
+        return res.json({ success: false });
+    }
+})
+
+router.post('/orders/mark-sent', gatekeeperCheck, async (req, res, next) => {
+    try {
+        var updated = await Order.updateOne({ _id: req.body.orderID }, {$set: { sent: true }});
+        if(updated.modifiedCount > 0) return res.json({ success: true });
+        else return res.json({ success: false });
+    } catch(err) {
+        return res.json ({ success: false });
+    }
+})
 
 router.post('/products/add', upload.array('images'), gatekeeperCheck, (req, res, next) => {
     var creatorUsername = req.body.username;

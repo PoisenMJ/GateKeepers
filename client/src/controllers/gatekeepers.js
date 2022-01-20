@@ -16,11 +16,35 @@ async function addProduct(data, username, token){
     return json;
 }
 
+async function getOrders(username, token){
+    var res = await fetch('/gatekeeper/orders', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, token })
+    });
+    var json = await res.json();
+    return json;
+}
+
 async function removeProduct(productID, username, token){
     var res = await fetch('/gatekeeper/products/remove', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productID, username, token })
+    });
+    var json = await res.json();
+    return json;
+}
+
+async function markOrderSent(orderID, username, token){
+    var res = await fetch('/gatekeeper/orders/mark-sent', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            token,
+            orderID
+        })
     });
     var json = await res.json();
     return json;
@@ -85,5 +109,7 @@ export {
     getProduct,
     getProducts,
     getGatekeeper,
-    updateGatekeeper
+    updateGatekeeper,
+    getOrders,
+    markOrderSent
 }

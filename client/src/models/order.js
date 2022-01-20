@@ -25,6 +25,18 @@ var orderSchema = mongoose.Schema({
     user: {
         type: String,
         default: ''
+    },
+    address: {
+        type: {},
+        required: true
+    },
+    creators: {
+        type: [String],
+        required: true
+    },
+    sent: {
+        type: Boolean,
+        default: false
     }
 })
 

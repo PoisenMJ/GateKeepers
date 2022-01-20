@@ -50,7 +50,6 @@
 }
 .slide-info{
     z-index: 0;
-    top: 40%;
     max-width: 90vw;
     width: min-content;
     position: relative;
@@ -73,7 +72,7 @@
     font-weight: 100;
 }
 .last-slide{
-    top: 0!important;
+    top: -40%!important;
 }
 /*  arrow animation css  */
 .arrow {
@@ -104,7 +103,17 @@
     border-right: 2px solid #fff;
 }
 
-
+.arrow-up-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    align-self: start;
+    margin-top: 3rem;
+    transform: rotate(180deg);
+    height: 6rem;
+    cursor: pointer;
+}
 .arrow-down-container {
     display: flex;
     justify-content: center;

@@ -18,7 +18,7 @@ async function getSessionData(sessionID, username ){
     return json;
 }
 
-async function decrementProductBeforeCheckout(urisAndNames){
+async function checkProduct(urisAndNames){
     var res = await fetch('/payment/check-products', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
@@ -28,17 +28,19 @@ async function decrementProductBeforeCheckout(urisAndNames){
     return { outOfStock: json.outOfStock, name: json.name }
 }
 
-async function saveOrder(customerID, orderID, items, total, username){
+async function saveOrder(customerID, orderID, items, total, username, shippingAddress, creators){
     var res = await fetch('/payment/save-order', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             orderID,
             customerID,
+            shippingAddress,
             items,
             username,
             date: new Date(),
-            total
+            total,
+            creators
         })
     });
     var json = await res.json();
@@ -55,4 +57,4 @@ async function cancelOrder(items){
     return json;
 }
 
-export { getCheckoutUrl, getSessionData, saveOrder, decrementProductBeforeCheckout, cancelOrder };
+export { getCheckoutUrl, getSessionData, saveOrder, checkProduct, cancelOrder };

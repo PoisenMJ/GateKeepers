@@ -3,6 +3,8 @@ import React, { useState, useEffect, useContext } from 'react';
 const CartContext = React.createContext({
     products: null,
     total: null,
+    shippingAddress: null,
+    setShippingAddress: (data) => { },
     setProducts: (data) => { },
     addToCart: (data) => { },
     removeFromCart: (data) => { },
@@ -12,8 +14,10 @@ const CartContext = React.createContext({
 const CartProvider = ({ children }) => {
     const localProducts = JSON.parse(localStorage.getItem('cart')) || [];
     const localTotal = JSON.parse(localStorage.getItem('cartTotal')) || 0;
+    const localShippingAddress = JSON.parse(localStorage.getItem('shippingAddress')) || null;
     const [products, setProducts] = useState(localProducts);
     const [total, setTotal] = useState(localTotal);
+    const [shippingAddress, setShippingAddress] = useState(localShippingAddress);
 
     const add = (product) => {
         products.push(product);
@@ -38,6 +42,12 @@ const CartProvider = ({ children }) => {
         localStorage.setItem('cartTotal', total-product.price);
     }
 
+    const setShipping = (address) => {
+        setShippingAddress(address);
+
+        localStorage.setItem('shippingAddress', JSON.stringify(address));
+    }
+
     const clear = () => {
         setProducts([]);
         setTotal(0);
@@ -48,6 +58,8 @@ const CartProvider = ({ children }) => {
     return <CartContext.Provider value={{
         products: products,
         total: total,
+        shippingAddress: shippingAddress,
+        setShippingAddress: setShipping,
         setProducts: setProducts,
         addToCart: add,
         removeFromCart: remove,

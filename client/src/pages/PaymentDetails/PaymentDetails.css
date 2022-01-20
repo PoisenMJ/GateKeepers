@@ -1,0 +1,18 @@
+#payment-details{
+    height: auto;
+    width: 100%;
+    padding: 1.5rem;
+    display: grid;
+    grid-template-rows: auto 10vh;
+}
+#payment-details-info{
+    min-height: 70vh;
+}
+#payment-details-subtotals{
+    font-size: 1rem;
+    font-weight: 900;
+}
+#payment-details-total{
+    display: grid;
+    grid-template-columns: auto auto;
+}

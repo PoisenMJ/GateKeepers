@@ -21,6 +21,14 @@ const Home = () => {
     const nextSlide = (id) => {
         document.getElementById(id).scrollIntoView();
     }
+    const prevSlide = (id) => {
+        if(id === 'top'){
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        } else {
+            document.getElementById(id).scrollIntoView();
+        }
+    }
 
     const exploreButton = () => {
         navigate('/maksie_aki/own');
@@ -60,8 +68,14 @@ const Home = () => {
                                 }
                             </div>
                         ) : '';
+                        var prevID = (index == 0) ? 'top' : 'slide-'+index;
                         return(
                             <div className="slide" id={`slide-${index+1}`} key={index}>
+                                <div className="arrow-up-container" onClick={() => prevSlide(prevID)}>
+                                    <div className="chevron white"></div>
+                                    <div className="chevron white"></div>
+                                    <div className="chevron white"></div>
+                                </div>
                                 <div className={`slide-info ${(lastPost)?" last-slide":""}`}>
                                     {socialsHTML}
                                     <div className="slide-creator">

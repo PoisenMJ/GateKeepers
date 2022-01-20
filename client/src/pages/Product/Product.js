@@ -32,12 +32,13 @@ const ProductPage = () => {
         setSize(_size);
     }
 
-    const AddToCart = (_uri, _size, _price, _name) => {
+    const AddToCart = (_uri, _size, _price, _name, _creator) => {
         var productJSON = {
             uri: _uri,
             name: _name,
             size: _size,
-            price: _price
+            price: _price,
+            creator: _creator
         };
         addToCart(productJSON);
         Flash("Added to cart", "dark");
@@ -72,7 +73,7 @@ const ProductPage = () => {
                             <span className="fs-3 mb-2 product-price">${product.price} <span className="text-muted fs-5">: {product.count >= 0 ? product.count : 0} {purchasable ? 'LEFT' : 'AVAILABLE'}</span></span>
                             <span className="fs-2 fw-bold">{product.name}</span>
                             <span className="fs-6 fw-light mb-4">{product.description}</span>
-                            <Button disabled={addToCartDisabled} onClick={() => AddToCart(product.uri, size, product.price, product.name)} variant={"dark"} className="w-100" style={{alignSelf: 'end'}}>Add To Cart</Button>
+                            <Button disabled={addToCartDisabled} onClick={() => AddToCart(product.uri, size, product.price, product.name, product.creator.tag)} variant={"dark"} className="w-100" style={{alignSelf: 'end'}}>Add To Cart</Button>
                         </div>
                     </div>
                 </div>

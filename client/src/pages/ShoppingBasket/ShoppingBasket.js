@@ -5,8 +5,6 @@ import { getProduct } from '../../controllers/creators';
 import './ShoppingBasket.css';
 import { FaArrowRight } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
-import { decrementProductBeforeCheckout, getCheckoutUrl } from '../../controllers/payment';
-import { Flash } from '../../components/FlashMessage/FlashMessage';
 import { AuthContext } from '../../services/AuthContext';
 
 const ShoppingBasket = () => {
@@ -48,23 +46,8 @@ const ShoppingBasket = () => {
         else setProductsData(null);
     }
     
-    const goToCheckout = async event => {
-        var data = [];
-        for(var i = 0; i < productsData.length; i++){
-            data.push({
-                size: productsData[i].size,
-                creator: productsData[i].creator,
-                price: productsData[i].price,
-                name: productsData[i].name
-            })
-        }
-        var res = await decrementProductBeforeCheckout(productsData.map((d, i) =>  {return {uri:d.uri, name:d.name}} ));
-        if(res.outOfStock) Flash(`${res.name} is out of stock.`);
-        else {
-            var checkoutUrl = await getCheckoutUrl(data, username);
-            window.location.href = checkoutUrl;
-        }
-        
+    const goToPaymentDetails = async event => {
+        navigate("/payment-details");
     }
 
     return (
@@ -103,7 +86,7 @@ const ShoppingBasket = () => {
                     <div id="shopping-basket-totals">
                         <span className='fs-2 shopping-basket-total-work'>TOTAL :</span>
                         <span className='fs-2 shopping-basket-total-price'>£{total}</span>
-                        <Button className="shopping-basket-proceed" onClick={goToCheckout} variant="dark">Proceed<FaArrowRight style={{marginLeft: '6px', marginBottom: '3px'}}/></Button>
+                        <Button className="shopping-basket-proceed" onClick={goToPaymentDetails} variant="dark">Proceed<FaArrowRight style={{marginLeft: '6px', marginBottom: '3px'}}/></Button>
                     </div>
                 }
             </div>

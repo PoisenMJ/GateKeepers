@@ -47,7 +47,7 @@ const Navbar = () => {
                 <LocaleButton/>
                 <ul>
                     <li><NavLink to="/" className={"mb-2"} onClick={toggleNavbar}>Home</NavLink></li>
-                    <li><a href="#" className={"d-flex"} style={{marginLeft: '40px'}}
+                    <li><a href="#" className={"d-flex mb-2"} style={{marginLeft: '40px'}}
                         onClick={() => document.getElementById("creator-list").classList.toggle("open")}>
                         Gatekeepers
                         <FaSortDown style={{marginLeft: '4px', marginBottom: '3px'}}/></a>

@@ -29,12 +29,8 @@ const CreatorNavbar = () => {
                 <ul>
                     <li><NavLink to="upload" className={"mb-2"} onClick={toggleNavbar}>Upload</NavLink></li>
                     <li><NavLink to="products" className={"mb-2"} onClick={toggleNavbar}>Products</NavLink></li>
+                    <li><NavLink to="orders" className={"mb-2"} onClick={toggleNavbar}>Orders</NavLink></li>
                     <li><NavLink to="profile" className={"mb-2"} onClick={toggleNavbar}>Profile</NavLink></li>
-                    {/* {loggedIn ? 
-                        <li><NavLink to="/login" onClick={toggleNavbar} className={"mb-2"}>Login</NavLink></li>
-                        :
-                        <li><NavLink to="/profile" onClick={toggleNavbar} className={"mb-2"}>Profile</NavLink></li>
-                    } */}
                 </ul>
                 <span onClick={() => {toggleNavbar(); logOutButton();}} style={{textDecoration: 'none'}} className="sign-out">Sign Out<FaSignOutAlt style={{marginLeft: '8px',marginBottom: '4px'}}/></span>
                 <span style={{position: 'absolute', bottom: 'calc(.5rem + 10px)', left: 'calc(.5rem + 10px)'}}>{username}</span>

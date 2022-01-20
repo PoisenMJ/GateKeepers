@@ -24,11 +24,13 @@ import EditProduct from './pages/CreatorPortal/EditProduct/EditProduct';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 import ShoppingBasket from './pages/ShoppingBasket/ShoppingBasket';
+import PaymentDetails from './pages/PaymentDetails/PaymentDetails';
 
 import PaymentSuccess from './pages/PaymentSuccess/PaymentSuccess';
 import PaymentFailure from './pages/PaymentFailure/PaymentFailure';
 import { CartProvider } from './services/CartContext';
 import { LocaleProvider } from './services/LocaleContext';
+import CreatorsOrders from './pages/CreatorPortal/Orders/Orders';
 
 function App() {
   return (
@@ -43,6 +45,7 @@ function App() {
                 <Route path="about" element={<About/>}/>
                 <Route path="contact-us" element={<Contact/>}/>
                 <Route path="shopping-basket" element={<ShoppingBasket/>}/>
+                <Route path="payment-details" element={<PaymentDetails/>}/>
                 <Route path="payment-success" element={<PaymentSuccess/>}/>
                 <Route path="payment-failure" element={<PaymentFailure/>}/>
               </Route>
@@ -71,6 +74,7 @@ function App() {
               <Route path="upload" element={<Upload/>}/>
               <Route path="products" element={<CreatorProducts/>}/>
               <Route path="products/edit/:productID" element={<EditProduct/>}/>
+              <Route path="orders" element={<CreatorsOrders/>}/>
               <Route path="profile" element={<CreatorProfile/>}/>
             </Route>
 

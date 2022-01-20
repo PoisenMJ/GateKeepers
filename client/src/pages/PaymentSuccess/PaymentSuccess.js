@@ -12,7 +12,7 @@ const PaymentSuccess = () => {
     let navigate = useNavigate();
     let location = useLocation();
     const [data, setData] = useState(null);
-    const { clearCart, products, total } = useContext(CartContext);
+    const { clearCart, products, total, shippingAddress } = useContext(CartContext);
     const { username, loggedIn } = useContext(AuthContext);
 
     useEffect(() => {
@@ -27,7 +27,9 @@ const PaymentSuccess = () => {
             
             // set items into [ {uri, name} ]
             var items = products.map((item, index) => { return { uri: item.uri, name: item.name } });
-            saveOrder(res.customerID, res.orderID, items, total, username);
+            var creators = [...new Set(products.map((item, index) => item.creator))];
+            console.log(creators);
+            saveOrder(res.customerID, res.orderID, items, total, username, shippingAddress, creators);
         }
         fetchSessionData();
         

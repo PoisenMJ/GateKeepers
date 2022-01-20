@@ -1,0 +1,23 @@
+#contact{
+    height: 90vh;
+    width: 100%;
+    padding: 1rem;
+}
+
+.contacts-parent{
+    margin-top: 1rem;
+    width: 100%;
+    height: fit-content;
+    padding: 1rem 0;
+    background-color: black;
+    color: white;
+    display: grid;
+    grid-auto-flow: column;
+}
+.gray-text{
+    color: rgb(180,180,180)!important;
+}
+.no-link-decor{
+    text-decoration: none!important;
+    color: white!important;
+}

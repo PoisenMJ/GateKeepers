@@ -66,12 +66,16 @@ router.post('/save-order', async (req, res, next) => {
         date: req.body.date,
         total: req.body.total,
         customerID,
-        user: username
+        user: username,
+        address: req.body.shippingAddress,
+        creators: req.body.creators
     });
     try {
         await order.save();
-        var user = await User.findOne({ username: username });
-        if(!user.customerID) await User.updateOne({ username: username }, {$set: { customerID: customerID }});
+        if(username){
+            var user = await User.findOne({ username: username });
+            if(!user.customerID) await User.updateOne({ username: username }, {$set: { customerID: customerID }});
+        }
 
         // update product count
         var updated = await CreatorProduct.updateMany({ uri: { $in: req.body.items.map((i, index) => i.uri) }}, { $inc: { count: -1} });

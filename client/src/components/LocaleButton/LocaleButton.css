@@ -1,0 +1,19 @@
+.dropdown-menu-locale{
+    min-width: auto!important;
+    border-color: white!important;
+    padding: 0!important;
+}
+.dropdown-toggle-locale{
+    background-color: white!important;
+    border-color: white!important;
+    box-shadow: none!important;
+}
+.dropdown-toggle-locale:hover, .dropdown-toggle-locale:focus{
+    background-color: rgb(230,230,230)!important;
+}
+.dropdown-item-locale:hover{
+    background-color: rgb(230,230,230)!important;
+}
+.dropdown-item-locale:active{
+    color: rgb(30,30,30);
+}
