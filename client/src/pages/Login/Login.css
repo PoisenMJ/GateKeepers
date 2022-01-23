@@ -1,3 +1,10 @@
+@media screen and (min-width: 1224px) {
+    #login{
+        width: 30vw!important;
+        place-self: center!important;
+    }
+}
+
 #login{
     width: 100vw;
     height: 90vh;

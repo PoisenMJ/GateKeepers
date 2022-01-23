@@ -53,6 +53,8 @@ const AuthVerify = (props) => {
             setUsername, setToken, setLoggedIn} = useContext(AuthContext);
     var location = useLocation();
 
+
+    // if just USERNAME FOR ACTIVATOIN TODO::
     useEffect(() => {
         if(username && token && loggedIn){
             const decodedJwt = parseJwt(token);

@@ -1,3 +1,20 @@
+@media screen and (min-width: 1224px) {
+    #edit-product{
+        width: 50%!important;
+        justify-self: center!important;
+    }
+    #creator-portal-iamges{
+        width: 100%!important;
+    }
+    .product-upload-image{
+        height: 50vh!important;
+        object-fit: conver;
+    }
+    .custom-upload-creator-carousel{
+        height: auto!important;
+    }
+}
+
 #edit-product{
     height: fit-content;
     padding: 0rem 1rem 2rem 1rem;

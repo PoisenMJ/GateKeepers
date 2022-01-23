@@ -1,3 +1,9 @@
+@media screen and (min-width: 1224px) {
+    .cart-button{
+        border-radius: 0px!important;
+    }
+}
+
 .cart-button{
     width: fit-content;
     position: absolute;
@@ -9,6 +15,7 @@
     color: white;
     cursor: pointer;
     transition: .15s;
+    z-index: 199;
 }
 .cart-button:hover{
     background-color: rgb(50,50,50);

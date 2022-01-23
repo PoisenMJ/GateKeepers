@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../services/AuthContext';
 import Event from '../../utils/events';
+import ActivateAccount from '../../components/ActivateAccount/ActivateAccount';
 
 const Login = () => {
 
@@ -16,9 +17,21 @@ const Login = () => {
 
     const [inputUsername, setInputUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showActivationDialog, setShowActivationDialog] = useState(false);
 
     const handleUsernameChange = event => setInputUsername(event.target.value);
     const handlePasswordChange = event => setPassword(event.target.value);
+
+    const activationCodeSuccess = async () => {
+        var res = await login(inputUsername, password);
+        setToken(res.token);
+        setUsername(inputUsername);
+        setLoggedIn(true);
+
+        setShowActivationDialog(false);
+        Flash("Account activated.", "dark");
+        navigate('/');
+    }
 
     useEffect(() => {
         if(loggedIn) navigate('/')
@@ -39,12 +52,22 @@ const Login = () => {
                     navigate('/creators/upload', { state: 'logged-in' });
                 Event.emit('loggedIn');
             }
-            else Flash(res.message, "danger");
+            else {
+                if(res.message === "activate account") {
+                    setShowActivationDialog(true);
+                } else Flash(res.message, "danger")
+            };
         } else Flash("Enter Username & Password", "dark");
     }
 
     return (
         <div id="login">
+            <ActivateAccount
+                showDialog={showActivationDialog}
+                username={inputUsername}
+                activationSuccess={activationCodeSuccess}
+                hideDialog={() => setShowActivationDialog(false)}/>
+
             <div className="simple-page-parent">
                 <div style={{width: '100%', textAlign: 'center'}}>
                     <span className="fs-3">▶ LOGIN ◀</span>

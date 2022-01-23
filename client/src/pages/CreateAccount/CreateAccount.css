@@ -1,3 +1,10 @@
+@media screen and (min-width: 1224px) {
+    #create-account{
+        width: 40%!important;
+        justify-self: center;
+    }
+}
+
 #create-account{
     height: 90vh;
     padding: 3rem;

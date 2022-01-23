@@ -84,8 +84,7 @@ const ShoppingBasket = () => {
                 }
                 {productsData &&
                     <div id="shopping-basket-totals">
-                        <span className='fs-2 shopping-basket-total-work'>TOTAL :</span>
-                        <span className='fs-2 shopping-basket-total-price'>£{total}</span>
+                        <span className='fs-2 shopping-basket-total-work'>TOTAL:   £{total}</span>
                         <Button className="shopping-basket-proceed" onClick={goToPaymentDetails} variant="dark">Proceed<FaArrowRight style={{marginLeft: '6px', marginBottom: '3px'}}/></Button>
                     </div>
                 }

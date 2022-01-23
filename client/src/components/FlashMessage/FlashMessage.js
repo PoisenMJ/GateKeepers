@@ -32,11 +32,14 @@ const FlashMessage = () => {
         return () => { isMounted = false };
     }, []);
 
+    const handleClose = () => {
+        setShow(false);
+    }
 
     return(
         <div style={styles}>
             {show && 
-                <Alert variant={variant}>
+                <Alert variant={variant} onClose={handleClose}>
                     {message}
                 </Alert>
             }

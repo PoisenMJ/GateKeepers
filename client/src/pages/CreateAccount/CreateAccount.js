@@ -21,6 +21,7 @@ const CreateAccount = () => {
         if(username && email && password){
             var res = await createAccount(username, email, password);
             if(res.success){
+                Flash("Check email for activation code", "success");
                 navigate("/login");
             } else Flash(res.message, "danger");
         } else Flash("Fill in all boxes", "dark");

@@ -1,3 +1,10 @@
+@media screen and (min-width: 1224px){
+    #creator-orders{
+        width: 70%!important;
+        justify-self: center!important;
+    }
+}
+
 #creator-orders{
     height: auto;
     width: 100%;

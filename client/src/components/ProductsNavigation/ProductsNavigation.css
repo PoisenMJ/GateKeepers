@@ -1,3 +1,10 @@
+@media screen and (min-width: 1224px){
+    #creator-nav{
+        right: 120px!important;
+        width: 76%!important;
+    }
+}
+
 #parent{
     position: absolute;
     top: 12%;

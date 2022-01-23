@@ -7,4 +7,10 @@ const Mobile = ({ children }) => (
     </MediaQuery>
 )
 
-export default Mobile;
+const Desktop = ({ children }) => (
+    <MediaQuery minWidth={1224}>
+        {children}
+    </MediaQuery>
+)
+
+export { Mobile, Desktop };

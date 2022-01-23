@@ -12,6 +12,22 @@ router.post('/profile', userCheck, (req, res, next) => {
     })
 });
 
+router.post('/check-activation-token', async (req, res, next) => {
+    var username = req.body.username;
+    var code = req.body.activationToken;
+    User.findOne({ username: username }).then((user, err) => {
+        if(err) return res.json({ success: false, message: "" });
+        if(!user) return res.json({ success: false, message: "" });
+        if(user.activationCode == code){
+            User.updateOne({ username: username }, { $set: { accountActivated: true }}).then((updated, err) => {
+                if(err) return res.json({ success: false, message: "" });
+                else return res.json({ success: true, message: "" })
+            });
+        }
+        else return res.json({ success: false, message: "Code Incorrect" });
+    });
+})
+
 router.post('/update-password', userCheck, async (req, res, next) => {
     var password = req.body.password;
     var username = req.body.username;

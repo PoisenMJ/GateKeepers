@@ -9,6 +9,7 @@ import { LogOut } from '../../services/auth';
 import { AuthContext } from '../../services/AuthContext';
 import Event from '../../utils/events';
 import LocaleButton from '../LocaleButton/LocaleButton';
+import { Mobile } from '../Query';
 
 const Navbar = () => {
     let navigate = useNavigate();
@@ -43,9 +44,11 @@ const Navbar = () => {
             </div>
 
             <div id="menu">
-                <Cart clicked={toggleNavbar}/>
+                <Mobile>
+                    <Cart clicked={toggleNavbar}/>
+                </Mobile>
                 <LocaleButton/>
-                <ul>
+                <ul className="navbar-ul">
                     <li><NavLink to="/" className={"mb-2"} onClick={toggleNavbar}>Home</NavLink></li>
                     <li><a href="#" className={"d-flex mb-2"} style={{marginLeft: '40px'}}
                         onClick={() => document.getElementById("creator-list").classList.toggle("open")}>

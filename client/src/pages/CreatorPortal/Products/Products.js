@@ -63,6 +63,7 @@ const CreatorProducts = () => {
                     </div>
                 </Modal.Body>
             </Modal>
+            <div id="creator-portal-product-list">
             {filteredProducts && filteredProducts.map((product, index) => {
                 return (
                     <div key={product.name} className="product mb-4">
@@ -79,6 +80,7 @@ const CreatorProducts = () => {
                     </div>
                 )
             })}
+            </div>
         </div>
     )
 }

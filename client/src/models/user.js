@@ -19,15 +19,22 @@ var userSchema = mongoose.Schema({
         unqiue: true
     },
     image: String,
-    type: {
+    accountType: {
         type: String,
-        default: 'user',
-        enum: ['user, creator']
+        enum: ['user', 'creator'],
+        default: 'user'
     },
     customerID: {
         type: String,
-        required: true,
         default: ''
+    },
+    activationCode: {
+        type: String,
+        required: true
+    },
+    accountActivated: {
+        type: Boolean,
+        default: false
     }
 });
 

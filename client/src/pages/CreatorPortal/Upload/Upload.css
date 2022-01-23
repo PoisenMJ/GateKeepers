@@ -1,3 +1,10 @@
+@media screen and (min-width: 1224px) {
+    #upload{
+        width: 50%!important;
+        justify-self: center!important;
+    }
+}
+
 #upload{
     height: auto;
     padding: 3rem;

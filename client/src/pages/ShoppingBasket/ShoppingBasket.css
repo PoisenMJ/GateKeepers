@@ -1,3 +1,13 @@
+@media screen and (min-width: 1224px) {
+    #shopping-basket{
+        width: 60%!important;
+        place-self: center!important;
+    }
+    #shopping-basket-totals{
+        width: 60%!important;
+    }
+}
+
 #shopping-basket{
     width: 100%;
     height: 90vh;
@@ -55,14 +65,11 @@
 }
 #shopping-basket-totals{
     display: grid;
-    grid-template-columns: 30% 30% 40%;
+    grid-template-columns: 60% 40%;
     margin-bottom: 1.5rem;
     position: absolute;
     bottom: 0;
     width: 100%;
-}
-.shopping-basket-total-price{
-
 }
 .shopping-basket-proceed{
     place-self: center;

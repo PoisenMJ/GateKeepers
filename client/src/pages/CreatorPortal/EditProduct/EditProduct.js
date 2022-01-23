@@ -7,6 +7,7 @@ import { Flash } from '../../../components/FlashMessage/FlashMessage';
 import CurrencyInput from 'react-currency-input-field';
 import Carousel from 'nuka-carousel';
 import DateTime from 'react-datetime';
+import { Desktop, Mobile } from '../../../components/Query';
 import './EditProduct.css';
 
 const EditProduct = () => {
@@ -71,19 +72,36 @@ const EditProduct = () => {
                 <Form id="creator-portal-edit-form" onSubmit={sendUpdateForm}>
                     <Form.Control multiple name="images" id="creator-portal-image-input" type="file" className="mb-2 visually-hidden"/>
                     <div id="creator-portal-images" className="mb-3">
-                        <Carousel className="carousel mb-2" width={'100%'} height='100%' dragging>
-                            {images ?
-                                images.map((image, index) => 
-                                {
-                                    var imageSRC = (typeof images[index] === 'string') ? `/images/products/${images[index]}` : URL.createObjectURL(images[index]); 
-                                    return(
-                                        <img className="creator-portalproduct-upload-image" src={imageSRC} key={index}/>
-                                    )
-                                })
-                                    :
-                                    <img className="product-upload-image" src="/images/default.jpg"/>
-                                }
-                        </Carousel>
+                        <Desktop>
+                            <Carousel className="carousel custom-upload-creator-carousel mb-2" dragging>
+                                {images ?
+                                    images.map((image, index) => 
+                                    {
+                                        var imageSRC = (typeof images[index] === 'string') ? `/images/products/${images[index]}` : URL.createObjectURL(images[index]); 
+                                        return(
+                                            <img className="creator-portal product-upload-image" src={imageSRC} key={index}/>
+                                        )
+                                    })
+                                        :
+                                        <img className="product-upload-image" src="/images/default.jpg"/>
+                                    }
+                            </Carousel>
+                        </Desktop>
+                        <Mobile>
+                            <Carousel className="carousel mb-2" width={'100%'} height='100%' dragging>
+                                {images ?
+                                    images.map((image, index) => 
+                                    {
+                                        var imageSRC = (typeof images[index] === 'string') ? `/images/products/${images[index]}` : URL.createObjectURL(images[index]); 
+                                        return(
+                                            <img className="creator-portalproduct-upload-image" src={imageSRC} key={index}/>
+                                        )
+                                    })
+                                        :
+                                        <img className="product-upload-image" src="/images/default.jpg"/>
+                                    }
+                            </Carousel>
+                        </Mobile>
                         <Button variant="secondary" className="w-100 mb-1" onClick={addImage}>Change Images</Button>
                         <Button variant="outline-dark" className="w-100" onClick={clearImages}>Clear Images</Button>
                     </div>

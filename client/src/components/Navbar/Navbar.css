@@ -22,6 +22,15 @@
     z-index: 1000;
     transition: 0.5s;
 }
+@media screen and (min-width: 1224px){
+    #menu{
+        width: 20%!important;
+        box-shadow: 4px 0px 3px 0px rgba(201, 201, 201, 0.5);
+    }
+    .navbar-ul{
+        left: 45%!important;
+    }
+}
 .creator {
     font-size: .85rem;
     cursor: pointer;

@@ -61,7 +61,7 @@ const Profile = () => {
                 </Form>
                 <span>ORDERS</span>
                 <div id="profile-page-order-history">
-                    {orders && orders.map((order, index) => {
+                    {orders && orders.length > 0 ? orders.map((order, index) => {
                         var hr = (index < orders.length-1) ? <hr style={{margin: '2px 30px 2px 30px'}}/> : "";
                         return (
                             <div>
@@ -73,7 +73,11 @@ const Profile = () => {
                                 {hr}
                             </div>
                         )
-                    })}
+                    }) : 
+                        <div className="p-2 text-center">
+                            <span>No Orders</span>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

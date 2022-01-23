@@ -74,7 +74,7 @@ const ProductsPage = ({ type }) => {
                     )
                 })}
                 {products && products.length == 0 &&
-                    <span className="text-center fs-1">No Products Available</span>
+                    <span className="text-center fs-1 no-prods-available">No Products Available</span>
                 }
             </div>
         </div>

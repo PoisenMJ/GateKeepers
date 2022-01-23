@@ -1,3 +1,10 @@
+@media screen and (min-width: 1224px){
+    #creator-profile{
+        width: 4 0%!important;
+        place-self: center!important;
+    }
+}
+
 #creator-profile{
     width: 100%;
     padding: 2rem;

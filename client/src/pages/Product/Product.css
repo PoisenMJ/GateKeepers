@@ -1,3 +1,30 @@
+@media screen and (min-width: 1224px) {
+    .custom-carousel-classses{
+        width: 100%!important;
+        align-self: center;
+        justify-self: center;
+    }
+    #product-image{
+        height: 100%!important;
+        width: auto!important;
+    }
+    #product-parent{
+        grid-template-columns: 70% 30%;
+        grid-template-rows: 90%!important;
+    }
+    #product-info, #product-info > *{
+        width: auto!important;
+    }
+    #product-info{
+        place-items: center!important;
+        height: fit-content;
+        place-self: center;
+    }
+    #product-sizing{
+        margin-bottom: 1rem;
+    }
+}
+
 #product-parent{
     height: 100%;
     overflow-x: hidden;

@@ -1,3 +1,10 @@
+@media screen and (min-width: 1224px) {
+    #creator-portal-product-list{
+        display: grid;
+        grid-template-columns: 25% 25% 25% 25%;
+    }
+}
+
 #creator-products-portal{
     padding: 0rem 2rem 2rem 2rem;
 }

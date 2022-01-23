@@ -1,0 +1,11 @@
+#activate-account-parent{
+    padding: 1rem;
+    align-self: center;
+}
+.black-custom-input{
+    background-color: black!important;
+    color: white!important;
+    box-shadow: none!important;
+    border-radius: 0!important;
+}
+.radius-zero{ border-radius: 0!important; }

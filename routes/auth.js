@@ -3,6 +3,9 @@ var router = express.Router();
 
 var User = require('../client/src/models/user');
 var key = require('../client/src/models/key');
+var crypto = require('crypto');
+
+var { sendActivationEmail } = require('../nodemailer.config');
 
 var nJwt = require('njwt');
 var secureRandom = require('secure-random');
@@ -13,14 +16,15 @@ router.post('/login', async (req, res, next) => {
 
     var user;
     try {
-        var user = await User.findOne({ username: username });
+        user = await User.findOne({ username: username });
     } catch(err) {
         return res.status(400).json(err);
     }
     if(!user) return res.json({ success: false, message: 'Username or password incorrect' })
+    else if(user.accountActivated == false) return res.json({ success: false, message: "activate account" });
     else if(!(user.checkPassword(password))) return res.json({ success: false, message: 'Username or password incorrect' });
 
-    var scope = user.type == 'user' ? 'user' : 'creator';
+    var scope = user.accountType == 'user' ? 'user' : 'creator';
 
     var signingKey = secureRandom(256, {type: 'Buffer'});
     var claims = {
@@ -40,7 +44,7 @@ router.post('/login', async (req, res, next) => {
     if(result){
         key.updateOne({ user: user.username }, { $set: { key: b64SigningKey } }, (err, updatedDoc) => {
             if(err) return res.status(400).json(err);
-            else return res.json({ success: true, token, type: user.type });
+            else return res.json({ success: true, token, type: user.accountType });
         });
     } else {
         var newKey = new key({
@@ -49,7 +53,7 @@ router.post('/login', async (req, res, next) => {
         });
         newKey.save((err, key) => {
             if(err) return res.status(400).json(err);
-            else return res.json({ success: true, token, type: user.type });
+            else return res.json({ success: true, token, type: user.accountType });
         })
     }
 });
@@ -64,15 +68,22 @@ router.post('/create-account', async (req, res, next) => {
     var emailExists = await User.exists({ email: email });
     if(emailExists) return res.json({ success: false, message: "Email Taken" });
 
+    var token = crypto.randomInt(0, 10000000);
+    console.log('actication token:');
+    console.log(token);
+
     var user = new User({
         username: username,
         email: email,
-        password: password
+        password: password,
+        activationCode: token
     });
     try {
         await user.save();
+        sendActivationEmail(username, email, token);
         return res.json({ success: true });
     } catch(err) {
+        console.log(err);
         return res.json({ success: false, message: "Creation Error" });
     }
 });

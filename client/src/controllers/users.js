@@ -1,3 +1,16 @@
+async function submitActivationToken(activationToken, username){
+    var res = await fetch('/user/check-activation-token', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username: username,
+            activationToken: activationToken
+        })
+    });
+    var json = await res.json();
+    return json;
+}
+
 async function getProfile(username, token){
     var res = await fetch('/user/profile', {
         method: "POST",
@@ -44,4 +57,4 @@ async function getOrders(username, token){
     return json;
 }
 
-export { getProfile, updatePassword };
+export { getProfile, updatePassword, submitActivationToken };

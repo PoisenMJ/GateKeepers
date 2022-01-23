@@ -7,6 +7,7 @@ import Carousel from 'nuka-carousel';
 import { useNavigate } from 'react-router';
 import { CartContext } from '../../services/CartContext';
 import { Flash } from '../../components/FlashMessage/FlashMessage';
+import { Mobile, Desktop } from '../../components/Query';
 
 const ProductPage = () => {
     let navigate = useNavigate();
@@ -49,16 +50,34 @@ const ProductPage = () => {
         <div id="product">
             {product &&
                 <div id="product-parent">
+                    <Desktop>
+                        <Carousel
+                            slideWidth={.9}
+                            slidesToShow={2}
+                            cellAlign='center'
+                            heightMode='max'
+                            dragging
+                            className='carousel mb-3 custom-carousel-classses'
+                        >
+                            {product.images.map((image, index) => (
+                                <div key={index} className="item">
+                                    <img key={index} id="product-image" src={`/images/products/${image}`}/> 
+                                </div>
+                            ))}
+                        </Carousel>
+                    </Desktop>
+                    <Mobile>
                     <Carousel
-                        dragging
-                        className='carousel mb-3'
-                    >
-                        {product.images.map((image, index) => (
-                            <div key={index} className="item">
-                                <img key={index} id="product-image" src={`/images/products/${image}`}/> 
-                            </div>
-                        ))}
-                    </Carousel>
+                            dragging
+                            className='carousel mb-3 custom-carousel-classses'
+                        >
+                            {product.images.map((image, index) => (
+                                <div key={index} className="item">
+                                    <img key={index} id="product-image" src={`/images/products/${image}`}/> 
+                                </div>
+                            ))}
+                        </Carousel>
+                    </Mobile>
                     <div id="product-info">
                         <div id="product-sizing">
                             {product.sizes.map((_size, index) => {
@@ -73,7 +92,7 @@ const ProductPage = () => {
                             <span className="fs-3 mb-2 product-price">${product.price} <span className="text-muted fs-5">: {product.count >= 0 ? product.count : 0} {purchasable ? 'LEFT' : 'AVAILABLE'}</span></span>
                             <span className="fs-2 fw-bold">{product.name}</span>
                             <span className="fs-6 fw-light mb-4">{product.description}</span>
-                            <Button disabled={addToCartDisabled} onClick={() => AddToCart(product.uri, size, product.price, product.name, product.creator.tag)} variant={"dark"} className="w-100" style={{alignSelf: 'end'}}>Add To Cart</Button>
+                            <Button disabled={addToCartDisabled} onClick={() => AddToCart(product.uri, size, product.price, product.name, product.creator.tag)} variant={"dark"} style={{alignSelf: 'end'}}>Add To Cart</Button>
                         </div>
                     </div>
                 </div>

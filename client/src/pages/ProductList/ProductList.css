@@ -1,3 +1,14 @@
+@media screen and (min-width: 1224px){
+    #products{
+        grid-template-columns: 25% 25% 25% 25%!important;
+        text-align: center!important;
+    }
+    .no-prods-available{
+        column-span: 4;
+        text-align: center;
+    }
+}
+
 #products{
     width: 100vw;
     display: grid;
