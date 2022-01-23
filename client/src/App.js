@@ -32,6 +32,8 @@ import { CartProvider } from './services/CartContext';
 import { LocaleProvider } from './services/LocaleContext';
 import CreatorsOrders from './pages/CreatorPortal/Orders/Orders';
 
+import PasswordRecovery from './pages/PasswordRecovery/PasswordRecovery';
+
 function App() {
   return (
     <AuthProvider>
@@ -40,14 +42,19 @@ function App() {
           <Routes>
             <Route path="/">
               // index route (home)
-              <Route element={<PageLayout header={<Header navbar={<Navbar/>}/>}/>}>
+              <Route element={<PageLayout header={<Header navbar={<Navbar/>}/>} cartEnabled={true}/>}>
                 <Route index element={<Home/>}/>
                 <Route path="about" element={<About/>}/>
                 <Route path="contact-us" element={<Contact/>}/>
+
                 <Route path="shopping-basket" element={<ShoppingBasket/>}/>
+              </Route>
+
+              <Route element={<PageLayout header={<Header navbar={<Navbar/>}/>} cartEnabled={false}/>}>
                 <Route path="payment-details" element={<PaymentDetails/>}/>
                 <Route path="payment-success" element={<PaymentSuccess/>}/>
                 <Route path="payment-failure" element={<PaymentFailure/>}/>
+                <Route path="password-recovery/:username/:token" element={<PasswordRecovery/>}/>
               </Route>
               
               // products routes

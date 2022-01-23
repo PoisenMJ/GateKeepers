@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../../services/AuthContext';
 import Event from '../../utils/events';
 import ActivateAccount from '../../components/ActivateAccount/ActivateAccount';
+import PasswordRecoveryBox from '../../components/PasswordRecoveryBox/PasswordRecoveryBox';
 
 const Login = () => {
 
@@ -18,6 +19,7 @@ const Login = () => {
     const [inputUsername, setInputUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showActivationDialog, setShowActivationDialog] = useState(false);
+    const [showPasswordRecovery, setShowPasswordRecovery] = useState(false);
 
     const handleUsernameChange = event => setInputUsername(event.target.value);
     const handlePasswordChange = event => setPassword(event.target.value);
@@ -50,7 +52,7 @@ const Login = () => {
                     navigate('/', { state: 'logged-in' });
                 else if(res.type == 'creator')
                     navigate('/creators/upload', { state: 'logged-in' });
-                Event.emit('loggedIn');
+            Event.emit('loggedIn');
             }
             else {
                 if(res.message === "activate account") {
@@ -62,6 +64,9 @@ const Login = () => {
 
     return (
         <div id="login">
+            <PasswordRecoveryBox
+                showPasswordRecovery={showPasswordRecovery}
+                hidePasswordRecovery={() => setShowPasswordRecovery(false)}/>
             <ActivateAccount
                 showDialog={showActivationDialog}
                 username={inputUsername}
@@ -75,8 +80,9 @@ const Login = () => {
                 <hr className="mb-4"/>
                 <Form onSubmit={sendLogin} className="mb-4">
                     <Form.Control type="text" onChange={handleUsernameChange} name="username" className="custom-input mb-2" placeholder="USERNAME" />
-                    <Form.Control type="password" onChange={handlePasswordChange} name="password" className="custom-input mb-3" placeholder="PASSWORD" />
-                    <Button className="w-100" variant="dark" type="submit">LOGIN</Button>
+                    <Form.Control type="password" onChange={handlePasswordChange} name="password" className="custom-input" placeholder="PASSWORD" />
+                    <span className="forgot-password-link" onClick={() => setShowPasswordRecovery(true)}>Forgot password</span>
+                    <Button className="w-100 mt-3" variant="dark" type="submit">LOGIN</Button>
                 </Form>
                 <div id="no-account">
                     <span>Don't have an account? </span>

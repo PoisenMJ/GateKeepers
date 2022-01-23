@@ -1,3 +1,29 @@
+async function recoverPassword(username, token, newPassword){
+    var res = await fetch('/user/recover-password', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            token,
+            newPassword
+        })
+    });
+    var json = await res.json();
+    return json;
+}
+
+async function sendRecoveryEmail(email){
+    var res = await fetch('/user/get-reset-password-token', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            email: email
+        })
+    });
+    var json = await res.json();
+    return json;
+}
+
 async function submitActivationToken(activationToken, username){
     var res = await fetch('/user/check-activation-token', {
         method: "POST",
@@ -57,4 +83,4 @@ async function getOrders(username, token){
     return json;
 }
 
-export { getProfile, updatePassword, submitActivationToken };
+export { getProfile, updatePassword, submitActivationToken, recoverPassword, sendRecoveryEmail };

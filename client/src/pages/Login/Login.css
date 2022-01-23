@@ -5,6 +5,16 @@
     }
 }
 
+.forgot-password-link{
+    font-size: .8rem!important;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: .15s;
+}
+.forgot-password-link:hover{
+    color: rgb(100,100,100);
+}
+
 #login{
     width: 100vw;
     height: 90vh;

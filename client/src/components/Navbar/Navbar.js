@@ -10,12 +10,14 @@ import { AuthContext } from '../../services/AuthContext';
 import Event from '../../utils/events';
 import LocaleButton from '../LocaleButton/LocaleButton';
 import { Mobile } from '../Query';
+import { CartContext } from '../../services/CartContext';
 
 const Navbar = () => {
     let navigate = useNavigate();
     const [creators, setCreators] = useState(null);
 
     const { loggedIn, token, setLoggedIn, username, setUsername, setToken } = useContext(AuthContext);
+    const { clearCart } = useContext(CartContext);
 
     useEffect(() => {
         // if(!loggedIn){
@@ -33,6 +35,7 @@ const Navbar = () => {
         setLoggedIn(false);
         setUsername('');
         setToken('');
+        clearCart();
         LogOut();
         navigate('/login');
     }

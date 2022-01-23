@@ -2,7 +2,10 @@ const express = require('express');
 var router = express.Router();
 var User = require('../client/src/models/user');
 var Order = require('../client/src/models/order');
+const Key = require('../client/src/models/key');
+const nJwt = require('njwt');
 var { userCheck } = require('../middleware/auth');
+var { sendPasswordResetEmail } = require('../nodemailer.config');
 
 router.post('/profile', userCheck, (req, res, next) => {
     var username = req.body.username;
@@ -11,6 +14,53 @@ router.post('/profile', userCheck, (req, res, next) => {
         else return res.json({ success: true, user });
     })
 });
+
+router.post('/recover-password', async (req, res, next) => {
+    var username = req.body.username;
+    var token = req.body.token;
+    var newPassword = req.body.newPassword;
+
+    try{
+        var skBuffer = await Key.findOne({ user: username });
+        if(skBuffer){
+            var signingKey = Buffer.from(skBuffer.key, 'base64');
+            nJwt.verify(token, signingKey, function(err, verifiedJwt) {
+                if(err) return res.json({ success: false, message: '' });
+                if(verifiedJwt.body.scope === 'password-reset'){
+                    User.updateOne({ username: username }, {$set: { password: User.encryptPassword(newPassword)}}).then((user, err) => {
+                        if(err) return res.json({ success: false, message: ''})
+                        return res.json({ success: true, message: "password updated"});
+                    });
+                }
+                else return res.json({ success: false, message: "failed" });
+            })
+        }
+    } catch(err) {
+        return res.json({ success: false, message: "DB Error" });
+    }
+})
+
+router.post('/get-reset-password-token', async (req, res, next) => {
+    var email = req.body.email;
+    try {
+        var user = await User.findOne({ email: email });
+        var key = await Key.findOne({ user: user.username });
+        if(key){
+            var signingKey = Buffer.from(key.key, 'base64');
+            var jwt = nJwt.create({
+                iss: process.env.HOST,
+                scope: "password-reset"
+            }, signingKey);
+            var token = jwt.compact();
+            var b64token = token.toString('base64');
+            console.log(b64token);
+            sendPasswordResetEmail(email, `${process.env.HOST}/password-recovery/${user.username}/${b64token}`)
+            return res.json({ success: true });
+        }
+    } catch(err) {
+        return res.json({ success: false });
+    }
+})
 
 router.post('/check-activation-token', async (req, res, next) => {
     var username = req.body.username;

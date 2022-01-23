@@ -28,7 +28,7 @@ router.post('/login', async (req, res, next) => {
 
     var signingKey = secureRandom(256, {type: 'Buffer'});
     var claims = {
-        iss: 'http://localhost:2999',
+        iss: process.env.HOST,
         scope: scope
     };
     var jwt = nJwt.create(claims, signingKey);

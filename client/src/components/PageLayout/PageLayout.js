@@ -6,11 +6,13 @@ import AuthProvider, { AuthVerify } from '../../services/AuthContext';
 import Cart from '../Cart/Cart';
 import { Desktop } from '../Query';
 
-const PageLayout = ({ header, body, footer}) => {
+const PageLayout = ({ header, body, footer, cartEnabled}) => {
     return (
         <div id="page-layout">
             <Desktop>
-                <Cart clicked={() => console.log('1')}/>
+                {cartEnabled === true &&
+                    <Cart clicked={() => console.log('1')}/>
+                }
             </Desktop>
             {header}
             {body}
