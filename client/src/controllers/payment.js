@@ -57,4 +57,19 @@ async function cancelOrder(items){
     return json;
 }
 
-export { getCheckoutUrl, getSessionData, saveOrder, checkProduct, cancelOrder };
+async function sendConfirmationEmail(username, email, items, total){
+    var res = await fetch('/payment/send-confirmation-email', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            email,
+            items,
+            total
+        })
+    });
+    var json = await res.json();
+    return json;
+}
+
+export { getCheckoutUrl, getSessionData, saveOrder, checkProduct, cancelOrder, sendConfirmationEmail };

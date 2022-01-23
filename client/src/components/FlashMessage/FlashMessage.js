@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-bootstrap';
 import Event from '../../utils/events';
+import "./FlashMessage.css";
 
 const styles = {
     position: 'fixed',
@@ -37,9 +38,9 @@ const FlashMessage = () => {
     }
 
     return(
-        <div style={styles}>
+        <div style={styles} className="custom-flash-message">
             {show && 
-                <Alert variant={variant} onClose={handleClose}>
+                <Alert variant={variant} onClose={handleClose} dismissible>
                     {message}
                 </Alert>
             }

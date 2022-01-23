@@ -1,6 +1,7 @@
 @media screen and (min-width: 1224px) {
     .cart-button{
         border-radius: 0px!important;
+        padding: 7px 10px 6px 13px!important;
     }
 }
 

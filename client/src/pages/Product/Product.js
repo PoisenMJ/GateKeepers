@@ -52,12 +52,12 @@ const ProductPage = () => {
                 <div id="product-parent">
                     <Desktop>
                         <Carousel
-                            slideWidth={.9}
-                            slidesToShow={2}
+                            slideWidth={1}
+                            slidesToShow={1}
                             cellAlign='center'
-                            heightMode='max'
+                            height='100%'
                             dragging
-                            className='carousel mb-3 custom-carousel-classses'
+                            className='custom-carousel-classses'
                         >
                             {product.images.map((image, index) => (
                                 <div key={index} className="item">
@@ -88,7 +88,7 @@ const ProductPage = () => {
                                 )
                             })}
                         </div>
-                        <div style={{display: 'grid', alignContent: 'center', width: '100vw', paddingLeft: '10px', paddingRight: '10px'}}>
+                        <div id="product-info-details-add">
                             <span className="fs-3 mb-2 product-price">${product.price} <span className="text-muted fs-5">: {product.count >= 0 ? product.count : 0} {purchasable ? 'LEFT' : 'AVAILABLE'}</span></span>
                             <span className="fs-2 fw-bold">{product.name}</span>
                             <span className="fs-6 fw-light mb-4">{product.description}</span>

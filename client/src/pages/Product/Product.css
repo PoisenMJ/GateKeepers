@@ -1,30 +1,44 @@
 @media screen and (min-width: 1224px) {
     .custom-carousel-classses{
-        width: 100%!important;
+        width: 60%!important;
         align-self: center;
         justify-self: center;
+        height: 90vh!important;
     }
+    .item{ display: grid; width: 100%!important; height: auto!important; }
     #product-image{
         height: 100%!important;
-        width: auto!important;
+        justify-self: center;
+    }
+    #product-info-details-add{
+        width: 100%!important;
     }
     #product-parent{
         grid-template-columns: 70% 30%;
-        grid-template-rows: 90%!important;
+        grid-template-rows: 90vh!important;
     }
-    #product-info, #product-info > *{
+    #product-info{
         width: auto!important;
+        place-content: initial!important;
+        padding: 0 2rem;
     }
     #product-info{
         place-items: center!important;
         height: fit-content;
         place-self: center;
+        width: 100%!important;
     }
     #product-sizing{
         margin-bottom: 1rem;
     }
 }
-
+#product-info-details-add{
+    display: grid;
+    align-content: center;
+    width: 100vw;
+    padding-left: 10px;
+    padding-right: 10px;
+}
 #product-parent{
     height: 100%;
     overflow-x: hidden;
