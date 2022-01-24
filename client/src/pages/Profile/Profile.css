@@ -1,3 +1,11 @@
+@media screen and (min-width: 1224px) {
+    #profile{
+        width: 40%!important;
+        justify-self: center;
+        align-self: center;
+    }
+}
+
 #profile{
     height: 90vh;
     width: 100vw;
