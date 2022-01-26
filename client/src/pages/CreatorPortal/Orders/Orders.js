@@ -41,7 +41,7 @@ const CreatorsOrders = () => {
     return (
         <div id="creator-orders">
             <Accordion defaultActiveKey={0}>
-                {orders && orders.map((order, index) => {
+                {orders && orders.length > 0 ? orders.map((order, index) => {
                     var items = order.items.map((item, i) => item.name)
                     var date = new Date(order.date);
                     var formattedDate = MONTHS[date.getMonth()] +' '+ date.getDate();
@@ -76,7 +76,13 @@ const CreatorsOrders = () => {
                             </Accordion.Body>
                         </Accordion.Item>
                     )
-                })}
+                }) : 
+                    <div className='w-100 text-center' style={{display: 'grid', placeContent: 'center', height: '80vh'}}>
+                        <span className='fs-1'>No Orders</span>
+                        <br/>
+                        <span className='text-muted'>Check again later.</span>
+                    </div>
+                }
             </Accordion>
         </div>
     )

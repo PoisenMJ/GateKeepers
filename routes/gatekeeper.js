@@ -59,7 +59,7 @@ router.post('/products/add', upload.array('images'), gatekeeperCheck, (req, res,
     }
     var sizes = req.body.sizes.replace(`'`, '').split(',').filter((e) => e.trim());
 
-    Creator.findOne({ username: creatorUsername }).then((user, err) => {
+    Creator.findOne({ tag: creatorUsername }).then((user, err) => {
         var newProduct = new CreatorProduct({
             creator: user._id,
             name: req.body.name,

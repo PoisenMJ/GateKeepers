@@ -48,13 +48,26 @@ const parseJwt = (token) => {
     }
 }
 
+
+const usePrevious = (value) => {
+    const ref = React.useRef();
+    useEffect(() => { ref.current = value });
+    return ref.current;
+}
+
+const useLocationChange = (action) => {
+    const location = useLocation();
+    const prevLocation = usePrevious(location);
+    useEffect(() => {
+        action(location, prevLocation);
+    }, [location])
+}
+
 const AuthVerify = (props) => {
     const {username, token, loggedIn,
             setUsername, setToken, setLoggedIn} = useContext(AuthContext);
     var location = useLocation();
 
-
-    // if just USERNAME FOR ACTIVATOIN TODO::
     useEffect(() => {
         if(username && token && loggedIn){
             const decodedJwt = parseJwt(token);

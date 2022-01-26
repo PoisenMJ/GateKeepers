@@ -39,7 +39,7 @@ const CreateAccount = () => {
                     <Form.Control onChange={handleUsernameChange} className="custom-input mb-1" type="text" placeholder="USERNAME" />
                     <Form.Control onChange={handleEmailChange} className="custom-input mb-1" type="email" placeholder="EMAIL" />
                     <Form.Control onChange={handlePasswordChange} className="custom-input mb-4" type="password" placeholder="PASSWORD" />
-                    <Form.Group>
+                    {/* <Form.Group>
                         <Form.Label className="mb-0">SELECT INFLUENCER</Form.Label>
                         <Form.Select className="mb-4 custom-input" aria-label="Select Influencer">
                             <option value="MAKSIE_AKI">MAKSIE_AKI</option>
@@ -48,7 +48,7 @@ const CreateAccount = () => {
                             <option value="JASHUBOO">JASHUBOO</option>
                             <option value="NONE">NONE</option>
                         </Form.Select>
-                    </Form.Group>
+                    </Form.Group> */}
                     <Button variant="dark" type="submit" className="w-100">
                         Create
                     </Button>
