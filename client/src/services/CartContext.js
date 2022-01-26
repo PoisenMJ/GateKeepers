@@ -44,7 +44,6 @@ const CartProvider = ({ children }) => {
 
     const setShipping = (address) => {
         setShippingAddress(address);
-
         localStorage.setItem('shippingAddress', JSON.stringify(address));
     }
 

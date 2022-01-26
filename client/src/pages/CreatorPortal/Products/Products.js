@@ -36,8 +36,8 @@ const CreatorProducts = () => {
 
     const confirmRemoveProduct = async () => {
         var data = await removeProduct(focusedProduct, username, token);
-        setShowRemoveProductModal(false);
         setProducts(products.filter(e => e._id != focusedProduct));
+        setShowRemoveProductModal(false);
         if(data.success) Flash("Product Removed", "dark");
         else Flash("Product not removed", "danger");
     }
@@ -68,7 +68,7 @@ const CreatorProducts = () => {
                 return (
                     <div key={product.name} className="product mb-4">
                         <div className="product-image-parent">
-                            <img src={`/images/products/${product.images[0]}`} className="product-image"/>
+                            <img src={`/images/products/${product.images[product.imageOrder[0]]}`} className="product-image"/>
                         </div>
                         <div className="product-info w-100">
                             <span className="fs-4 text-muted fw-light">{product.name}</span>

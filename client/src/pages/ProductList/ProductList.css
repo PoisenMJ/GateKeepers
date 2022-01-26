@@ -2,6 +2,8 @@
     #products{
         grid-template-columns: 25% 25% 25% 25%!important;
         text-align: center!important;
+        column-gap: 1rem;
+        row-gap: 1rem;
     }
     .no-prods-available{
         column-span: 4;

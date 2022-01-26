@@ -16,12 +16,14 @@ const EditProduct = () => {
     const { username, token } = useContext(AuthContext);
     const [images, setImages] = useState(null);
     const [cleared, setCleared] = useState(false);
+    const [imageOrder, setImageOrder] = useState([]);
 
     useEffect(() => {
         const fetch = async () => {
             var data = await getProduct(productID, username, token);
             setProduct(data.product);
             setImages(data.product.images);
+            setImageOrder(data.product.imageOrder);
         }
         fetch();
     }, [])
@@ -34,37 +36,51 @@ const EditProduct = () => {
             for(var i = 0; i < event.target.files.length; i++){
                 list.push(event.target.files[i]);
             }
-            if(images){
-                setImages(images.concat(list));
-            } else {
-                setImages(list);
-            }
+            setImages(list);
         }
     }
-    const clearImages = () => {
-        setImages(null);
-        setCleared(true);
+
+    const updateOrder = (event, index) => {
+        var order = imageOrder;
+        order[index] = parseInt(event.target.value)-1;
+        setImageOrder([]);
+        setImageOrder(order);
     }
 
     const sendUpdateForm = async event => {
         event.preventDefault();
-        // get rid of $ prefix
-        var m = document.getElementById("edit-money-input");
 
-        var form = document.getElementById('creator-portal-edit-form');
-        var data = new FormData(form);
-        
-        data.append('productID', productID);
-        data.append('price', m.value.substring(1, m.value.length));
-        // send if images are changed or not
-        if(product.images != images) data.append('imagesChanged', true);
-        else data.append('imagesChanged', false);
-        data.append('images', images);
-        data.append('imagesCleared', cleared);
+        // check order is valid
+        var count = [...imageOrder];
+        var length = count.length;
+        for(var i = 0; i < length; i++){
+            var search = count.indexOf(i);
+            if(search !== -1) count.splice(search, 1);
+        }
+        console.log(count);
 
-        var res = await updateProduct(data, username, token);
-        if(res.success) Flash("Product Updated", "dark");
-        else Flash("Product failed to update", "danger");
+        if(count.length === 0){
+            // get rid of $ prefix
+            var m = document.getElementById("edit-money-input");
+    
+            var form = document.getElementById('creator-portal-edit-form');
+            var data = new FormData(form);
+            
+            data.append('productID', productID);
+            data.append('price', m.value.substring(1, m.value.length));
+            // send if images are changed or not
+            if(product.images != images) data.append('imagesChanged', true);
+            else data.append('imagesChanged', false);
+            data.append('images', images);
+            data.append('imagesCleared', cleared);
+            data.append('imageOrder', imageOrder);
+    
+            var res = await updateProduct(data, username, token);
+            if(res.success) Flash("Product Updated", "dark");
+            else Flash("Product failed to update", "danger");
+        } else {
+            Flash("Order invalid", "danger");
+        }
     }
 
     return (
@@ -102,15 +118,25 @@ const EditProduct = () => {
                                     }
                             </Carousel>
                         </Mobile>
-                        <Button variant="secondary" className="w-100 mb-1" onClick={addImage}>Change Images</Button>
-                        <Button variant="outline-dark" className="w-100" onClick={clearImages}>Clear Images</Button>
+                        <Button variant="secondary" className="w-100 mb-1 radius-zero" onClick={addImage}>Set Images</Button>
                     </div>
                     {product &&
                         <div>
+                            <Form.Text>Image Order</Form.Text>
+                            <div id="edit-image-order" className="mb-2">
+                                {product && product.imageOrder.map((order, index) => (
+                                    <Form.Control onChange={(e) => updateOrder(e, index)} type="number" defaultValue={order+1} className="black-custom-input"/>
+                                ))}
+                            </div>
+                            <Form.Text>Name</Form.Text>
                             <Form.Control required name="name" type="text" defaultValue={product.name} className="mb-2 custom-input"/>
+                            <Form.Text>Price</Form.Text>
                             <CurrencyInput required allowNegativeValue={false} defaultValue={product.price} id="edit-money-input" prefix='$' className="custom-input mb-2 w-100" placeholder="Enter Price" decimalsLimit={2}/>
+                            <Form.Text>Description</Form.Text>
                             <Form.Control required name="description" as="textarea" defaultValue={product.description} placeholder="Enter description..." className="custom-input mb-2"/>
+                            <Form.Text>Count</Form.Text>
                             <Form.Control required name="count" min="0" type="number" defaultValue={product.count} className="custom-input mb-2"/>
+                            <Form.Text>Sizes (comma seperated)</Form.Text>
                             <Form.Control required name="sizes" placeholder="'Small, Medium, Large', or '1 Size' ..." className="custom-input mb-2" defaultValue={product.sizes}/>
                             <Form.Select required name="type" className="custom-input mb-2" defaultValue={product.type}>
                                 <option value="made">Made By</option>

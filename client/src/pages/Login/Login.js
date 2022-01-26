@@ -47,7 +47,6 @@ const Login = () => {
                 setToken(res.token);
                 setUsername(inputUsername);
                 setLoggedIn(true);
-                
                 if(res.type == 'user')
                     navigate('/', { state: 'logged-in' });
                 else if(res.type == 'creator')

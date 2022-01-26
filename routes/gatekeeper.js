@@ -70,10 +70,10 @@ router.post('/products/add', upload.array('images'), gatekeeperCheck, (req, res,
             images: imageNameList,
             type: req.body.type,
             dateToPost: req.body.dateToPost,
-            sizes: sizes
+            sizes: sizes,
+            imageOrder: req.body.imageOrder.split(",")
         });
         newProduct.save((err) => {
-            console.log(err);
             if(err) return res.json({ success: false });
             else return res.json({ success: true });
         })
@@ -121,7 +121,8 @@ router.post('/products/update', upload.array('images'), gatekeeperCheck, (req, r
                 images: (imagesChanged && imagesCleared) ? fileNames : originalImages,
                 type: req.body.type,
                 sizes: req.body.sizes,
-                dateToPost: req.body.dateToPost
+                dateToPost: req.body.dateToPost,
+                imageOrder: req.body.imageOrder.split(",")
             }
         }, (err, docs) => {
             if(err) return res.json({ success: false });
@@ -171,12 +172,12 @@ router.post('/update/:creatorTag', gatekeeperCheck, (req, res, next) => {
     var username = req.params.creatorTag;
     Creator.findOneAndUpdate({ tag: username }, { $set: {
         links: {
-            instagram: req.body.instagramLink ?? '',
-            tiktok: req.body.tiktokLink ?? '',
-            twitter: req.body.twitterLink ?? '',
-            twitch: req.body.twitchLink ?? ''
+            instagram: req.body.instagramLink ? req.body.instagramLink : '',
+            tiktok: req.body.tiktokLink ? req.body.tiktokLink : '',
+            twitter: req.body.twitterLink ? req.body.twitterLink : '',
+            twitch: req.body.twitchLink ? req.body.twitchLink : ''
         },
-        name: req.body.name ?? ''
+        name: req.body.name ? req.body.name : ''
     }}).then((doc, err) => {
         if(req.body.password){
             User.findOneAndUpdate({ username: username }, {

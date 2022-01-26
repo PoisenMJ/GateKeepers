@@ -25,6 +25,10 @@ const creatorProductSchema = mongoose.Schema({
         type: [String],
         required: true
     },
+    imageOrder: {
+        type: [Number],
+        required: true
+    },
     type: {
         type: String,
         required: true
