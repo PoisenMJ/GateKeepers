@@ -21,7 +21,7 @@ router.post('/login', async (req, res, next) => {
         return res.status(400).json(err);
     }
     if(!user) return res.json({ success: false, message: 'Username or password incorrect' })
-    else if(user.accountActivated == false && !user.accountType === "creator") return res.json({ success: false, message: "activate account" });
+    else if(user.accountActivated === false && user.accountType !== "creator") return res.json({ success: false, message: "activate account" });
     else if(!(user.checkPassword(password))) return res.json({ success: false, message: 'Username or password incorrect' });
 
     var scope = user.accountType == 'user' ? 'user' : 'creator';

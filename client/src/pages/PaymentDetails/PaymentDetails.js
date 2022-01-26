@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { CartContext } from '../../services/CartContext';
 import { LocaleContext, GetShippingPrice } from '../../services/LocaleContext';
 import { getProduct } from '../../controllers/creators';
@@ -17,7 +17,10 @@ const PaymentDetails = () => {
     const [country, setCountry] = useState(null);
     const [state, setState] = useState(null);
     const [zipcode, setZipcode] = useState(null);
+    const [email, setEmail] = useState('');
     const [streetAddress, setStreetAddress] = useState(null);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
 
     const [productsData, setProductsData] = useState(null);
     const { products, total, setShippingAddress } = useContext(CartContext);
@@ -34,6 +37,15 @@ const PaymentDetails = () => {
                 break;
             case "streetAddress":
                 setStreetAddress(event.target.value);
+                break;
+            case "email":
+                setEmail(event.target.value);
+                break;
+            case "firstname":
+                setFirstName(event.target.value);
+                break;
+            case "lastname":
+                setLastName(event.target.value);
                 break;
         }
     }
@@ -58,31 +70,39 @@ const PaymentDetails = () => {
         } else {
             navigate('/');
         }
+        // first country in list
         setShippingPrice(GetShippingPrice('austria'));
+        setCountry("austria");
     }, []);
 
     const goToStripeCheckout = async event => {
-        setShippingAddress({
-            country: country,
-            state: state,
-            zipcode: zipcode,
-            streetAddress: streetAddress
-        })
-
-        var data = [];
-        for(var i = 0; i < productsData.length; i++){
-            data.push({
-                size: productsData[i].size,
-                creator: productsData[i].creator,
-                price: productsData[i].price,
-                name: productsData[i].name
+        if(country && state && zipcode && email && streetAddress && firstName && lastName){
+            setShippingAddress({
+                country: country,
+                state: state,
+                zipcode: zipcode,
+                streetAddress: streetAddress,
+                firstName: firstName,
+                lastName: lastName
             })
-        }
-        var res = await checkProduct(productsData.map((d, i) =>  {return {uri:d.uri, name:d.name}} ));
-        if(res.outOfStock) Flash(`${res.name} is out of stock.`);
-        else {
-            var checkoutUrl = await getCheckoutUrl(data, shippingPrice, username);
-            window.location.href = checkoutUrl;
+    
+            var data = [];
+            for(var i = 0; i < productsData.length; i++){
+                data.push({
+                    size: productsData[i].size,
+                    creator: productsData[i].creator,
+                    price: productsData[i].price,
+                    name: productsData[i].name
+                })
+            }
+            var res = await checkProduct(productsData.map((d, i) =>  {return {uri:d.uri, name:d.name}} ));
+            if(res.outOfStock) Flash(`${res.name} is out of stock.`);
+            else {
+                var checkoutUrl = await getCheckoutUrl(data, shippingPrice, username);
+                window.location.href = checkoutUrl;
+            }
+        } else {
+            Flash("Fill out all fields.", "dark");
         }
     }
 
@@ -98,7 +118,13 @@ const PaymentDetails = () => {
                 <Form className="mt-2">
                     <Form.Group className='text-start'>
                         <Form.Text>Email</Form.Text>
-                        <Form.Control required name="email" className="mb-2 custom-input" type="text" placeholder="user@provider.com"/>
+                        <Form.Control onChange={handleInputChange} required name="email" className="mb-2 custom-input" type="text" placeholder="user@provider.com"/>
+                    </Form.Group>
+                    <Form.Group className='mb-2'>
+                        <Row className='g-2'>
+                            <Col><Form.Control onChange={handleInputChange} name="firstname" type="text" placeholder="first name" className="custom-input"/></Col>
+                            <Col><Form.Control onChange={handleInputChange} name="lastname" type="text" placeholder="last name" className="custom-input"/></Col>
+                        </Row>
                     </Form.Group>
                     <Form.Group className='text-start'>
                         <Form.Text>Country</Form.Text>

@@ -65,11 +65,13 @@ const CreatorsOrders = () => {
                                 </div>
                                 <div className="order-details">
                                     <div>
+                                        <span>FIRST NAME: <span className="gray-text">{order.address.firstName}</span></span><br/>
+                                        <span>LAST NAME: <span className="gray-text">{order.address.lastName}</span></span><br/>
                                         <span>TOTAL: <span className="gray-text">£{order.total}</span></span><br/>
                                         <span>USER: <span className="gray-text">{order.user ? order.user : "GUEST"}</span></span>
                                     </div>
                                     <Button onClick={() => sendMarkOrderSent(order.id, index)}
-                                        className="order-mark-sent"
+                                        className="order-mark-sent mt-1"
                                         size='sm'
                                         variant="light">Mark Sent</Button>
                                 </div>

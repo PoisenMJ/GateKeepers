@@ -57,7 +57,9 @@ router.post('/save-order', async (req, res, next) => {
     });
     try {
         await order.save();
+        console.log(username);
         if(username){
+            console.log(username);
             var user = await User.findOne({ username: username });
             if(!user.customerID) await User.updateOne({ username: username }, {$set: { customerID: customerID }});
         }
@@ -66,6 +68,7 @@ router.post('/save-order', async (req, res, next) => {
         var updated = await CreatorProduct.updateMany({ uri: { $in: req.body.items.map((i, index) => i.uri) }}, { $inc: { count: -1} });
         return res.json({ success: true });
     } catch(err){
+        console.log(err);
         return res.json({ success: false });
     }
 })

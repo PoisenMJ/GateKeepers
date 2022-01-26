@@ -58,7 +58,7 @@ function App() {
               </Route>
               
               // products routes
-              <Route path=":creator" element={ <PageLayout header={<Header navbar={<Navbar/>} navigation={<ProductsNavbar/>} />} />}>
+              <Route path=":creator" element={ <PageLayout header={<Header navbar={<Navbar/>} navigation={<ProductsNavbar/>}/>} cartEnabled={true} />}>
                 <Route index element={<ProductsPage type="own"/>}/>
                 <Route path="own" element={<ProductsPage type="own"/>}/>
                 <Route path="made" element={<ProductsPage type="made"/>}/>
@@ -66,7 +66,7 @@ function App() {
                 <Route path=":productURI" element={<ProductPage/>}/>
               </Route>
 
-              <Route element={<PageLayout header={<Header navbar={<Navbar/>}/>} body={<ProtectedRoute/>}/>}>
+              <Route element={<PageLayout header={<Header navbar={<Navbar/>}/>} body={<ProtectedRoute/>} cartEnabled={false}/>}>
                 <Route path="profile" element={<Profile/>}/>
               </Route>
 
@@ -74,7 +74,6 @@ function App() {
                 <Route path="create-account" element={<CreateAccount/>}/>
                 <Route path="login" element={<Login/>}/>
               </Route>
-
             </Route>
 
             <Route path="creators" element={<PageLayout header={<Header navbar={<CreatorNavbar/>}/>} body={<CreatorRoute/>}/>}>

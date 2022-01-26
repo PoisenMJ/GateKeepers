@@ -3,11 +3,11 @@
         width: 60%!important;
         align-self: center;
         justify-self: center;
-        height: 90vh!important;
+        height: 85vh!important;
     }
     .item{ display: grid; width: 100%!important; height: auto!important; }
     #product-image{
-        height: 100%!important;
+        height: 85vh!important;
         justify-self: center;
     }
     #product-info-details-add{
@@ -65,7 +65,7 @@
 #product-sizing{
     display: grid;
     justify-content: center;
-    align-content: start;
+    align-content: end;
     width: 100%;
     grid-auto-flow: column;
 }
@@ -75,6 +75,7 @@
     padding: 3px 5px 4px 5px;
     cursor: pointer;
     transition: .15s;
+    font-size: 1.1rem;
 }
 .product-sizing-item.active{
     background-color: black;
@@ -93,7 +94,7 @@
 
 .item{
     width: 100vw;
-    height: 50vh;
+    /* height: 50vh; */
 }
 .carousel{
     height: auto!important;

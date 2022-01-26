@@ -55,7 +55,6 @@ const ProductPage = () => {
                             slideWidth={1}
                             slidesToShow={1}
                             cellAlign='center'
-                            height='100%'
                             dragging
                             className='custom-carousel-classses'
                         >
