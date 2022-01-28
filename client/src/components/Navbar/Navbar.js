@@ -59,7 +59,7 @@ const Navbar = () => {
                         <FaSortDown style={{marginLeft: '4px', marginBottom: '3px'}}/></a>
                         <div id="creator-list">
                             {creators && creators.map((creator, index) => (
-                                    <NavLink key={creator.tag} onClick={toggleNavbar} to={`/${creator.tag}/own`} className="mb-1 text-secondary creator">{creator.tag}</NavLink>
+                                    <NavLink key={creator.tag} onClick={toggleNavbar} to={`/${creator.tag}/made`} className="mb-1 text-secondary creator">{creator.tag}</NavLink>
                                 ))
                             }
                         </div>

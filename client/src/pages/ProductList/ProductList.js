@@ -38,9 +38,10 @@ const ProductsPage = ({ type }) => {
                 {products && products.map((product, index) => {
                     var date = new Date(product.dateToPost);
                     var available = (new Date() < date);
+                    var outOfStock = (product.count === 0);
                     // if not ready yet change class
-                    var c = (available) ? ' unavailable-product' : '';
-                    var imageC = (available) ? ' unavailable-product-image': '';
+                    var c = (available) ? ' unavailable-product' : (outOfStock) ? ' out-of-stock-product' : '';
+                    var imageC = (available || outOfStock) ? ' unavailable-product-image' : '';
                     
                     // time format
                     var hours = date.getHours();
@@ -64,6 +65,11 @@ const ProductsPage = ({ type }) => {
                                             <br/>
                                             <span style={{fontSize: '.9rem', color: 'rgb(200,200,200)'}}>{strTime}</span>
                                         </span>
+                                }
+                                {outOfStock &&
+                                    <span className='product-image-text text-white'>
+                                        OUT OF STOCK
+                                    </span>
                                 }
                             </div>
                             <div className="product-info">

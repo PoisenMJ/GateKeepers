@@ -5,7 +5,7 @@ var Order = require('../client/src/models/order');
 const Key = require('../client/src/models/key');
 const nJwt = require('njwt');
 var { userCheck } = require('../middleware/auth');
-var { sendPasswordResetEmail } = require('../nodemailer.config');
+var { sendPasswordResetEmail, sendPasswordChangeEmail } = require('../nodemailer.config');
 
 router.post('/profile', userCheck, (req, res, next) => {
     var username = req.body.username;
@@ -37,6 +37,88 @@ router.post('/recover-password', async (req, res, next) => {
         }
     } catch(err) {
         return res.json({ success: false, message: "DB Error" });
+    }
+})
+
+router.post('/change-password', userCheck, async (req, res, next) => {
+    var username = req.body.username;
+    var updateToken = req.body.updateToken;
+    var newPassword = req.body.newPassword;
+
+    try{
+        var key = await Key.findOne({ user: username });
+        var user = await User.findOne({ username: username });
+        if(key){
+            var signingKey = Buffer.from(key.key, 'base64');
+            nJwt.verify(updateToken, signingKey, function(err, verifiedJwt) {
+                console.log(err);
+                console.log(verifiedJwt);
+                if(err) return res.json({ success: false, message: 'Expired get new link' });
+                if(verifiedJwt.body.scope === "password-change"){
+                    User.updateOne({ username: username }, {$set: {password: User.encryptPassword(newPassword)}}).then((user, err) => {
+                        if(err) return res.json({ success: false, message: 'Not updated' })
+                        return res.json({ success: true, message: ''})
+                    });
+                }
+                else return res.json({ success: false, message: "Invalid token" });
+            })
+        } else return res.json({ success: false, message: "Failed" });
+    } catch(err) {
+        return res.json({ success: false, message: "failed" });
+    }
+})
+
+router.post('/email-change-password', userCheck, async (req, res, next) => {
+    var username = req.body.username;
+    try {
+        var user = await User.findOne({ username: username });
+        var key = await Key.findOne({ user: user.username });
+
+        //if link saved check its still active and dont send email
+        if(user.updateCode){
+            var signingKey = Buffer.from(key.key, 'base64');
+            nJwt.verify(user.updateCode, signingKey, function(err, verifiedJwt) {
+                if(err){
+                    if(key){
+                        var signingKey = Buffer.from(key.key, 'base64');
+                        var jwt = nJwt.create({
+                            iss: process.env.HOST,
+                            scope: "password-change"
+                        }, signingKey);
+                        var token = jwt.compact().toString('base64');
+                        User.updateOne({ username: username }, { $set: { updateCode: token }}).then((u, e) => {
+                            if(e) return res.json({ success: false, message: '' })
+                            else{
+                                sendPasswordChangeEmail(user.email, `${process.env.HOST}/password-change/${token}`)
+                                return res.json({ success: true });
+                            }
+                        });
+                    } else return res.json({ success: false });
+                }
+                else if(verifiedJwt.body.scope === 'password-change') return res.json({ success: true, message: "Email sent already" })
+                else return res.json({ success: false, message: 'Invalid token' });
+            })
+        }
+
+        // put code in the verify
+        if(!user.updateCode){
+            if(key){
+                var signingKey = Buffer.from(key.key, 'base64');
+                var jwt = nJwt.create({
+                    iss: process.env.HOST,
+                    scope: "password-change"
+                }, signingKey);
+                var token = jwt.compact();
+                var b64token = token.toString('base64');
+                console.log(b64token);
+                await User.updateOne({ username: username }, { $set: { updateCode: b64token }});
+                sendPasswordChangeEmail(user.email, `${process.env.HOST}/password-change/${b64token}`)
+                return res.json({ success: true });
+            } else return res.json({ success: false });
+        }
+    } catch(err) {
+        console.log(err);
+        return res.json({ success: false });
     }
 })
 

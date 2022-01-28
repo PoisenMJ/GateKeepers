@@ -12,12 +12,40 @@ async function recoverPassword(username, token, newPassword){
     return json;
 }
 
+async function changePassword(username, token, newPassword, updateToken){
+    var res = await fetch('/user/change-password', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            token,
+            newPassword,
+            updateToken
+        })
+    })
+    var json = await res.json();
+    return json;
+}
+
 async function sendRecoveryEmail(email){
     var res = await fetch('/user/get-reset-password-token', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             email: email
+        })
+    });
+    var json = await res.json();
+    return json;
+}
+
+async function sendPasswordChangeEmail(username, token){
+    var res = await fetch('/user/email-change-password', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            token
         })
     });
     var json = await res.json();
@@ -56,20 +84,6 @@ async function getProfile(username, token){
     else return { success: false };
 }
 
-async function updatePassword(password, username, token){
-    var res = await fetch('/user/update-password', {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            token: token,
-            username: username,
-            password: password
-        })
-    });
-    var json = await res.json();
-    return json;
-}
-
 async function getOrders(username, token){
     var res = await fetch('/user/orders', {
         method: "POST",
@@ -83,4 +97,4 @@ async function getOrders(username, token){
     return json;
 }
 
-export { getProfile, updatePassword, submitActivationToken, recoverPassword, sendRecoveryEmail };
+export { getProfile, submitActivationToken, recoverPassword, sendRecoveryEmail, sendPasswordChangeEmail, changePassword };

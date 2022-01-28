@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./Home.css";
 import { Mobile, Desktop } from '../../components/Query';
 import { getCreatorPosts } from '../../controllers/creators';
@@ -31,7 +31,7 @@ const Home = () => {
     }
 
     const exploreButton = () => {
-        navigate('/maksie_aki/own');
+        navigate('/maksie_aki/made');
     }
     
     return(
@@ -143,11 +143,11 @@ const Home = () => {
                         ) : '';
                         var socialsHTML2 = (post.creator.links) ?
                         (
-                            <div>
+                            <div className="socials">
                                 {post.creator.links.twitch &&
-                                    <a key={post.creator.links.twitch} className="socials-icon" href={post.creator.links.twitch}><FaTwitch size={35} color='#fff'/></a>
+                                    <a key={post.creator.links.twitch} className="socials-icon-right" href={post.creator.links.twitch}><FaTwitch size={35} color='#fff'/></a>
                                 }{post.creator.links.twitter &&
-                                    <a key={post.creator.links.twitter} className="socials-icon" href={post.creator.links.twitter}><FaTwitter size={35} color='#fff'/></a>
+                                    <a key={post.creator.links.twitter} className="socials-icon-right" href={post.creator.links.twitter}><FaTwitter size={35} color='#fff'/></a>
                                 }
                             </div>
                         ):'';

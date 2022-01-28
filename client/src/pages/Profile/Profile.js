@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
-import { getProfile, updatePassword } from '../../controllers/users';
+import { getProfile, sendPasswordChangeEmail } from '../../controllers/users';
 import { Flash } from '../../components/FlashMessage/FlashMessage';
 import { AuthContext } from '../../services/AuthContext';
 import './Profile.css';
@@ -13,11 +13,6 @@ const Profile = () => {
 
     const [profileData, setProfileData] = useState({});
     const [orders, setOrders] = useState(null);
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-
-    const handlePasswordChange = event => setPassword(event.target.value);
-    const handleConfirmPasswordChange = event => setConfirmPassword(event.target.value);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,14 +27,10 @@ const Profile = () => {
 
     }, [])
 
-    const sendUpdatePassword = async event => {
-        event.preventDefault();
-        if(password !== confirmPassword) Flash("Passwords don't match", "dark");
-        else{
-            var res = await updatePassword(password, username, token);
-            if(res.success) Flash("Password updated", "success");
-            else Flash("Password failed to update", "dark");
-        }
+    const sendUpdatePassword = async () => {
+        var res = await sendPasswordChangeEmail(username, token);
+        if(res.success) Flash("Check email for update link", "success");
+        else Flash("Password failed to update", "dark");
     }
 
     return (
@@ -49,16 +40,11 @@ const Profile = () => {
                     <span className="fs-3">◑ PROFILE ◐</span>
                 </div>
                 <hr className="mb-4"/>
-                <Form onSubmit={sendUpdatePassword} className="mb-5">
-                    <span>INFO</span>
-                    <Form.Control className="custom-input mb-2" type="text" disabled defaultValue={profileData ? profileData.username : 'username'}/>
-                    <Form.Control className="custom-input mb-2" type="text" disabled defaultValue={profileData ? profileData.email : 'email'}/>
-                    <br />
-                    <span>PASSWORD</span>
-                    <Form.Control className="custom-input mb-2" onChange={handlePasswordChange} type="password" placeholder="New Password"/>
-                    <Form.Control className="custom-input mb-2" onChange={handleConfirmPasswordChange} type="password" placeholder="Confirm Password"/>
-                    <Button className="w-100" variant="dark" type="submit">UPDATE</Button>
-                </Form>
+                <span>INFO</span>
+                <Form.Control className="custom-input mb-2" type="text" disabled defaultValue={profileData ? profileData.username : 'username'}/>
+                <Form.Control className="custom-input mb-2" type="text" disabled defaultValue={profileData ? profileData.email : 'email'}/>
+                <br />
+                <Button onClick={sendUpdatePassword} className="w-100 mb-3" variant="dark" type="submit">UPDATE PASSWORD</Button>
                 <span>ORDERS</span>
                 <div id="profile-page-order-history">
                     {orders && orders.length > 0 ? orders.map((order, index) => {

@@ -45,6 +45,18 @@
 .unavailable-product-image{
     filter: opacity(0.6);
 }
+.out-of-stock-product{
+    background-color: rgb(100,100,100);
+    box-shadow: 10px 10px 0px 0px rgba(200,200,200,0.95);
+    -webkit-box-shadow: 10px 10px 0px 0px rgba(200,200,200,0.95);
+    -moz-box-shadow: 10px 10px 0px 0px rgba(200,200,200,0.95);
+}
+.out-of-stock-product:hover{
+    background-color: rgb(120,120,120)!important;
+    box-shadow: 10px 10px 0px 0px rgba(200,200,200,0.95);
+    -webkit-box-shadow: 10px 10px 0px 0px rgba(200,200,200,0.95);
+    -moz-box-shadow: 10px 10px 0px 0px rgba(200,200,200,0.95);
+}
 .product:hover {
     background-color: rgb(220,220,220);
 }

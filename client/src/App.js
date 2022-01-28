@@ -33,6 +33,7 @@ import { LocaleProvider } from './services/LocaleContext';
 import CreatorsOrders from './pages/CreatorPortal/Orders/Orders';
 
 import PasswordRecovery from './pages/PasswordRecovery/PasswordRecovery';
+import PasswordChange from './pages/PasswordChange/PasswordChange';
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
                 <Route path="payment-success" element={<PaymentSuccess/>}/>
                 <Route path="payment-failure" element={<PaymentFailure/>}/>
                 <Route path="password-recovery/:username/:token" element={<PasswordRecovery/>}/>
+                <Route path="password-change/:updateToken" element={<PasswordChange/>}/>
               </Route>
               
               // products routes

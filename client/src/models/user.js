@@ -35,6 +35,10 @@ var userSchema = mongoose.Schema({
     accountActivated: {
         type: Boolean,
         default: false
+    },
+    updateCode: {
+        type: String,
+        default: ''
     }
 });
 
