@@ -30,6 +30,9 @@ const PaymentSuccess = () => {
             var creators = [...new Set(products.map((item, index) => item.creator))];
             saveOrder(res.customerID, res.orderID, items, total, username, shippingAddress, creators);
             sendConfirmationEmail(username, res.email, items, total)
+            for(var i = 0; i < creators.length; i++){
+                sendOrderToCreatorEmail(creators[i]);
+            }
         }
         fetchSessionData();
         
