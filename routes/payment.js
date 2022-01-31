@@ -4,7 +4,7 @@ var Stripe = require('../stripe');
 const CreatorProduct = require('../client/src/models/creatorProduct');
 const Order = require('../client/src/models/order');
 const User = require('../client/src/models/user');
-const { sendOrderConfirmationEmail } = require('../nodemailer.config');
+const { sendOrderConfirmationEmail, sendOrderToCreatorEmail } = require('../nodemailer.config');
 
 router.post('/checkout', async (req, res, next) => {
     var products = req.body.products;
@@ -57,15 +57,16 @@ router.post('/save-order', async (req, res, next) => {
     });
     try {
         await order.save();
-        console.log(username);
-        if(username){
-            console.log(username);
+        if(username !== "Guest"){
             var user = await User.findOne({ username: username });
             if(!user.customerID) await User.updateOne({ username: username }, {$set: { customerID: customerID }});
         }
 
         // update product count
-        var updated = await CreatorProduct.updateMany({ uri: { $in: req.body.items.map((i, index) => i.uri) }}, { $inc: { count: -1} });
+        await CreatorProduct.updateMany({ uri: { $in: req.body.items.map((i, index) => i.uri) }}, { $inc: { count: -1} });
+        // for(var i = 0; i < req.body.creators.length; i++){
+        //     sendOrderToCreatorEmail(req.body.creators[i]);
+        // }
         return res.json({ success: true });
     } catch(err){
         console.log(err);

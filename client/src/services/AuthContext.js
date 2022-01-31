@@ -83,7 +83,15 @@ const AuthVerify = (props) => {
             setUsername(null);
             setToken(null);
             setLoggedIn(false);
-            LogOut();
+            localStorage.removeItem("token");
+            localStorage.removeItem("username");
+            localStorage.removeItem("auth");
+
+            // TODO: 
+            // email styling
+            // email sent with items from user account if no account use payment detials email
+            // check necessity of payment deatils email (maybe only have if guest user)
+            // password length check on update
         }
     }, [location])
 

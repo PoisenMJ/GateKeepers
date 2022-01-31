@@ -38,6 +38,7 @@ const Home = () => {
         <div id="home-page">
             <Mobile>
                 <div id="home-page-first-slide">
+                    <img src={'/images/background.jpg'} id="home-page-background"/>
                     <div className="home-page-initial-content">
                         <span className="fs-1 fw-bold">GateKeepers</span>
                         <span className="text-lead mb-3 fw-light">Fashion Collection</span>
@@ -115,6 +116,7 @@ const Home = () => {
             </Mobile>
             <Desktop>
                 <div id="home-page-first-slide">
+                    <img src={'/images/background.jpg'} id="home-page-background"/>
                     <div className="home-page-initial-content lg">
                         <span className="fw-bold" style={{fontSize: '4rem'}}>GateKeepers</span>
                         <span className="text-lead mb-3 fw-light" style={{fontSize: '1.25rem'}}>Fashion Collection</span>

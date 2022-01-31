@@ -35,9 +35,8 @@ const CreateAccount = () => {
                 </div>
                 <hr className="mb-4"/>
                 <Form onSubmit={submitAccount}>
-                    <span>DETAILS</span>
-                    <Form.Control onChange={handleUsernameChange} className="custom-input mb-1" type="text" placeholder="USERNAME" />
-                    <Form.Control onChange={handleEmailChange} className="custom-input mb-1" type="email" placeholder="EMAIL" />
+                    <Form.Control onChange={handleUsernameChange} className="custom-input mb-2" type="text" placeholder="USERNAME" />
+                    <Form.Control onChange={handleEmailChange} className="custom-input mb-2" type="email" placeholder="EMAIL" />
                     <Form.Control onChange={handlePasswordChange} className="custom-input mb-4" type="password" placeholder="PASSWORD" />
                     {/* <Form.Group>
                         <Form.Label className="mb-0">SELECT INFLUENCER</Form.Label>

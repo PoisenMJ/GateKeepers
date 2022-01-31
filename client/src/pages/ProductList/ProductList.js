@@ -52,7 +52,6 @@ const ProductsPage = ({ type }) => {
                     hours = hours ? hours : 12; // the hour '0' should be '12'
                     var strTime = hours + ':' + minutes + ' ' + ampm;
 
-                    console.log(date.getMinutes());
                     return (
                         <div key={product.name} className={"product mb-4"+c} onClick={() => viewProduct(product.uri)}>
                             <div className="product-image-parent">

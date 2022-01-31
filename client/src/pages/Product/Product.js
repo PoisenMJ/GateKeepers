@@ -15,7 +15,7 @@ const ProductPage = () => {
     const [size, setSize] = useState(null);
     const {productURI} = useParams();
     const [purchasable, setPurchasable] = useState(false);
-    const { addToCart } = useContext(CartContext);
+    const { addToCart, products } = useContext(CartContext);
 
     useEffect(() => {
         const fetchProduct = async () => {

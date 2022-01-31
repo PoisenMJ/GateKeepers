@@ -8,7 +8,7 @@ const CartContext = React.createContext({
     setProducts: (data) => { },
     addToCart: (data) => { },
     removeFromCart: (data) => { },
-    clearCart: (data) => { }
+    clearCart: (data) => { },
 })
 
 const CartProvider = ({ children }) => {
@@ -22,6 +22,7 @@ const CartProvider = ({ children }) => {
     const add = (product) => {
         products.push(product);
         setProducts(products);
+        console.log(products);
         setTotal(total+product.price);
 
         localStorage.setItem('cart', JSON.stringify(products));
@@ -35,6 +36,7 @@ const CartProvider = ({ children }) => {
                 break;
             }
         }
+        setProducts([]);
         setProducts(products);
         setTotal(total-product.price);
 
@@ -62,7 +64,7 @@ const CartProvider = ({ children }) => {
         setProducts: setProducts,
         addToCart: add,
         removeFromCart: remove,
-        clearCart: clear
+        clearCart: clear,
     }}>
         {children}
     </CartContext.Provider>

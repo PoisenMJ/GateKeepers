@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 import './PaymentSuccess.css';
 import { CartContext } from '../../services/CartContext';
 import { AuthContext } from '../../services/AuthContext';
-import { saveOrder, sendConfirmationEmail } from '../../controllers/payment';
+import { saveOrder, sendConfirmationEmail, sendOrderToCreatorEmail } from '../../controllers/payment';
 
 const PaymentSuccess = () => {
     let navigate = useNavigate();
@@ -25,18 +25,17 @@ const PaymentSuccess = () => {
             d['email'] = res.email;
             setData(d);
             
+            console.log(products);
+            console.log('payment success');
             // set items into [ {uri, name} ]
+            var username = (username) ? username : "Guest";
             var items = products.map((item, index) => { return { uri: item.uri, name: item.name } });
             var creators = [...new Set(products.map((item, index) => item.creator))];
-            saveOrder(res.customerID, res.orderID, items, total, username, shippingAddress, creators);
-            sendConfirmationEmail(username, res.email, items, total)
-            for(var i = 0; i < creators.length; i++){
-                sendOrderToCreatorEmail(creators[i]);
-            }
+            await saveOrder(res.customerID, res.orderID, items, total, username, shippingAddress, creators);
+            await sendConfirmationEmail(username, res.email, items, total)
+            clearCart();
         }
         fetchSessionData();
-        
-        clearCart();
     }, [])
 
     const goBackHome = () => {

@@ -16,10 +16,10 @@ const ShoppingBasket = () => {
 
     // localStorage.removeItem('cart');
     // localStorage.removeItem('cartTotal');
-    console.log(total);
-    console.log(products);
-
+    // console.log(total);
+    
     useEffect(() => {
+        console.log(products);
         if(products.length > 0){
             var productsArray = []
             const getData = async () => {

@@ -8,6 +8,15 @@
     display: grid;
     width: 100vw;
 }
+#home-page-background{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    filter: opacity(0.2);
+    object-fit: cover;
+}
 #home-page-first-slide{
     text-align: center;
     display: grid;
