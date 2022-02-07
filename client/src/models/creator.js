@@ -9,6 +9,10 @@ const creatorSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     },
+    email: {
+        type: String,
+        required: true
+    },
     tag: {
         type: String,
         required: true,

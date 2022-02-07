@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Button, Form, CloseButton, FormText } from 'react-bootstrap';
-import CurrencyInput from 'react-currency-input-field';
+import { Button, Form, InputGroup } from 'react-bootstrap';
 import Carousel from 'nuka-carousel';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
 import { addProduct } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext';
 import DateTime from 'react-datetime';
 import { useNavigate } from 'react-router';
+import Compressor from 'compressorjs';
 import 'react-datetime/css/react-datetime.css';
 import './Upload.css';
 
@@ -27,6 +27,9 @@ const Upload = () => {
         switch(event.target.name){
             case 'name':
                 setName(event.target.value);
+                break;
+            case 'price':
+                setPrice(event.target.value);
                 break;
             case 'description':
                 setDescription(event.target.value);
@@ -53,14 +56,25 @@ const Upload = () => {
 
     useEffect(() => {
         var imageInput = document.getElementById('image-input');
-        imageInput.onchange = function(event){
+        imageInput.onchange = async function(event){
             var list = [];
             var order = [];
             for(var i = 0; i < event.target.files.length; i++){
-                list.push(event.target.files[i]);
+                //compress images
+                new Compressor(event.target.files[i], {
+                    quality: 0.7,
+                    success(result){
+                        var newFile = new File([result], result.name, {
+                            type: result.type
+                        });
+                        list.push(newFile);
+                        if(i === event.target.files.length){
+                            setImages(list);
+                        }
+                    }
+                })
                 order.push(i);
             }
-            setImages(list);
             setImageOrder(order);
         }
     })
@@ -71,15 +85,17 @@ const Upload = () => {
 
         // check image re-order has right numbers
         var orderList = [];
+        var compressImages = [];
         for(var i = 0; i < images.length; i++){
             if(imageOrder[i] <= images.length-1){
                 orderList.push(i);
             }
         }
+
         
         if(orderList.length === images.length){
             if(images && price && name && description && type && count && sizes){
-                var res = await addProduct(formdata, username, token, imageOrder);
+                var res = await addProduct(formdata, username, token, imageOrder, images);
                 if(res.success) {
                     Flash("Successfully added", "success");
                     navigate('../products');
@@ -101,7 +117,7 @@ const Upload = () => {
             <hr className="mb-4"/>
             <Form onSubmit={sendAddProduct} id="upload-form">
                 <Form.Control onChange={handleInputChange} name="name" type="text" placeholder="Product Name" className="mb-2 custom-input"/>
-                <Form.Control multiple id="image-input" name="images" type="file" className="mb-2 visually-hidden"/>
+                <Form.Control multiple id="image-input" accept="image/jpeg,image/jpg" type="file" className="mb-2 visually-hidden"/>
                 <div id="product-images" className="mb-2">
                     <Carousel className="carousel mb-3" width={'100%'} height='100%' dragging>
                         {images ?
@@ -124,9 +140,13 @@ const Upload = () => {
                 </div>
                 <Form.Group>
                     <Form.Text>Price</Form.Text>
-                    <CurrencyInput onChange={handleInputChange} name="price" allowNegativeValue={false} id="money-input" prefix='£' className="no-outline custom-input mb-2 w-100" placeholder="Enter Price" decimalsLimit={2} onValueChange={(value, name) => setPrice(value)}/>
+                    <InputGroup>
+                        <InputGroup.Text className="custom-input">£</InputGroup.Text>
+                        <Form.Control className="custom-input" type="number" placeholder="price" onChange={handleInputChange} name="price"/>
+                    </InputGroup>
+
                 </Form.Group>
-                <Form.Control onChange={handleInputChange} name="description" as="textarea" placeholder="Enter description..." className="custom-input mb-2"/>
+                <Form.Control onChange={handleInputChange} name="description" as="textarea" placeholder="Enter description..." className="custom-input mb-2 mt-2"/>
                 <Form.Group>
                     <Form.Text>Product Count</Form.Text>
                     <Form.Control onChange={handleInputChange} name="count" type="number" min="1" placeholder="Number of products" className="custom-input mb-1"/>

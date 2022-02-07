@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './Navbar.css';
-import { FaBars, FaSignOutAlt, FaSortDown } from 'react-icons/fa';
+import { FaBars, FaInstagram, FaSignOutAlt, FaSortDown, FaTwitter } from 'react-icons/fa';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { getCreators } from '../../controllers/creators';
 import Cart from '../Cart/Cart';
 import { LogOut } from '../../services/auth';
 
 import { AuthContext } from '../../services/AuthContext';
-import Event from '../../utils/events';
-import LocaleButton from '../LocaleButton/LocaleButton';
 import { Mobile } from '../Query';
 import { CartContext } from '../../services/CartContext';
 
@@ -50,7 +48,6 @@ const Navbar = () => {
                 <Mobile>
                     <Cart clicked={toggleNavbar}/>
                 </Mobile>
-                <LocaleButton/>
                 <ul className="navbar-ul">
                     <li><NavLink to="/" className={"mb-2"} onClick={toggleNavbar}>Home</NavLink></li>
                     <li><a href="#" className={"d-flex mb-2"} style={{marginLeft: '40px'}}
@@ -65,12 +62,19 @@ const Navbar = () => {
                         </div>
                     </li>
                     <li><NavLink to="/about" className={"mb-2"} onClick={toggleNavbar}>About</NavLink></li>
-                    <li><NavLink to="/contact-us" className={"mb-2"} onClick={toggleNavbar}>Contact Us</NavLink></li>
                     {loggedIn ?
                         <li><NavLink to="/profile" onClick={toggleNavbar} className={"mb-2"}>Profile</NavLink></li>
                         :
                         <li><NavLink to="/login" onClick={toggleNavbar} className={"mb-2"}>Login</NavLink></li>
                     }
+                    <li>
+                        <a href="https://www.instagram.com/gatekeepers.store/">
+                            <FaInstagram size={50}/>
+                        </a>
+                        <a href="https://twitter.com/Gatek33pers">
+                            <FaTwitter size={50}/>
+                        </a>
+                    </li>
                 </ul>
                 {loggedIn &&
                 <div>

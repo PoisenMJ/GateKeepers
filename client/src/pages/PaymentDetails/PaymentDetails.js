@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { CartContext } from '../../services/CartContext';
-import { LocaleContext, GetShippingPrice } from '../../services/LocaleContext';
+import { GetShippingPrice } from '../../services/Shipping';
 import { getProduct } from '../../controllers/creators';
 import { checkProduct, getCheckoutUrl } from '../../controllers/payment';
 import { FaArrowRight } from 'react-icons/fa';
@@ -24,8 +24,7 @@ const PaymentDetails = () => {
 
     const [productsData, setProductsData] = useState(null);
     const { products, total, setShippingAddress } = useContext(CartContext);
-    const { currency } = useContext(LocaleContext);
-    const { username, token } = useContext(AuthContext);
+    const { username, loggedIn } = useContext(AuthContext);
 
     const handleInputChange = event => {
         switch(event.target.name){
@@ -76,30 +75,33 @@ const PaymentDetails = () => {
     }, []);
 
     const goToStripeCheckout = async event => {
-        if(country && state && zipcode && email && streetAddress && firstName && lastName){
-            setShippingAddress({
-                country: country,
-                state: state,
-                zipcode: zipcode,
-                streetAddress: streetAddress,
-                firstName: firstName,
-                lastName: lastName
-            })
-    
-            var data = [];
-            for(var i = 0; i < productsData.length; i++){
-                data.push({
-                    size: productsData[i].size,
-                    creator: productsData[i].creator,
-                    price: productsData[i].price,
-                    name: productsData[i].name
+        if(country && state && zipcode && streetAddress && firstName && lastName){
+            if(loggedIn && !email || !loggedIn && email){
+                setShippingAddress({
+                    email: email,
+                    country: country,
+                    state: state,
+                    zipcode: zipcode,
+                    streetAddress: streetAddress,
+                    firstName: firstName,
+                    lastName: lastName
                 })
-            }
-            var res = await checkProduct(productsData.map((d, i) =>  {return {uri:d.uri, name:d.name}} ));
-            if(res.outOfStock) Flash(`${res.name} is out of stock.`);
-            else {
-                var checkoutUrl = await getCheckoutUrl(data, shippingPrice, username);
-                window.location.href = checkoutUrl;
+        
+                var data = [];
+                for(var i = 0; i < productsData.length; i++){
+                    data.push({
+                        size: productsData[i].size,
+                        creator: productsData[i].creator,
+                        price: productsData[i].price,
+                        name: productsData[i].name
+                    })
+                }
+                var res = await checkProduct(productsData.map((d, i) =>  {return {uri:d.uri, name:d.name}} ));
+                if(res.outOfStock) Flash(`${res.name} is out of stock.`);
+                else {
+                    var checkoutUrl = await getCheckoutUrl(data, shippingPrice, username);
+                    window.location.href = checkoutUrl;
+                }
             }
         } else {
             Flash("Fill out all fields.", "dark");
@@ -116,10 +118,12 @@ const PaymentDetails = () => {
             <div id="payment-details-info" className='text-center'>
                 <span className="fs-1">✦ DETAILS ✦</span>
                 <Form className="mt-2">
-                    <Form.Group className='text-start'>
-                        <Form.Text>Email</Form.Text>
-                        <Form.Control onChange={handleInputChange} required name="email" className="mb-2 custom-input" type="text" placeholder="user@provider.com"/>
-                    </Form.Group>
+                    {!loggedIn &&
+                        <Form.Group className='text-start'>
+                            <Form.Text>Email</Form.Text>
+                            <Form.Control onChange={handleInputChange} required name="email" className="mb-2 custom-input" type="email" placeholder="user@provider.com"/>
+                        </Form.Group>
+                    }
                     <Form.Group className='mb-2'>
                         <Row className='g-2'>
                             <Col><Form.Control onChange={handleInputChange} name="firstname" type="text" placeholder="first name" className="custom-input"/></Col>
@@ -152,11 +156,11 @@ const PaymentDetails = () => {
             </div>
             <div id="payment-details-total">
                 <div>
-                    <span className="fs-1">TOTAL : {currency}{total+shippingPrice}</span>
+                    <span className="fs-1">TOTAL : £{total+shippingPrice}</span>
                     <br/>
-                    <span className="text-muted" id="payment-details-subtotals">Products : {currency}{total}</span>
+                    <span className="text-muted" id="payment-details-subtotals">Products : £{total}</span>
                     <br/>
-                    <span className="text-muted" id="payment-details-subtotals">Shipping : {currency}{shippingPrice}</span>
+                    <span className="text-muted" id="payment-details-subtotals">Shipping : £{shippingPrice}</span>
                 </div>
                 <Button onClick={goToStripeCheckout} variant="dark">BUY<FaArrowRight style={{marginBottom: '3px', marginLeft: '5px'}}/></Button>
             </div>

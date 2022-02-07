@@ -9,7 +9,7 @@ import { Flash } from '../../../components/FlashMessage/FlashMessage';
 const CreatorProducts = () => {
     let navigate = useNavigate();
     const { username, token } = useContext(AuthContext);
-    const [products, setProducts] = useState(null);
+    const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState(null)
     const [showRemoveProductModal, setShowRemoveProductModal] = useState(false);
     const [focusedProduct, setFocusedProduct] = useState(null);
@@ -36,9 +36,16 @@ const CreatorProducts = () => {
 
     const confirmRemoveProduct = async () => {
         var data = await removeProduct(focusedProduct, username, token);
-        setProducts(products.filter(e => e._id != focusedProduct));
         setShowRemoveProductModal(false);
-        if(data.success) Flash("Product Removed", "dark");
+        if(data.success){
+            var newProducts = [];
+            for(var i = 0; i < products.length; i++){
+                if(products[i]._id !== focusedProduct) newProducts.push(products[i]);
+            }
+            setProducts(newProducts);
+            setFilteredProducts(newProducts);
+            Flash("Product Removed", "dark");
+        }
         else Flash("Product not removed", "danger");
     }
     
@@ -64,14 +71,14 @@ const CreatorProducts = () => {
                 </Modal.Body>
             </Modal>
             <div id="creator-portal-product-list">
-            {filteredProducts && filteredProducts.map((product, index) => {
+            {filteredProducts && filteredProducts.length > 0 && filteredProducts.map((product, index) => {
                 return (
                     <div key={product.name} className="product mb-4">
                         <div className="product-image-parent">
                             <img src={`/images/products/${product.images[product.imageOrder[0]]}`} className="product-image"/>
                         </div>
                         <div className="product-info w-100">
-                            <span className="fs-4 text-muted fw-light">{product.name}</span>
+                            <span className="fs-4 text-muted fw-light mb-2">{product.name}</span>
                             <div className="creator-portal-product-edit-group">
                                 <Button onClick={() => editProduct(product._id)} size="sm" className="mx-1 w-95" variant="secondary">EDIT</Button>
                                 <Button onClick={() => showConfirmRemoveProduct(product._id)} size="sm" className="mx-1 w-95" variant="dark">REMOVE</Button>

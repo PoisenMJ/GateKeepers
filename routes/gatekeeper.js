@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 var router = express.Router();
 const Creator = require('../client/src/models/creator');
 const CreatorProduct = require('../client/src/models/creatorProduct');
@@ -18,6 +19,8 @@ var storage = multer.diskStorage({
     }
 })
 var upload = multer({ storage: storage });
+
+
 
 router.post('/orders', gatekeeperCheck, async (req, res, next) => {
     var creatorUsername = req.body.username;
@@ -54,6 +57,7 @@ router.post('/orders/mark-sent', gatekeeperCheck, async (req, res, next) => {
 router.post('/products/add', upload.array('images'), gatekeeperCheck, (req, res, next) => {
     var creatorUsername = req.body.username;
     var imageNameList = [];
+
     for(var i = 0; i < req.files.length; i++){
         imageNameList.push(req.files[i].filename)
     }
@@ -82,9 +86,17 @@ router.post('/products/add', upload.array('images'), gatekeeperCheck, (req, res,
 
 router.post('/products/remove', gatekeeperCheck, (req, res, next) => {
     var productID = req.body.productID;
-    CreatorProduct.deleteOne({ _id: productID }).then((deleted, err) => {
+    CreatorProduct.findOne({ _id: productID }).then((product, err) => {
         if(err) return res.json({ success: false });
-        else return res.json({ success: true });
+        for(var i = 0; i < product.images.length; i++){
+            fs.unlink(`./client/public/images/products/${product.images[i]}`, (err) => {
+                if(err) console.log(err);
+            })
+        }
+        CreatorProduct.deleteOne({ _id: productID }).then((deleted, err) => {
+            if(err) return res.json({ success: false });
+            else return res.json({ success: true });
+        })
     })
 })
 
@@ -177,19 +189,28 @@ router.post('/update/:creatorTag', gatekeeperCheck, (req, res, next) => {
             twitter: req.body.twitterLink ? req.body.twitterLink : '',
             twitch: req.body.twitchLink ? req.body.twitchLink : ''
         },
-        name: req.body.name ? req.body.name : ''
+        name: req.body.name ? req.body.name : '',
+        email: req.body.email ? req.body.email : ''
     }}).then((doc, err) => {
-        if(req.body.password){
-            User.findOneAndUpdate({ username: username }, {
-                $set: { password: User.encryptPassword(req.body.password) }
-            }).then((doc, err) => {
+        User.findOneAndUpdate({ username: username }, {
+            $set: { email: req.body.email ? req.body.email : '' }
+        }).then((doc, err) => {
+            if(err) return res.json({ success: false });
+            if(req.body.password){
+                User.findOneAndUpdate({ username: username }, {
+                    $set: { 
+                        password: User.encryptPassword(req.body.password),
+                    }
+                }).then((doc, err) => {
+                    if(err) return res.json({ success: false });
+                    else return res.json({ success: true });
+                })
+            } else {
                 if(err) return res.json({ success: false });
                 else return res.json({ success: true });
-            })
-        } else {
-            if(err) return res.json({ success: false });
-            else return res.json({ success: true });
-        }
+            }
+            return res.json({ success: true });
+        })
     })
 })
 

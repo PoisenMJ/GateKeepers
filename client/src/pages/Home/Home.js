@@ -89,7 +89,7 @@ const Home = () => {
                                     <div className="slide-creator">
                                         <span className="fs-1 slide-tag">{post.creator.tag.toUpperCase()}</span>
                                         <hr/>
-                                        <Button variant="light" className="shop-creator" onClick={() => navigate(`/${post.creator.tag}`)}>
+                                        <Button variant="light" className="shop-creator" onClick={() => navigate(`/${post.creator.tag}/made`)}>
                                             SHOP
                                             <FaShoppingBag style={{marginLeft: '6px', marginBottom: '4px'}}/>
                                         </Button>
@@ -166,20 +166,29 @@ const Home = () => {
                                     <div className="slide-creator">
                                         <span style={{fontSize: '3.5rem'}} className="slide-tag">{post.creator.tag.toUpperCase()}</span>
                                         <hr/>
-                                        <Button style={{fontSize: '1.2rem'}} variant="light" className="shop-creator" onClick={() => navigate(`/${post.creator.tag}`)} size='lg'>
+                                        <Button style={{fontSize: '1.2rem'}} variant="light" className="shop-creator" onClick={() => navigate(`/${post.creator.tag}/made`)} size='lg'>
                                             SHOP
                                             <FaShoppingBag style={{marginLeft: '6px', marginBottom: '4px'}}/>
                                         </Button>
                                     </div>
                                     {socialsHTML2}
                                 </div>
-                                <img
-                                    className="slide-image"
-                                    src={`/images/${post.image}`}
-                                    style={{
+                                <div className="desktop-slide-images" style={{
                                         top: `calc(100vh * ${index+1})`
-                                    }}
-                                />
+                                    }}>
+                                    <img
+                                        className="slide-image desktop"
+                                        src={`/images/${post.image}`}
+                                    />
+                                    <img
+                                        className="slide-image desktop"
+                                        src={`/images/${post.image}`}
+                                    />
+                                    <img
+                                        className="slide-image desktop"
+                                        src={`/images/${post.image}`}
+                                    />
+                                </div>
                                 {!lastPost &&
                                     <div onClick={() => nextSlide(`slide-${index+2}`)} className="arrow-down-container">
                                         <div className="chevron white"></div>

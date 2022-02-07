@@ -2,20 +2,24 @@ import React, { useState, useEffect, useContext } from 'react';
 import './ProductList.css';
 import { getOwnProducts, getMadeProducts } from '../../controllers/creators';
 import { useParams, useNavigate } from 'react-router-dom';
-import { LocaleContext, ConvertPrice } from '../../services/LocaleContext';
 
 const ProductsPage = ({ type }) => {
     const [products, setProducts] = useState(null);
     const {creator} = useParams();
     let navigate = useNavigate();
-    const { currency, locale } = useContext(LocaleContext);
 
     useEffect(() => {
         const fetchData = async () => {
             var products;
-            if(type == "own") products = await getOwnProducts(creator);
-            else if(type == "made") products = await getMadeProducts(creator);
-            setProducts(products);
+            if(type === "own"){
+                products = await getOwnProducts(creator);
+                if(products.success === false) navigate("/");
+            }
+            else if(type === "made"){
+                products = await getMadeProducts(creator);
+                if(products.success === false) navigate("/");
+            }
+            setProducts(products.products);
         }
         fetchData();
     }, [type, creator])
@@ -27,7 +31,7 @@ const ProductsPage = ({ type }) => {
     return (
         <div id="products-page">
             <div className="w-100 text-center mb-3">
-                {type == "own" ?
+                {type === "own" ?
                     <span className="text-muted text-uppercase">Worn by @{creator}</span>
                     :
                     <span className="text-muted text-uppercase">Made by @{creator}</span>
@@ -38,7 +42,7 @@ const ProductsPage = ({ type }) => {
                 {products && products.map((product, index) => {
                     var date = new Date(product.dateToPost);
                     var available = (new Date() < date);
-                    var outOfStock = (product.count === 0);
+                    var outOfStock = (product.count <= 0);
                     // if not ready yet change class
                     var c = (available) ? ' unavailable-product' : (outOfStock) ? ' out-of-stock-product' : '';
                     var imageC = (available || outOfStock) ? ' unavailable-product-image' : '';
@@ -55,7 +59,7 @@ const ProductsPage = ({ type }) => {
                     return (
                         <div key={product.name} className={"product mb-4"+c} onClick={() => viewProduct(product.uri)}>
                             <div className="product-image-parent">
-                                <img src={`/images/products/${product.images[0]}`} className={"product-image"+imageC}/>
+                                <img src={`/images/products/${product.images[product.imageOrder[0]]}`} className={"product-image"+imageC}/>
                                 {available &&
                                         <span className="product-image-text">
                                             RELEASING SOON
@@ -73,12 +77,12 @@ const ProductsPage = ({ type }) => {
                             </div>
                             <div className="product-info">
                                 <span className="fs-4 fw-light">{product.name}</span>
-                                <span className="fs-5">{currency}{ConvertPrice(locale, product.price)}</span>
+                                <span className="fs-5">£{product.price}</span>
                             </div>
                         </div>
                     )
                 })}
-                {products && products.length == 0 &&
+                {products && products.length === 0 &&
                     <span className="text-center fs-1 no-prods-available">No Products Available</span>
                 }
             </div>

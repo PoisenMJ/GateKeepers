@@ -14,9 +14,10 @@ function checkToken(){
     }).then(raw => raw.json()).then(json => {
         if(json.success) return true;
         else {
-            // TODO: abstract token writing and deleting
-            localStorage.removeItem('token');
-            localStorage.removeItem('username');
+            // console.log("DELETING TOKENS");
+            // // TODO: abstract token writing and deleting
+            // localStorage.removeItem('token');
+            // localStorage.removeItem('username');
             return false;
         }
     })
@@ -32,8 +33,9 @@ async function checkCreatorToken() {
     }).then(raw => raw.json()).then(json => {
         if(json.success) return true;
         else {
-            localStorage.removeItem('token');
-            localStorage.removeItem('username');
+            // console.log("DELETING CREATOR TOKEN");
+            // localStorage.removeItem('token');
+            // localStorage.removeItem('username');
             return false;
         }
     })

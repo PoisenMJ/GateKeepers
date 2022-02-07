@@ -18,24 +18,27 @@ const PaymentSuccess = () => {
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const session_id = params.get('session_id');
-        const fetchSessionData = async () => {
-            var res = await getSessionData(session_id);
-            var d = {}
-            d['name'] = res.name;
-            d['email'] = res.email;
-            setData(d);
-            
-            console.log(products);
-            console.log('payment success');
-            // set items into [ {uri, name} ]
-            var username = (username) ? username : "Guest";
-            var items = products.map((item, index) => { return { uri: item.uri, name: item.name } });
-            var creators = [...new Set(products.map((item, index) => item.creator))];
-            await saveOrder(res.customerID, res.orderID, items, total, username, shippingAddress, creators);
-            await sendConfirmationEmail(username, res.email, items, total)
-            clearCart();
-        }
-        fetchSessionData();
+        if(session_id){
+            const fetchSessionData = async () => { 
+                var res = await getSessionData(session_id);
+                if(res.success){
+                    var d = {}
+                    d['name'] = res.name;
+                    d['email'] = res.email;
+                    setData(d);
+                    
+                    // set items into [ {uri, name} ]
+                    console.log(username);
+                    var u = (username) ? username : "Guest";
+                    var items = products.map((item, index) => { return { uri: item.uri, name: item.name } });
+                    var creators = [...new Set(products.map((item, index) => item.creator))];
+                    await saveOrder(res.customerID, res.orderID, items, total, u, shippingAddress, creators);
+                    await sendConfirmationEmail(res.orderID, res.email, items, total);
+                    clearCart();
+                } else navigate("/");
+            }
+            fetchSessionData();
+        } else navigate("/");
     }, [])
 
     const goBackHome = () => {

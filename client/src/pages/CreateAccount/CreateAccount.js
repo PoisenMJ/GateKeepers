@@ -19,11 +19,13 @@ const CreateAccount = () => {
     const submitAccount = async event => {
         event.preventDefault();
         if(username && email && password){
-            var res = await createAccount(username, email, password);
-            if(res.success){
-                Flash("Check email for activation code", "success");
-                navigate("/login");
-            } else Flash(res.message, "danger");
+            if(password.length >= 7){
+                var res = await createAccount(username, email, password);
+                if(res.success){
+                    Flash("Check email for activation code", "success");
+                    navigate("/login");
+                } else Flash(res.message, "danger");
+            } else Flash("Password must be at least 7 chars long", "warning");
         } else Flash("Fill in all boxes", "dark");
     }
 

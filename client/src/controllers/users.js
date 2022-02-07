@@ -52,6 +52,18 @@ async function sendPasswordChangeEmail(username, token){
     return json;
 }
 
+async function getActivationToken(username){
+    var res = await fetch('/user/get-activation-token', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username: username
+        })
+    })
+    var json = await res.json();
+    return json;
+}
+
 async function submitActivationToken(activationToken, username){
     var res = await fetch('/user/check-activation-token', {
         method: "POST",
@@ -97,4 +109,4 @@ async function getOrders(username, token){
     return json;
 }
 
-export { getProfile, submitActivationToken, recoverPassword, sendRecoveryEmail, sendPasswordChangeEmail, changePassword };
+export { getProfile, getActivationToken, submitActivationToken, recoverPassword, sendRecoveryEmail, sendPasswordChangeEmail, changePassword };

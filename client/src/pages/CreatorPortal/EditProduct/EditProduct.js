@@ -2,12 +2,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { getProduct, updateProduct } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext.js';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, InputGroup } from 'react-bootstrap';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
-import CurrencyInput from 'react-currency-input-field';
 import Carousel from 'nuka-carousel';
 import DateTime from 'react-datetime';
 import { Desktop, Mobile } from '../../../components/Query';
+import Compressor from 'compressorjs';
 import './EditProduct.css';
 
 const EditProduct = () => {
@@ -26,18 +26,35 @@ const EditProduct = () => {
             setImageOrder(data.product.imageOrder);
         }
         fetch();
+
+        var imageInput = document.getElementById('creator-portal-image-input');
+        imageInput.onchange = function(event){
+            var list = [];
+            var order = [];
+            for(var i = 0; i < event.target.files.length; i++){
+                //compress images
+                new Compressor(event.target.files[i], {
+                    quality: 0.7,
+                    success(result){
+                        var newFile = new File([result], result.name, {
+                            type: result.type
+                        });
+                        list.push(newFile);
+                        if(i === event.target.files.length){
+                            setImages(list);
+                        }
+                    }
+                })
+                order.push(i);
+            }
+            setImages(list);
+            setCleared(true);
+            setImageOrder(order);
+        }
     }, [])
 
     const addImage = () => {
-        var imageInput = document.getElementById('creator-portal-image-input');
-        imageInput.click();
-        imageInput.onchange = function(event){
-            var list = [];
-            for(var i = 0; i < event.target.files.length; i++){
-                list.push(event.target.files[i]);
-            }
-            setImages(list);
-        }
+        document.getElementById('creator-portal-image-input').click();
     }
 
     const updateOrder = (event, index) => {
@@ -57,17 +74,13 @@ const EditProduct = () => {
             var search = count.indexOf(i);
             if(search !== -1) count.splice(search, 1);
         }
-        console.log(count);
 
         if(count.length === 0){
-            // get rid of $ prefix
-            var m = document.getElementById("edit-money-input");
-    
             var form = document.getElementById('creator-portal-edit-form');
             var data = new FormData(form);
             
             data.append('productID', productID);
-            data.append('price', m.value.substring(1, m.value.length));
+            data.append('price', document.getElementById("edit-money-input").value);
             // send if images are changed or not
             if(product.images != images) data.append('imagesChanged', true);
             else data.append('imagesChanged', false);
@@ -86,7 +99,7 @@ const EditProduct = () => {
     return (
         <div id="edit-product">
                 <Form id="creator-portal-edit-form" onSubmit={sendUpdateForm}>
-                    <Form.Control multiple name="images" id="creator-portal-image-input" type="file" className="mb-2 visually-hidden"/>
+                    <Form.Control multiple name="images" accept="image/jpeg, image/jpg" id="creator-portal-image-input" type="file" className="mb-2 visually-hidden"/>
                     <div id="creator-portal-images" className="mb-3">
                         <Desktop>
                             <Carousel className="carousel custom-upload-creator-carousel mb-2" dragging>
@@ -131,7 +144,11 @@ const EditProduct = () => {
                             <Form.Text>Name</Form.Text>
                             <Form.Control required name="name" type="text" defaultValue={product.name} className="mb-2 custom-input"/>
                             <Form.Text>Price</Form.Text>
-                            <CurrencyInput required allowNegativeValue={false} defaultValue={product.price} id="edit-money-input" prefix='$' className="custom-input mb-2 w-100" placeholder="Enter Price" decimalsLimit={2}/>
+                            <InputGroup>
+                                <InputGroup.Text className="custom-input">£</InputGroup.Text>
+                                <Form.Control type="number" className="custom-input" placeholder="price" min={0} required defaultValue={product.price} id="edit-money-input"/>
+                            </InputGroup>
+                            {/* <CurrencyInput required allowNegativeValue={false} defaultValue={product.price} id="edit-money-input" prefix='$' className="custom-input mb-2 w-100" placeholder="Enter Price" decimalsLimit={2}/> */}
                             <Form.Text>Description</Form.Text>
                             <Form.Control required name="description" as="textarea" defaultValue={product.description} placeholder="Enter description..." className="custom-input mb-2"/>
                             <Form.Text>Count</Form.Text>

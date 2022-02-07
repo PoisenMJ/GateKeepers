@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { sendRecoveryEmail } from '../../controllers/users';
+import { Flash } from '../FlashMessage/FlashMessage';
 
 const PasswordRecoveryBox = ({showPasswordRecovery, hidePasswordRecovery}) => {
     const [email, setEmail] = useState('');
@@ -9,7 +10,9 @@ const PasswordRecoveryBox = ({showPasswordRecovery, hidePasswordRecovery}) => {
     const sendPasswordRecovery = async event => {
         event.preventDefault();
         var res = await sendRecoveryEmail(email);
-        console.log(res);
+        if(res.success) Flash("Check email for link", "dark");
+        else Flash("failed", "danger");
+        hidePasswordRecovery();
     }
 
     return (

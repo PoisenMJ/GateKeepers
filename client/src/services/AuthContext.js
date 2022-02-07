@@ -33,7 +33,7 @@ const AuthProvider = ({ children }) => {
             username: username,
             setLoggedIn: setLoggedIn,
             setToken: setToken,
-            setUsername: setUsername
+            setUsername: setUsername,
         }}>
             {children}
         </AuthContext.Provider>
@@ -49,19 +49,19 @@ const parseJwt = (token) => {
 }
 
 
-const usePrevious = (value) => {
-    const ref = React.useRef();
-    useEffect(() => { ref.current = value });
-    return ref.current;
-}
+// const usePrevious = (value) => {
+//     const ref = React.useRef();
+//     useEffect(() => { ref.current = value });
+//     return ref.current;
+// }
 
-const useLocationChange = (action) => {
-    const location = useLocation();
-    const prevLocation = usePrevious(location);
-    useEffect(() => {
-        action(location, prevLocation);
-    }, [location])
-}
+// const useLocationChange = (action) => {
+//     const location = useLocation();
+//     const prevLocation = usePrevious(location);
+//     useEffect(() => {
+//         action(location, prevLocation);
+//     }, [location])
+// }
 
 const AuthVerify = (props) => {
     const {username, token, loggedIn,
@@ -72,26 +72,22 @@ const AuthVerify = (props) => {
         if(username && token && loggedIn){
             const decodedJwt = parseJwt(token);
             if(decodedJwt.exp * 1000 < Date.now()) {
+                console.log("EXPIRED");
                 setUsername(null);
                 setToken(null);
                 setLoggedIn(false);
                 LogOut();
             } else {
-                console.log('valid');
+                console.log('VALID');
             }
         } else {
+            console.log("NO USER");
             setUsername(null);
             setToken(null);
             setLoggedIn(false);
             localStorage.removeItem("token");
             localStorage.removeItem("username");
             localStorage.removeItem("auth");
-
-            // TODO: 
-            // email styling
-            // email sent with items from user account if no account use payment detials email
-            // check necessity of payment deatils email (maybe only have if guest user)
-            // password length check on update
         }
     }, [location])
 

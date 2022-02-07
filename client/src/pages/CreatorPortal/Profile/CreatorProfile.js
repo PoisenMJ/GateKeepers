@@ -5,8 +5,10 @@ import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
 import './CreatorProfile.css';
 import { FaInstagram, FaTiktok, FaTwitch, FaTwitter } from 'react-icons/fa';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
+import { useNavigate } from 'react-router';
 
 const CreatorProfile = () => {
+    let navigate = useNavigate();
     const { username, token } = useContext(AuthContext);
 
     const [twitch, setTwitch] = useState('');
@@ -14,6 +16,7 @@ const CreatorProfile = () => {
     const [tiktok, setTiktok] = useState('');
     const [instagram, setInstagram] = useState('');
     const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const [dataFetched, setDataFetched] = useState(false);
     const [password, setPassword] = useState('');
     const [confPassword, setConfPassword] = useState('');
@@ -27,10 +30,11 @@ const CreatorProfile = () => {
                 setTiktok(data.user.links.tiktok);
                 setInstagram(data.user.links.instagram);
                 setName(data.user.name);
+                setEmail(data.user.email);
                 setDataFetched(true);
             }
             else {
-                // TODO: NAVIGATE IF FAILED
+                navigate('/login');
             }
         }
         fetch();
@@ -53,6 +57,9 @@ const CreatorProfile = () => {
             case "name":
                 setName(event.target.value);
                 break;
+            case "email":
+                setEmail(event.target.value);
+                break;
             case "password":
                 setPassword(event.target.value);
                 break;
@@ -71,6 +78,7 @@ const CreatorProfile = () => {
             twitchLink: twitch,
             tiktokLink: tiktok,
             name: name,
+            email: email,
             username,
             token
         };
@@ -82,9 +90,11 @@ const CreatorProfile = () => {
                 data['password'] = password;
             }
         }
-        var res = await updateGatekeeper(data, username);
-        if(res.success) Flash("Successfully updated", "dark");
-        else Flash("Update Failed", "danger");
+        if(email){
+            var res = await updateGatekeeper(data, username);
+            if(res.success) Flash("Successfully updated", "dark");
+            else Flash("Update Failed", "danger");
+        } else Flash("Email empty", "danger");
     }
 
     return (
@@ -154,6 +164,7 @@ const CreatorProfile = () => {
                     <div id="creator-profile-personal-info" className="mb-2">
                         <span>INFO</span>
                         <Form.Control className="custom-input mb-1" value={name} onChange={handleInputChange} type="text" name="name" placeholder="name"/>
+                        <Form.Control className="custom-input mb-1" value={email} onChange={handleInputChange} type="email" name="email" placeholder="email"/>
                     </div>
                     <Button className="w-100" variant="dark" type="submit">UPDATE</Button>
                 </Form>

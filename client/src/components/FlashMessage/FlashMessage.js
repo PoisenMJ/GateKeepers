@@ -27,7 +27,7 @@ const FlashMessage = () => {
                 // set timeout for when to hide message
                 setTimeout(() => {
                     setShow(false);
-                }, 4000)
+                }, 3000)
             }
         })
         return () => { isMounted = false };

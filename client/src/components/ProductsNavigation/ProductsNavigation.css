@@ -1,6 +1,19 @@
 @media screen and (min-width: 1224px){
     #creator-nav{
-        right: 120px!important;
+        right: 50%!important;
+        transform: translate(50%, 0);
+        width: 60%!important;
+        place-self: center;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    #creator-nav{
+        width: 90%!important;
+    }
+}
+@media screen and (min-width: 600px) {
+    #creator-nav{
         width: 85%!important;
     }
 }

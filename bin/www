@@ -10,26 +10,27 @@ var http = require('http');
 var https = require('https');
 var fs = require('fs');
 
-var key = fs.readFileSync(__dirname + "/../selfsigned.key");
-var cert = fs.readFileSync(__dirname + "/../selfsigned.crt");
-var options = {
-  key: key,
-  cert: cert
-};
+// var key = fs.readFileSync(__dirname + "/../selfsigned.key");
+// var cert = fs.readFileSync(__dirname + "/../selfsigned.crt");
+// var options = {
+//   key: key,
+//   cert: cert
+// };
 
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '2999');
+console.debug("LISTENING ON "+port);
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-// var server = http.createServer(app);
-var server = https.createServer(options, app);
+var server = http.createServer(app);
+// var server = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.

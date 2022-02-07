@@ -1,20 +1,20 @@
 @media screen and (min-width: 1224px) {
     .custom-carousel-classses{
-        width: 60%!important;
-        align-self: center;
+        width: 60vw!important;
+        align-self: start;
         justify-self: center;
-        height: 85vh!important;
+        height: 90vh!important;
     }
     .item{ display: grid; width: 100%!important; height: auto!important; }
     #product-image{
-        height: 85vh!important;
+        height: 90vh!important;
         justify-self: center;
     }
     #product-info-details-add{
         width: 100%!important;
     }
     #product-parent{
-        grid-template-columns: 70% 30%;
+        grid-template-columns: 60% 40%;
         grid-template-rows: 90vh!important;
     }
     #product-info{
@@ -29,7 +29,13 @@
         width: 100%!important;
     }
     #product-sizing{
-        margin-bottom: 1rem;
+        margin-bottom: .6rem;
+    }
+    #product-name{
+        margin-bottom: 5px;
+    }
+    #product-description{
+        font-size: 1.25rem!important;
     }
 }
 #product-info-details-add{

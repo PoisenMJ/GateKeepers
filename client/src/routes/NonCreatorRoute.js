@@ -1,34 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { checkToken } from '../services/auth';
 import { Outlet } from 'react-router';
 import { Navigate } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
+import { checkCreatorToken } from '../services/auth';
 
-const ProtectedRoute = () => {
-    const [auth, setAuth] = useState(false);
-    const [isCreator, setCreator] = useState(false);
+const NonCreatorRoute = () => {
+    const [isCreator, setIsCreator] = useState(false);
     const [isTokenValidated, setIsTokenValidated] = useState(false);
-    
+
     useEffect(() => {
-        checkToken().then(result => {
-            if(result){
-                setAuth(true);
+        checkCreatorToken().then(result => {
+            if(result) {
+                setIsCreator(true);
             }
-            if(result.message) setCreator(true);
         }).then(() => {
             setIsTokenValidated(true);
         })
-
     }, []);
 
     if(!isTokenValidated) return <div className="loading">
         <Spinner animation="border" role="status" size='sm'>
             <span className="visually-hidden">Loading...</span>
         </Spinner></div>
-
     return (
-        (auth) ? <Outlet/> : <Navigate to="/login"/>
+        (!isCreator) ? <Outlet/> : <Navigate to="/creators"/>
     )
-};
+}
 
-export default ProtectedRoute;
+export default NonCreatorRoute;

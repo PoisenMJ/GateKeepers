@@ -62,7 +62,7 @@ const ProductPage = () => {
                         >
                             {product.images.map((image, index) => (
                                 <div key={index} className="item">
-                                    <img key={index} id="product-image" src={`/images/products/${image}`}/> 
+                                    <img key={index} id="product-image" src={`/images/products/${product.images[product.imageOrder[index]]}`}/> 
                                 </div>
                             ))}
                         </Carousel>
@@ -74,7 +74,7 @@ const ProductPage = () => {
                         >
                             {product.images.map((image, index) => (
                                 <div key={index} className="item">
-                                    <img key={index} id="product-image" src={`/images/products/${image}`}/> 
+                                    <img key={index} id="product-image" src={`/images/products/${product.images[product.imageOrder[index]]}`}/> 
                                 </div>
                             ))}
                         </Carousel>
@@ -90,10 +90,14 @@ const ProductPage = () => {
                             })}
                         </div>
                         <div id="product-info-details-add">
-                            <span className="fs-3 mb-2 product-price">${product.price} <span className="text-muted fs-5">: {product.count >= 0 ? product.count : 0} {purchasable ? 'LEFT' : 'AVAILABLE'}</span></span>
-                            <span className="fs-2 fw-bold">{product.name}</span>
-                            <span className="fs-6 fw-light mb-4">{product.description}</span>
-                            <Button disabled={addToCartDisabled} onClick={() => AddToCart(product.uri, size, product.price, product.name, product.creator.tag, product.count)} variant={"dark"} style={{alignSelf: 'end'}}>Add To Cart</Button>
+                            <span className="fs-3 mb-2 product-price">£{product.price} <span className="text-muted fs-5">: {product.count >= 0 ? product.count : 0} {purchasable ? 'LEFT' : 'AVAILABLE'}</span></span>
+                            <span className="fs-2 fw-bold" id="product-name">{product.name}</span>
+                            <span className="fs-6 fw-light mb-4" id="product-description">{product.description}</span>
+                            <Button disabled={addToCartDisabled}
+                                    onClick={() => AddToCart(product.uri, size, product.price, product.name, product.creator.tag, product.count)}
+                                    variant={"dark"}
+                                    style={{alignSelf: 'end', width: '60%', justifySelf: 'center', marginBottom: '2rem'}}>Add To Cart</Button>
+                            <span className="text-muted">@{product.creator.tag}</span>
                         </div>
                     </div>
                 </div>

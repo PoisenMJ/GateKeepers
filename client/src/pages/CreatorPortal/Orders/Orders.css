@@ -3,6 +3,12 @@
         width: 70%!important;
         justify-self: center!important;
     }
+    .custom-accordion-body{
+        background-color: black!important;
+        color: white;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr!important;
+    }
 }
 
 #creator-orders{
@@ -41,6 +47,11 @@
     display: grid;
     grid-auto-flow: row;
     justify-self: end;
+}
+.order-user{
+    display: grid;
+    grid-auto-flow: row;
+    justify-self: center;
 }
 .order-address{
     display: flex;

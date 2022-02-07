@@ -20,11 +20,13 @@ const PasswordChange = () => {
     const sendPasswordChange = async event => {
         event.preventDefault();
         if(password === passwordConf){
-            var res = await changePassword(username, token, password, updateToken);
-            if(res.success){
-                Flash("Password Updated", "dark");
-                navigate("/profile");
-            } else Flash(res.message, "danger");
+            if(password.length > 8){
+                var res = await changePassword(username, token, password, updateToken);
+                if(res.success){
+                    Flash("Password Updated", "dark");
+                    navigate("/profile");
+                } else Flash(res.message, "danger");
+            } else Flash("Password must be at least 8 chars long", "danger");
 
         } else Flash("Passwords don't match", "danger");
     }

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import './Login.css';
 import { Form, Button } from 'react-bootstrap';
 import { login } from '../../controllers/auth';
+import { getActivationToken } from '../../controllers/users';
 import { Flash } from '../../components/FlashMessage/FlashMessage';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -25,14 +26,14 @@ const Login = () => {
     const handlePasswordChange = event => setPassword(event.target.value);
 
     const activationCodeSuccess = async () => {
-        var res = await login(inputUsername, password);
-        setToken(res.token);
-        setUsername(inputUsername);
-        setLoggedIn(true);
+        // var res = await login(inputUsername, password);
+        // setToken(res.token);
+        // setUsername(inputUsername);
+        // setLoggedIn(true);
 
         setShowActivationDialog(false);
         Flash("Account activated.", "dark");
-        navigate('/');
+        navigate('/login');
     }
 
     useEffect(() => {
@@ -55,6 +56,7 @@ const Login = () => {
             }
             else {
                 if(res.message === "activate account") {
+                    getActivationToken(inputUsername);
                     setShowActivationDialog(true);
                 } else Flash(res.message, "danger")
             };

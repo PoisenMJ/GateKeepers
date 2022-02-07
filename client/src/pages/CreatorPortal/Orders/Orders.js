@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router';
 import { getOrders, markOrderSent } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext';
 import { Accordion, Button } from 'react-bootstrap';
+import { Desktop, Mobile } from '../../../components/Query';
 import "./Orders.css";
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
@@ -16,7 +18,8 @@ const CreatorsOrders = () => {
         const fetchOrders = async () => {
             var res = await getOrders(username, token);
             if(res.success){
-                setOrders(res.orders);
+                // come in fifo
+                setOrders(res.orders.reverse());
             } else {
                 navigate('/creators/upload');
             }
@@ -53,28 +56,54 @@ const CreatorsOrders = () => {
                                 <div className="order-accordion-header">
                                     <span>{items[0]+dots}</span>
                                     <span>{formattedDate}</span>
-                                    <span>{sent}</span>
+                                    <span>{order.sent ? <FaCheckCircle style={{marginRight: '5px', marginBottom: '5px'}}/> : <FaTimesCircle style={{marginRight: '5px', marginBottom: '5px'}}/>}{sent}</span>
                                 </div>
                             </Accordion.Button>
                             <Accordion.Body className="custom-accordion-body">
-                                <div className="order-address">
-                                    <span>COUNTRY: <span className="gray-text">{order.address.country}</span></span>
-                                    <span>STATE: <span className="gray-text">{order.address.state}</span></span>
-                                    <span>ZIPCODE: <span className="gray-text">{order.address.zipcode}</span></span>
-                                    <span>ADDR: <span className='gray-text'>{order.address.streetAddress}</span></span>
-                                </div>
-                                <div className="order-details">
-                                    <div>
-                                        <span>FIRST NAME: <span className="gray-text">{order.address.firstName}</span></span><br/>
-                                        <span>LAST NAME: <span className="gray-text">{order.address.lastName}</span></span><br/>
-                                        <span>TOTAL: <span className="gray-text">£{order.total}</span></span><br/>
-                                        <span>USER: <span className="gray-text">{order.user ? order.user : "GUEST"}</span></span>
+                                <Mobile>
+                                    <div className="order-address">
+                                        <span>COUNTRY: <span className="gray-text">{order.address.country}</span></span>
+                                        <span>STATE: <span className="gray-text">{order.address.state}</span></span>
+                                        <span>ZIPCODE: <span className="gray-text">{order.address.zipcode}</span></span>
+                                        <span>ADDR: <span className='gray-text'>{order.address.streetAddress}</span></span>
                                     </div>
-                                    <Button onClick={() => sendMarkOrderSent(order.id, index)}
-                                        className="order-mark-sent mt-1"
-                                        size='sm'
-                                        variant="light">Mark Sent</Button>
-                                </div>
+                                    <div className="order-details">
+                                        <div>
+                                            <span>FIRST NAME: <span className="gray-text">{order.address.firstName}</span></span><br/>
+                                            <span>LAST NAME: <span className="gray-text">{order.address.lastName}</span></span><br/>
+                                            <span>EMAIL: <span className="gray-text">{order.address.email}</span></span><br/>
+                                            <span>TOTAL: <span className="gray-text">£{order.total}</span></span><br/>
+                                            <span>USER: <span className="gray-text">{order.user ? order.user : "GUEST"}</span></span>
+                                        </div>
+                                        <Button onClick={() => sendMarkOrderSent(order.id, index)}
+                                            className="order-mark-sent mt-1"
+                                            size='sm'
+                                            variant="light">Mark Sent</Button>
+                                    </div>
+                                </Mobile>
+                                <Desktop>
+                                    <div className="order-address">
+                                        <span>COUNTRY: <span className="gray-text">{order.address.country}</span></span>
+                                        <span>STATE: <span className="gray-text">{order.address.state}</span></span>
+                                        <span>ZIPCODE: <span className="gray-text">{order.address.zipcode}</span></span>
+                                        <span>ADDR: <span className='gray-text'>{order.address.streetAddress}</span></span>
+                                    </div>
+                                    <div className="order-user">
+                                            <span>FIRST NAME: <span className="gray-text">{order.address.firstName}</span></span><br/>
+                                            <span>LAST NAME: <span className="gray-text">{order.address.lastName}</span></span><br/>
+                                            <span>EMAIL: <span className="gray-text">{order.address.email}</span></span><br/>
+                                    </div>
+                                    <div className="order-details">
+                                        <div>
+                                            <span>USER: <span className="gray-text">{order.user ? order.user : "GUEST"}</span></span><br/>
+                                            <span>TOTAL: <span className="gray-text">£{order.total}</span></span>
+                                        </div>
+                                        <Button onClick={() => sendMarkOrderSent(order.id, index)}
+                                            className="order-mark-sent mt-1"
+                                            size='sm'
+                                            variant="light">Mark Sent</Button>
+                                    </div>
+                                </Desktop>
                             </Accordion.Body>
                         </Accordion.Item>
                     )

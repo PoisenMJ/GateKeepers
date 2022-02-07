@@ -1,11 +1,15 @@
-async function addProduct(data, username, token, order){
+async function addProduct(data, username, token, order, images){
     var data = new FormData(data);
     data.append('username', username);
     data.append('token', token);
     data.append('imageOrder', order);
 
+    for(var i = 0; i < images.length; i++){
+        data.append("images", images[i]);
+    }
+
     var moneyInput = data.get('price').split(",").join("");
-    data.set('price', moneyInput.substring(1, moneyInput.length).split(',').join())
+    data.set('price', moneyInput);
     var uri = data.get('name').toLowerCase().replace(' ', '_').concat('_').concat(username);
     data.append('uri', uri);
 

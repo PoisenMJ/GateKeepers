@@ -5,7 +5,7 @@ var Order = require('../client/src/models/order');
 const Key = require('../client/src/models/key');
 const nJwt = require('njwt');
 var { userCheck } = require('../middleware/auth');
-var { sendPasswordResetEmail, sendPasswordChangeEmail } = require('../nodemailer.config');
+var { sendPasswordResetEmail, sendPasswordChangeEmail, sendActivationEmail } = require('../nodemailer.config');
 
 router.post('/profile', userCheck, (req, res, next) => {
     var username = req.body.username;
@@ -36,7 +36,7 @@ router.post('/recover-password', async (req, res, next) => {
             })
         }
     } catch(err) {
-        return res.json({ success: false, message: "DB Error" });
+        return res.json({ success: false, message: "Error" });
     }
 })
 
@@ -47,12 +47,9 @@ router.post('/change-password', userCheck, async (req, res, next) => {
 
     try{
         var key = await Key.findOne({ user: username });
-        var user = await User.findOne({ username: username });
         if(key){
             var signingKey = Buffer.from(key.key, 'base64');
             nJwt.verify(updateToken, signingKey, function(err, verifiedJwt) {
-                console.log(err);
-                console.log(verifiedJwt);
                 if(err) return res.json({ success: false, message: 'Expired get new link' });
                 if(verifiedJwt.body.scope === "password-change"){
                     User.updateOne({ username: username }, {$set: {password: User.encryptPassword(newPassword)}}).then((user, err) => {
@@ -135,7 +132,6 @@ router.post('/get-reset-password-token', async (req, res, next) => {
             }, signingKey);
             var token = jwt.compact();
             var b64token = token.toString('base64');
-            console.log(b64token);
             sendPasswordResetEmail(email, `${process.env.HOST}/password-recovery/${user.username}/${b64token}`)
             return res.json({ success: true });
         }
@@ -144,13 +140,25 @@ router.post('/get-reset-password-token', async (req, res, next) => {
     }
 })
 
+router.post('/get-activation-token', async (req, res, next) => {
+    var username = req.body.username;
+    try{
+        var u = await User.findOne({ username: username });
+        sendActivationEmail(u.email, u.activationCode);
+        return res.json({ success: true });
+
+    } catch(err){
+        return res.json({ success: false });
+    }
+});
+
 router.post('/check-activation-token', async (req, res, next) => {
     var username = req.body.username;
     var code = req.body.activationToken;
     User.findOne({ username: username }).then((user, err) => {
         if(err) return res.json({ success: false, message: "" });
         if(!user) return res.json({ success: false, message: "" });
-        if(user.activationCode == code){
+        if(user.activationCode == code && user.accountType !== "creator"){
             User.updateOne({ username: username }, { $set: { accountActivated: true }}).then((updated, err) => {
                 if(err) return res.json({ success: false, message: "" });
                 else return res.json({ success: true, message: "" })

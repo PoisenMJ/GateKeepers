@@ -41,7 +41,6 @@ router.post('/login', async (req, res, next) => {
     } catch(err) {
         return res.status(400).json(err);
     }
-    console.log(user);
     if(result){
         key.updateOne({ user: user.username }, { $set: { key: b64SigningKey } }, (err, updatedDoc) => {
             if(err) return res.status(400).json(err);
@@ -70,8 +69,6 @@ router.post('/create-account', async (req, res, next) => {
     if(emailExists) return res.json({ success: false, message: "Email Taken" });
 
     var token = crypto.randomInt(0, 10000000);
-    console.log('actication token:');
-    console.log(token);
 
     var user = new User({
         username: username,
@@ -84,7 +81,6 @@ router.post('/create-account', async (req, res, next) => {
         sendActivationEmail(username, email, token);
         return res.json({ success: true });
     } catch(err) {
-        console.log(err);
         return res.json({ success: false, message: "Creation Error" });
     }
 });
@@ -104,6 +100,7 @@ router.post('/check-token', async (req, res, next) => {
     nJwt.verify(req.body.token, signingKey, function(err, verifiedJwt) {
         if(err) return res.json({ success: false });
         if(verifiedJwt.body.scope == 'user') return res.json({ success: true });
+        else if(verifiedJwt.body.scope == 'creator') return res.json({ success: false, message: 'creator' })
         else return res.json({ success: false });
     })
 });
