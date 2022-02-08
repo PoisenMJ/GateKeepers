@@ -12,30 +12,36 @@ router.get('/all-posts', (req, res, next) => {
 });
 
 router.get('/products/own/:creatorTag', (req, res, next) => {
-    creatorProduct.find({type: "own"}).populate({
-        path: 'creator',
-        select: '-_id',
-        match: { tag: req.params.creatorTag }
-    }).select('-_id name price images imageOrder uri dateToPost count').exec((err, docs) => {
-        // filter resulting docs because with populate if there is no match the creator
-        // field is empty but still returns doc
-        if(err) return res.status(400).json(err);
-        var products = docs.filter((a) => a.creator);
-        if(products.length > 0) return res.json({ products, success: true });
-        else return res.json({ success: false });
+    creator.findOne({ tag: req.params.creatorTag}).then((c, e) => {
+        if(e) return res.json({ success: false });
+        if(c){
+            creatorProduct.find({type: "own"}).populate({
+                path: 'creator',
+                select: '-_id',
+                match: { tag: req.params.creatorTag }
+            }).select('-_id name price images imageOrder uri dateToPost count').exec((err, docs) => {
+                if(err) return res.status(400).json(err);
+                var products = docs.filter((a) => a.creator);
+                return res.json({ products, success: true });
+            })
+        } else return res.json({ success: false });
     })
 });
 
 router.get('/products/made/:creatorTag', (req, res, next) => {
-    creatorProduct.find({type: "made"}).populate({
-        path: 'creator',
-        select: '-_id',
-        match: { tag: req.params.creatorTag }
-    }).select('-_id name price images imageOrder uri dateToPost count').exec((err, docs) => {
-        if(err) return res.status(400).json(err);
-        var products = docs.filter((a) => a.creator);
-        if(products.length > 0) return res.json({ products, success: true });
-        else return res.json({ success: false });
+    creator.findOne({ tag: req.params.creatorTag}).then((c, e) => {
+        if(e) return res.json({ success: false });
+        if(c){
+            creatorProduct.find({type: "made"}).populate({
+                path: 'creator',
+                select: '-_id',
+                match: { tag: req.params.creatorTag }
+            }).select('-_id name price images imageOrder uri dateToPost count').exec((err, docs) => {
+                if(err) return res.status(400).json(err);
+                var products = docs.filter((a) => a.creator);
+                return res.json({ products, success: true });
+            })
+        } else return res.json({ success: false });
     })
 });
 

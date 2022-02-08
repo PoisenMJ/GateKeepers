@@ -38,9 +38,10 @@ const Home = () => {
         <div id="home-page">
             <Mobile>
                 <div id="home-page-first-slide">
-                    <img src={'/images/background.jpg'} id="home-page-background"/>
+                    <img src={'/images/background.jpg'} id="home-page-background" alt='background'/>
                     <div className="home-page-initial-content">
                         <span className="fs-1 fw-bold">GateKeepers</span>
+                        <h1 className="visually-hidden">Gatekeepers Store</h1>
                         <span className="text-lead mb-3 fw-light">Fashion Collection</span>
                         <Button onClick={exploreButton} variant="dark" style={{paddingBottom: '7.5px'}} className="explore-button">
                             Explore
@@ -97,6 +98,7 @@ const Home = () => {
                                     {socialsHTML2}
                                 </div>
                                 <img
+                                    alt='creator-image'
                                     className="slide-image"
                                     src={`/images/${post.image}`}
                                     style={{
@@ -119,6 +121,7 @@ const Home = () => {
                     <img src={'/images/background.jpg'} id="home-page-background"/>
                     <div className="home-page-initial-content lg">
                         <span className="fw-bold" style={{fontSize: '4rem'}}>GateKeepers</span>
+                        <h1 className="visually-hidden">Gatekeepers Store</h1>
                         <span className="text-lead mb-3 fw-light" style={{fontSize: '1.25rem'}}>Fashion Collection</span>
                         <Button onClick={exploreButton} variant="dark" style={{paddingBottom: '7.5px'}} className="explore-button">
                             Explore
@@ -176,15 +179,18 @@ const Home = () => {
                                 <div className="desktop-slide-images" style={{
                                         top: `calc(100vh * ${index+1})`
                                     }}>
-                                    <img
+                                    <object
+                                        alt='creator-image'
+                                        className="slide-image desktop"
+                                        data={`/images/${post.image}`}
+                                    />
+                                    <video
+                                        alt='creator-image'
                                         className="slide-image desktop"
                                         src={`/images/${post.image}`}
                                     />
-                                    <img
-                                        className="slide-image desktop"
-                                        src={`/images/${post.image}`}
-                                    />
-                                    <img
+                                    <video
+                                        alt='creator-image'
                                         className="slide-image desktop"
                                         src={`/images/${post.image}`}
                                     />

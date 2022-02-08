@@ -5,7 +5,6 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import AuthContext from './services/AuthContext';
 
 ReactDOM.render(
   <BrowserRouter>
