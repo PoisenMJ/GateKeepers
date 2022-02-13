@@ -189,7 +189,7 @@ router.post('/orders', userCheck, async (req, res, next) => {
         var ordersData = orders.map((order, index) => {
             var d = new Date(order.date);
             var date = d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
-            return { items: order.items.map((o, i) => o.name), date, total: order.total };
+            return { items: order.items.map((o, i) => o.name), date, total: order.total, sizes: order.items.map((o, i) => o.size) };
         });
         
         // orders into array

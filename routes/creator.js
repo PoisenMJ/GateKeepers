@@ -45,8 +45,8 @@ router.get('/products/made/:creatorTag', (req, res, next) => {
     })
 });
 
-router.get('/products/:productURI', (req, res, next) => {
-    creatorProduct.findOne({ uri: req.params.productURI }).populate('creator', 'tag').then((product, err) => {
+router.get('/products/:productURI/:type', (req, res, next) => {
+    creatorProduct.findOne({ uri: req.params.productURI, type: req.params.type }).populate('creator', 'tag').then((product, err) => {
         if(err) return res.json({ success: false });
         if(product) return res.json({ success: true, product });
         else return res.json({ success: false });

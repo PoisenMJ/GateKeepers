@@ -26,14 +26,16 @@ const PaymentSuccess = () => {
                     d['name'] = res.name;
                     d['email'] = res.email;
                     setData(d);
+
+                    // if no email use email from stripe payment
+                    if(!shippingAddress.email) shippingAddress['email'] = res.email;
                     
                     // set items into [ {uri, name} ]
-                    console.log(username);
                     var u = (username) ? username : "Guest";
-                    var items = products.map((item, index) => { return { uri: item.uri, name: item.name } });
+                    var items = products.map((item, index) => { return { uri: item.uri, name: item.name, size: item.size } });
                     var creators = [...new Set(products.map((item, index) => item.creator))];
-                    await saveOrder(res.customerID, res.orderID, items, total, u, shippingAddress, creators);
-                    await sendConfirmationEmail(res.orderID, res.email, items, total);
+                    await saveOrder(res.customerID, res.orderID, items, (total+shippingAddress.shippingPrice), u, shippingAddress, creators);
+                    await sendConfirmationEmail(res.orderID, res.email, items, (total+shippingAddress.shippingPrice));
                     clearCart();
                 } else navigate("/");
             }

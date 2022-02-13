@@ -8,7 +8,7 @@ var { sendOrderConfirmationEmail, sendOrderToCreatorEmail } = require('../nodema
 
 router.post('/checkout', async (req, res, next) => {
     var products = req.body.products;
-    var url = await Stripe.createSession(products, req.body.username);
+    var url = await Stripe.createSession(products, req.body.shippingPrice, req.body.username, req.body.email);
     if(url) return res.json({ url });
     else return res.json({ url: '' });
 })

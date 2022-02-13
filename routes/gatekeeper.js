@@ -107,6 +107,8 @@ router.post('/products/update', upload.array('images'), gatekeeperCheck, (req, r
     var imagesCleared = req.body.imagesCleared == 'true';
     var originalImages = [];
 
+    var sizes = req.body.sizes.replace(`'`, '').split(',').filter((e) => e.trim());
+
     CreatorProduct.findOne({ _id: productID }, (err, product) => {
         if(err) return res.json({ success: false });
         originalImages = product.images;
@@ -132,7 +134,7 @@ router.post('/products/update', upload.array('images'), gatekeeperCheck, (req, r
                 count: req.body.count,
                 images: (imagesChanged && imagesCleared) ? fileNames : originalImages,
                 type: req.body.type,
-                sizes: req.body.sizes,
+                sizes: sizes,
                 dateToPost: req.body.dateToPost,
                 imageOrder: req.body.imageOrder.split(",")
             }

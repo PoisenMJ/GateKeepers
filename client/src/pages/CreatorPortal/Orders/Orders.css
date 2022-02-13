@@ -7,7 +7,7 @@
         background-color: black!important;
         color: white;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr!important;
+        grid-template-columns: 1fr 1fr 1fr 1fr!important;
     }
 }
 
@@ -41,7 +41,7 @@
     grid-template-columns: 1fr 1fr;
 }
 .order-mark-sent{
-    align-self: end;
+    align-self: center;
 }
 .order-details{
     display: grid;
@@ -49,6 +49,11 @@
     justify-self: end;
 }
 .order-user{
+    display: grid;
+    grid-auto-flow: row;
+    justify-self: start;
+}
+.order-products{
     display: grid;
     grid-auto-flow: row;
     justify-self: center;

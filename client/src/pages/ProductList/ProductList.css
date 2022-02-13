@@ -1,18 +1,22 @@
 @media screen and (min-width: 1300px){
     #products{
         grid-template-columns: 25% 25% 25% 25%!important;
-        column-gap: 1.5rem;
-        row-gap: 1.5rem;
+        row-gap: 1rem;
         padding: 1rem 4rem 1rem 4rem!important;
+    }
+    .product{
+        margin-right: 1rem;
     }
 }
 @media screen and (max-width: 1300px) and (min-width: 900px) {
     #products{
         grid-template-columns: 50% 50%!important;
         text-align: center!important;
-        column-gap: 1.5rem;
-        row-gap: 1.5rem;
+        row-gap: 1rem;
         padding: 1rem 4rem 1rem 4rem!important;
+    }
+    .product{
+        margin-right: 2rem!important;
     }
     .no-prods-available{
         column-span: 4;
@@ -30,7 +34,9 @@
         height: 50vh!important;
     }
 }
-
+#products-page{
+    margin-top: 10px;
+}
 #products{
     width: 100vw;
     display: grid;
@@ -83,6 +89,7 @@
 .product-image{
     height: 100%;
     object-fit: cover;
+    place-self: center;
     width: 100%;
     padding-top: 1rem;
     padding-left: 1rem;

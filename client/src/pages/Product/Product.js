@@ -13,13 +13,13 @@ const ProductPage = () => {
     let navigate = useNavigate();
     const [product, setProduct] = useState(null);
     const [size, setSize] = useState(null);
-    const {productURI} = useParams();
+    const { productURI, type } = useParams();
     const [purchasable, setPurchasable] = useState(false);
     const { addToCart, products } = useContext(CartContext);
 
     useEffect(() => {
         const fetchProduct = async () => {
-            var res = await getProduct(productURI);
+            var res = await getProduct(productURI, type);
             if(res.success){
                 setPurchasable(new Date(res.product.dateToPost) < new Date() && res.product.count > 0);
                 setProduct(res.product);
@@ -30,17 +30,18 @@ const ProductPage = () => {
     }, [])
 
     const selectSize = (_size) => {
-        setSize(_size);
+        setSize(_size.trim());
     }
 
-    const AddToCart = (_uri, _size, _price, _name, _creator, _count) => {
+    const AddToCart = (_uri, _size, _price, _name, _creator, _count, _type) => {
         if(_count > 0){
             var productJSON = {
                 uri: _uri,
                 name: _name,
                 size: _size,
                 price: _price,
-                creator: _creator
+                creator: _creator,
+                type: _type
             };
             addToCart(productJSON);
             Flash("Added to cart", "dark");
@@ -70,7 +71,7 @@ const ProductPage = () => {
                     <Mobile>
                     <Carousel
                             dragging
-                            className='carousel mb-3 custom-carousel-classses'
+                            className='carousel mb-1 custom-carousel-classses'
                         >
                             {product.images.map((image, index) => (
                                 <div key={index} className="item">
@@ -92,11 +93,11 @@ const ProductPage = () => {
                         <div id="product-info-details-add">
                             <span className="fs-3 mb-2 product-price">£{product.price} <span className="text-muted fs-5">: {product.count >= 0 ? product.count : 0} {purchasable ? 'LEFT' : 'AVAILABLE'}</span></span>
                             <span className="fs-2 fw-bold" id="product-name">{product.name}</span>
-                            <span className="fs-6 fw-light mb-4" id="product-description">{product.description}</span>
+                            <span className="fs-6 fw-light mb-2" id="product-description">{product.description}</span>
                             <Button disabled={addToCartDisabled}
-                                    onClick={() => AddToCart(product.uri, size, product.price, product.name, product.creator.tag, product.count)}
+                                    onClick={() => AddToCart(product.uri, size, product.price, product.name, product.creator.tag, product.count, product.type)}
                                     variant={"dark"}
-                                    style={{alignSelf: 'end', width: '60%', justifySelf: 'center', marginBottom: '2rem'}}>Add To Cart</Button>
+                                    style={{alignSelf: 'end', width: '60%', justifySelf: 'center', marginBottom: '.5rem'}}>Add To Cart</Button>
                             <span className="text-muted">@{product.creator.tag}</span>
                         </div>
                     </div>

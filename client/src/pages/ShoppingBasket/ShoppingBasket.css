@@ -1,10 +1,14 @@
 @media screen and (min-width: 1224px) {
     #shopping-basket{
-        width: 60%!important;
+        width: 50%!important;
         place-self: center!important;
     }
     #shopping-basket-totals{
         width: 60%!important;
+    }
+    .shopping-basket-total-work{ justify-self: start;}
+    .shopping-basket-product-name{
+        width: initial!important;
     }
 }
 
@@ -19,21 +23,33 @@
 .shopping-basket-product{
     display: grid;
     width: 100%;
-    grid-template-columns: 4fr 3fr 1fr;
+    grid-template-columns: 1fr 40% 3fr 1fr;
     grid-template-rows: max-content min-content;
     padding-top: 5px;
-    padding-bottom: 10px;
-    grid-template-areas: "name price remove"
-    "info price remove";
+    padding-bottom: 5px;
+    grid-template-areas: "image name price remove"
+                        "image info price remove";
     background-color: black;
     color: white;
     margin-bottom: .5rem;
 }
+.shopping-basket-product-image{
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    place-self: center;
+    margin-left: 10px;
+    grid-area: image;
+}
 .shopping-basket-product-name{
     grid-area: name;
+    width: inherit;
     justify-self: start;
     align-self: center;
     margin-left: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .shopping-basket-product-info{
     grid-area: info;

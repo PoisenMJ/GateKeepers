@@ -25,16 +25,22 @@ const ProductsPage = ({ type }) => {
     }, [type, creator])
 
     const viewProduct = (path) => {
-        navigate('../'+encodeURIComponent(path));
+        navigate('../'+encodeURIComponent(path)+'/'+type);
     }
 
     return (
         <div id="products-page">
             <div className="w-100 text-center mb-3">
                 {type === "own" ?
-                    <span className="text-muted text-uppercase">Worn by @{creator}</span>
+                    <span className="text-uppercase">
+                        Worn by @{creator}
+                        <p className="text-lowercase text-muted">Clothes from @{creator}'s own wardrobe.</p>
+                    </span>
                     :
-                    <span className="text-muted text-uppercase">Made by @{creator}</span>
+                    <span className="text-uppercase">
+                        Made by @{creator}
+                        <p className="text-lowercase text-muted">Clothes hand made by @{creator}.</p>
+                    </span>
                 }
             </div>
             <hr className="mx-5"/>
@@ -57,7 +63,7 @@ const ProductsPage = ({ type }) => {
                     var strTime = hours + ':' + minutes + ' ' + ampm;
 
                     return (
-                        <div key={product.name} className={"product mb-4"+c} onClick={() => viewProduct(product.uri)}>
+                        <div key={product.name} className={"product mb-2"+c} onClick={() => viewProduct(product.uri)}>
                             <div className="product-image-parent">
                                 <img src={`/images/products/${product.images[product.imageOrder[0]]}`} className={"product-image"+imageC}/>
                                 {available &&

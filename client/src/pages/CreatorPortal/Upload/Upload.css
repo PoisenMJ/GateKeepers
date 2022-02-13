@@ -1,13 +1,13 @@
 @media screen and (min-width: 1224px) {
     #upload{
-        width: 45%!important;
+        width: 40%!important;
         justify-self: center!important;
     }
 }
 
 #upload{
     height: fit-content;
-    padding: 3rem;
+    padding: 0 3rem 2rem;
 }
 #no-images{
     width: 100%!important;

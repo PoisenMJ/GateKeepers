@@ -48,6 +48,7 @@ const CreatorsOrders = () => {
                     var items = order.items.map((item, i) => item.name)
                     var date = new Date(order.date);
                     var formattedDate = MONTHS[date.getMonth()] +' '+ date.getDate();
+                    var year = date.getFullYear();
                     var dots = (items.length > 1) ? '...' : '';
                     var sent = (order.sent) ? "SENT" : "NOT SENT";
                     return (
@@ -62,18 +63,27 @@ const CreatorsOrders = () => {
                             <Accordion.Body className="custom-accordion-body">
                                 <Mobile>
                                     <div className="order-address">
-                                        <span>COUNTRY: <span className="gray-text">{order.address.country}</span></span>
-                                        <span>STATE: <span className="gray-text">{order.address.state}</span></span>
-                                        <span>ZIPCODE: <span className="gray-text">{order.address.zipcode}</span></span>
-                                        <span>ADDR: <span className='gray-text'>{order.address.streetAddress}</span></span>
+                                        <span>COUNTRY: <span className="text-muted">{order.address.country}</span></span>
+                                        <span>STATE: <span className="text-muted">{order.address.state}</span></span>
+                                        <span>ZIPCODE: <span className="text-muted">{order.address.zipcode}</span></span>
+                                        <span>ADDR: <span className='text-muted'>{order.address.streetAddress}</span></span>
+                                        <br/>
+                                        <span>DATE: <span className='text-muted'>{year+' '+formattedDate}</span></span>
+                                        <hr/>
+                                        {order.items.map((item, i2) => (
+                                            <div>
+                                                <span>{item.name} </span>
+                                                <span className="text-muted">({item.size})</span>
+                                            </div>
+                                        ))}
                                     </div>
                                     <div className="order-details">
                                         <div>
-                                            <span>FIRST NAME: <span className="gray-text">{order.address.firstName}</span></span><br/>
-                                            <span>LAST NAME: <span className="gray-text">{order.address.lastName}</span></span><br/>
-                                            <span>EMAIL: <span className="gray-text">{order.address.email}</span></span><br/>
-                                            <span>TOTAL: <span className="gray-text">£{order.total}</span></span><br/>
-                                            <span>USER: <span className="gray-text">{order.user ? order.user : "GUEST"}</span></span>
+                                            <span>FIRST NAME: <span className="text-muted">{order.address.firstName}</span></span><br/>
+                                            <span>LAST NAME: <span className="text-muted">{order.address.lastName}</span></span><br/>
+                                            <span>EMAIL: <span className="text-muted">{order.address.email}</span></span><br/>
+                                            <span>TOTAL: <span className="text-muted">£{order.total}</span></span><br/>
+                                            <span>USER: <span className="text-muted">{order.user ? order.user : "GUEST"}</span></span>
                                         </div>
                                         <Button onClick={() => sendMarkOrderSent(order.id, index)}
                                             className="order-mark-sent mt-1"
@@ -83,20 +93,29 @@ const CreatorsOrders = () => {
                                 </Mobile>
                                 <Desktop>
                                     <div className="order-address">
-                                        <span>COUNTRY: <span className="gray-text">{order.address.country}</span></span>
-                                        <span>STATE: <span className="gray-text">{order.address.state}</span></span>
-                                        <span>ZIPCODE: <span className="gray-text">{order.address.zipcode}</span></span>
-                                        <span>ADDR: <span className='gray-text'>{order.address.streetAddress}</span></span>
+                                        <span>COUNTRY: <span className="text-muted">{order.address.country}</span></span>
+                                        <span>STATE: <span className="text-muted">{order.address.state}</span></span>
+                                        <span>ZIPCODE: <span className="text-muted">{order.address.zipcode}</span></span>
+                                        <span>ADDR: <span className='text-muted'>{order.address.streetAddress}</span></span>
                                     </div>
                                     <div className="order-user">
-                                            <span>FIRST NAME: <span className="gray-text">{order.address.firstName}</span></span><br/>
-                                            <span>LAST NAME: <span className="gray-text">{order.address.lastName}</span></span><br/>
-                                            <span>EMAIL: <span className="gray-text">{order.address.email}</span></span><br/>
+                                            <span>FIRST NAME: <span className="text-muted">{order.address.firstName}</span></span><br/>
+                                            <span>LAST NAME: <span className="text-muted">{order.address.lastName}</span></span><br/>
+                                            <span>EMAIL: <span className="text-muted">{order.address.email}</span></span><br/>
+                                    </div>
+                                    <div className="order-products">
+                                        <h4>PRODUCTS:</h4>
+                                        {order.items.map((item, i2) => (
+                                            <div>
+                                                <span>{item.name} </span>
+                                                <span className="text-muted">({item.size})</span>
+                                            </div>
+                                        ))}
                                     </div>
                                     <div className="order-details">
                                         <div>
-                                            <span>USER: <span className="gray-text">{order.user ? order.user : "GUEST"}</span></span><br/>
-                                            <span>TOTAL: <span className="gray-text">£{order.total}</span></span>
+                                            <span>USER: <span className="text-muted">{order.user ? order.user : "GUEST"}</span></span><br/>
+                                            <span>TOTAL: <span className="text-muted">£{order.total}</span></span>
                                         </div>
                                         <Button onClick={() => sendMarkOrderSent(order.id, index)}
                                             className="order-mark-sent mt-1"

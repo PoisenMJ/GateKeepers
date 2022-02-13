@@ -78,7 +78,7 @@ const CreatorProducts = () => {
                             <img src={`/images/products/${product.images[product.imageOrder[0]]}`} className="product-image"/>
                         </div>
                         <div className="product-info w-100">
-                            <span className="fs-4 text-muted fw-light mb-2">{product.name}</span>
+                            <span className="fs-4 text-muted fw-light mb-2">{product.name} <span className='text-primary'>({product.type})</span></span>
                             <div className="creator-portal-product-edit-group">
                                 <Button onClick={() => editProduct(product._id)} size="sm" className="mx-1 w-95" variant="secondary">EDIT</Button>
                                 <Button onClick={() => showConfirmRemoveProduct(product._id)} size="sm" className="mx-1 w-95" variant="dark">REMOVE</Button>

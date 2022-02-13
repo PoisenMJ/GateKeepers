@@ -10,10 +10,12 @@ import { AuthContext } from '../../services/AuthContext';
 import Event from '../../utils/events';
 import ActivateAccount from '../../components/ActivateAccount/ActivateAccount';
 import PasswordRecoveryBox from '../../components/PasswordRecoveryBox/PasswordRecoveryBox';
+import { CartContext } from '../../services/CartContext';
 
 const Login = () => {
 
     const { setLoggedIn, setUsername, setToken, loggedIn, username, token } = useContext(AuthContext);
+    const { clearCart } = useContext(CartContext);
 
     let navigate = useNavigate();
 
@@ -48,6 +50,8 @@ const Login = () => {
                 setToken(res.token);
                 setUsername(inputUsername);
                 setLoggedIn(true);
+                clearCart();
+
                 if(res.type == 'user')
                     navigate('/', { state: 'logged-in' });
                 else if(res.type == 'creator')

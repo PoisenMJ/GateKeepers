@@ -5,7 +5,21 @@
         align-self: center;
     }
 }
-
+.profile-order-name{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.profile-order-item{
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: space-between;
+    padding: 0 10px 0 0;
+}
+.profile-order-body{
+    background-color: black !important;
+    color: white;
+}
 #profile{
     height: 90vh;
     width: 100vw;

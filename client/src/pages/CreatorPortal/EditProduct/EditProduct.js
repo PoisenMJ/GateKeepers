@@ -98,6 +98,10 @@ const EditProduct = () => {
 
     return (
         <div id="edit-product">
+                <div className="text-center">
+                    <span className="fs-2">◆ Edit Product ◆</span>
+                </div>
+                <hr className="mb-4"/>
                 <Form id="creator-portal-edit-form" onSubmit={sendUpdateForm}>
                     <Form.Control multiple name="images" accept="image/jpeg, image/jpg" id="creator-portal-image-input" type="file" className="mb-2 visually-hidden"/>
                     <div id="creator-portal-images" className="mb-3">

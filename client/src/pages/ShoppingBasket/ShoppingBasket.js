@@ -10,7 +10,7 @@ import { AuthContext } from '../../services/AuthContext';
 const ShoppingBasket = () => {
     let navigate = useNavigate();
     
-    const { products, total, removeFromCart } = useContext(CartContext);
+    const { products, total, removeFromCart, clearCart } = useContext(CartContext);
     const { username } = useContext(AuthContext);
     const [productsData, setProductsData] = useState(null);
 
@@ -24,13 +24,14 @@ const ShoppingBasket = () => {
             var productsArray = []
             const getData = async () => {
                 for(var i = 0; i < products.length; i++){
-                    var res = await getProduct(products[i].uri);
+                    var res = await getProduct(products[i].uri, products[i].type);
                     productsArray.push({
                         "name": res.product.name,
                         "price": res.product.price,
                         "size": products[i].size,
                         "creator": res.product.creator.tag,
                         "uri": res.product.uri,
+                        "image": res.product.images[res.product.imageOrder[0]]
                     });
                 }
                 setProductsData(productsArray);
@@ -60,6 +61,7 @@ const ShoppingBasket = () => {
                         return (
                             <div key={index}>
                                 <div className="shopping-basket-product">
+                                    <img className="shopping-basket-product-image" src={`/images/products/${product.image}`} alt="product-image"/>
                                     <span className="shopping-basket-product-name fs-4">{product.name}</span>
                                     <div className="shopping-basket-product-info">
                                         <span className="shopping-basket-product-creator">{product.creator}</span>

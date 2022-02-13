@@ -7,17 +7,17 @@ const ExchangeRates = {
 }
 
 const ShippingPrices = {
-    'united-kingdom': 5.39,
-    'france': 15.14,
-    'italy': 17.93,
-    'netherlands': 13.59,
-    'united-states': 22.38,
-    'austria': 16.30,
-    'canada': 24.84,
-    'germany': 13.09,
-    'hong-kong': 13.32,
-    'singapore': 18.14,
-    'south-korea': 17.73,
+    'united-kingdom': 5.4,
+    'france': 15.2,
+    'italy': 18,
+    'netherlands': 13.6,
+    'united-states': 22.4,
+    'austria': 16.3,
+    'canada': 24.9,
+    'germany': 13.1,
+    'hong-kong': 13.4,
+    'singapore': 18.2,
+    'south-korea': 17.8,
 
 }
 

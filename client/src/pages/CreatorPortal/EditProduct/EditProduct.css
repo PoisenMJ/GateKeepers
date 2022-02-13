@@ -1,6 +1,6 @@
 @media screen and (min-width: 1224px) {
     #edit-product{
-        width: 50%!important;
+        width: 40%!important;
         justify-self: center!important;
     }
     #creator-portal-iamges{
@@ -11,7 +11,7 @@
         object-fit: conver;
     }
     .custom-upload-creator-carousel{
-        height: auto!important;
+        height: 50vh!important;
     }
 }
 

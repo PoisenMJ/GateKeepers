@@ -85,7 +85,6 @@ const Upload = () => {
 
         // check image re-order has right numbers
         var orderList = [];
-        var compressImages = [];
         for(var i = 0; i < images.length; i++){
             if(imageOrder[i] <= images.length-1){
                 orderList.push(i);
@@ -119,7 +118,7 @@ const Upload = () => {
                 <Form.Control onChange={handleInputChange} name="name" type="text" placeholder="Product Name" className="mb-2 custom-input"/>
                 <Form.Control multiple id="image-input" accept="image/jpeg,image/jpg" type="file" className="mb-2 visually-hidden"/>
                 <div id="product-images" className="mb-2">
-                    <Carousel className="carousel mb-3" width={'100%'} height='100%' dragging>
+                    <Carousel className="carousel mb-3" width={'100%'} height='40vh' dragging>
                         {images ?
                             images.map((image, index) => (
                                 <img className="product-upload-image" src={URL.createObjectURL(image)} key={index}/>

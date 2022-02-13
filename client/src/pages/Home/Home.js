@@ -40,7 +40,8 @@ const Home = () => {
                 <div id="home-page-first-slide">
                     <img src={'/images/background.jpg'} id="home-page-background" alt='background'/>
                     <div className="home-page-initial-content">
-                        <span className="fs-1 fw-bold">GateKeepers</span>
+                        {/* <span className="fs-1 fw-bold">GateKeepers</span> */}
+                        <h1 className="fs-1 fw-bold">GateKeepers</h1>
                         <h1 className="visually-hidden">Gatekeepers Store</h1>
                         <span className="text-lead mb-3 fw-light">Fashion Collection</span>
                         <Button onClick={exploreButton} variant="dark" style={{paddingBottom: '7.5px'}} className="explore-button">
@@ -179,17 +180,17 @@ const Home = () => {
                                 <div className="desktop-slide-images" style={{
                                         top: `calc(100vh * ${index+1})`
                                     }}>
-                                    <object
-                                        alt='creator-image'
-                                        className="slide-image desktop"
-                                        data={`/images/${post.image}`}
-                                    />
-                                    <video
+                                    <img
                                         alt='creator-image'
                                         className="slide-image desktop"
                                         src={`/images/${post.image}`}
                                     />
-                                    <video
+                                    <img
+                                        alt='creator-image'
+                                        className="slide-image desktop"
+                                        src={`/images/${post.image}`}
+                                    />
+                                    <img
                                         alt='creator-image'
                                         className="slide-image desktop"
                                         src={`/images/${post.image}`}

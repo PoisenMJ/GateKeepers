@@ -1,8 +1,8 @@
-async function getCheckoutUrl(products, username){
+async function getCheckoutUrl(products, username, shippingPrice, email){
     var res = await fetch('/payment/checkout',{
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({products, username})
+        body: JSON.stringify({products, username, shippingPrice, email})
     });
     var json = await res.json();
     return json.url;

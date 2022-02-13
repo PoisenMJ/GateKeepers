@@ -54,7 +54,7 @@ const PaymentDetails = () => {
             var productsArray = []
             const getData = async () => {
                 for(var i = 0; i < products.length; i++){
-                    var res = await getProduct(products[i].uri);
+                    var res = await getProduct(products[i].uri, products[i].type);
                     productsArray.push({
                         "name": res.product.name,
                         "price": res.product.price,
@@ -84,7 +84,8 @@ const PaymentDetails = () => {
                     zipcode: zipcode,
                     streetAddress: streetAddress,
                     firstName: firstName,
-                    lastName: lastName
+                    lastName: lastName,
+                    shippingPrice: shippingPrice
                 })
         
                 var data = [];
@@ -96,10 +97,12 @@ const PaymentDetails = () => {
                         name: productsData[i].name
                     })
                 }
+
                 var res = await checkProduct(productsData.map((d, i) =>  {return {uri:d.uri, name:d.name}} ));
                 if(res.outOfStock) Flash(`${res.name} is out of stock.`);
                 else {
-                    var checkoutUrl = await getCheckoutUrl(data, shippingPrice, username);
+                    var notLoggedInEmail = (email) ? email : "";
+                    var checkoutUrl = await getCheckoutUrl(data, username, shippingPrice, notLoggedInEmail);
                     window.location.href = checkoutUrl;
                 }
             }

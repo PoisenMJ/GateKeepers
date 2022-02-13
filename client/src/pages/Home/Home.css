@@ -78,6 +78,7 @@
     position: initial!important;
 }
 .slide-info{
+    left: 0;
     z-index: 20;
     max-width: 90vw;
     width: min-content;
