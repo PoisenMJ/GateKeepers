@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { getGatekeeper, updateGatekeeper } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext';
-import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
+import { Button, Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap';
 import './CreatorProfile.css';
 import { FaInstagram, FaTiktok, FaTwitch, FaTwitter } from 'react-icons/fa';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
 import { useNavigate } from 'react-router';
+import Compressor from 'compressorjs';
 
 const CreatorProfile = () => {
     let navigate = useNavigate();
@@ -16,10 +17,14 @@ const CreatorProfile = () => {
     const [tiktok, setTiktok] = useState('');
     const [instagram, setInstagram] = useState('');
     const [name, setName] = useState('');
+    const [image, setImage] = useState('');
     const [email, setEmail] = useState('');
+
     const [dataFetched, setDataFetched] = useState(false);
     const [password, setPassword] = useState('');
     const [confPassword, setConfPassword] = useState('');
+    const [shippingDetails, setShippingDetails] = useState({});
+
 
     useEffect(() => {
         const fetch = async () => {
@@ -29,8 +34,10 @@ const CreatorProfile = () => {
                 setTwitter(data.user.links.twitter);
                 setTiktok(data.user.links.tiktok);
                 setInstagram(data.user.links.instagram);
+                setImage(data.user.image);
                 setName(data.user.name);
                 setEmail(data.user.email);
+                setShippingDetails(data.user.shippingDetails);
                 setDataFetched(true);
             }
             else {
@@ -72,29 +79,68 @@ const CreatorProfile = () => {
     const updateCreatorProfile = async event => {
         event.preventDefault();
 
-        var data = {
-            instagramLink: instagram,
-            twitterLink: twitter,
-            twitchLink: twitch,
-            tiktokLink: tiktok,
-            name: name,
-            email: email,
-            username,
-            token
-        };
+        var formData = new FormData();
+        formData.append('instagramLink', instagram);
+        formData.append('twitterLink', twitter);
+        formData.append('twitchLink', twitch);
+        formData.append('tiktokLink', tiktok);
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('creatorImage', (typeof image === 'src') ? '' : image);
+        formData.append('shippingDetails', shippingDetails);
+        formData.append('username', username);
+        formData.append('token', token);
+        console.log(formData);
 
         if(password && confPassword){
             if(password !== confPassword) return Flash("Password Don't Match", "dark");
             else if(password.length < 8) return Flash("Password must be 8 chars long", "dark");
             else {
-                data['password'] = password;
+                formData.append('password', password);
             }
         }
         if(email){
-            var res = await updateGatekeeper(data, username);
+            var res = await updateGatekeeper(formData, username);
             if(res.success) Flash("Successfully updated", "dark");
             else Flash("Update Failed", "danger");
         } else Flash("Email empty", "danger");
+    }
+
+    const addCountry = () => {
+        var a = shippingDetails;
+        var b = {...shippingDetails, 'new-country': true};
+        setShippingDetails(b);
+    }
+    const updateCountry = (event, country) => {
+        var a = {...shippingDetails};
+        if(event.target.value !== 'new-country'){
+            a[event.target.value.toString()] = a[country];
+            delete a[country];
+        }
+        setShippingDetails(a);
+    }
+    const updatePrice = (event, country) => {
+        var a = {...shippingDetails};
+        a[country] = parseFloat(event.target.value);
+        setShippingDetails(a);
+    }
+
+    const openImageUpload = event => {
+        var imageInput = document.getElementById("creator-profile-image-upload");
+        imageInput.click();
+        imageInput.onchange = function(event){
+            console.log(event);
+            var newFile = new File([event.target.files[0]], event.target.files[0].name, {
+                type: event.target.files[0].type
+            });
+            setImage(newFile);
+
+            // new Compressor(event.target.files[0], {
+            //     quality: 0.7,
+            //     success(result){
+            //     }
+            // })
+        }
     }
 
     return (
@@ -105,6 +151,31 @@ const CreatorProfile = () => {
             </div>
             {dataFetched &&
                 <Form onSubmit={updateCreatorProfile}>
+                    <div className='mb-3' id="shipping-countries">
+                        <span>SHIPPING</span>
+                        {shippingDetails && Object.entries(shippingDetails).map((country, index) => {
+                            return (
+                                <Row className="g-1 mb-1" key={index}>
+                                    <Col className="col-8"><Form.Control onChange={(e) => updateCountry(e, country[0])} type="text" defaultValue={country[0]} className="custom-input"/></Col>
+                                    <Col>
+                                        <InputGroup>
+                                            <InputGroup.Text className="custom-input">£</InputGroup.Text>
+                                            <Form.Control step={.1} type="number" onChange={(e) => updatePrice(e, country[0])} defaultValue={country[1]} className="custom-input"/>
+                                        </InputGroup>
+                                    </Col>
+                                </Row>
+                            )
+                        })}
+                        <Button onClick={addCountry} className="w-100" variant="success">Add Country</Button>
+                    </div>
+                    <div className='mb-2' id="creator-image">
+                        <span>IMAGE <span className='text-muted'>(GIF)</span></span>
+                        <div id="creator-image-src-parent" className='mt-1' onClick={openImageUpload}>
+                            <img id="creator-image-src" src={typeof image === 'string' ? `/images/${image}` : URL.createObjectURL(image)}/>
+                            <div id="creator-image-src-overlay">Click to change</div>
+                        </div>
+                        <Form.Control accept='image/gif' className='visually-hidden' type='file' id='creator-profile-image-upload'/>
+                    </div>
                     <div id="creator-profile-socials" className="mb-3">
                         <span>SOCIALS</span>
                         <InputGroup className="mb-1">

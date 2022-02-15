@@ -1,4 +1,11 @@
 @media screen and (min-width: 1224px) {
+    #product-sizing-parent{
+        display: grid;
+        width: 100%!important;
+        place-content: center;
+        place-self: center;
+    }
+
     .custom-carousel-classses{
         width: 60vw!important;
         align-self: start;
@@ -65,13 +72,21 @@
 #product-count{
     align-self: center;
 }
+#product-sizing-parent{
+    display: grid;
+    width: 80vw;
+    place-content: center;
+    place-self: center;
+}
 #product-sizing{
     display: grid;
     justify-content: center;
     align-content: end;
     width: 100%;
     grid-auto-flow: column;
+    margin-bottom: 2px;
 }
+#product-custom-size{ display: grid;place-items: center; }
 .product-sizing-item{
     border: 1px solid black;
     width: fit-content;

@@ -30,6 +30,14 @@ const creatorSchema = mongoose.Schema({
     image: {
         type: String,
         required: true
+    },
+    country: {
+        type: String,
+        default: 'united-kingdom'
+    },
+    shippingDetails: {
+        type: Object,
+        default: {'united-kingdom': 0.0}
     }
 });
 

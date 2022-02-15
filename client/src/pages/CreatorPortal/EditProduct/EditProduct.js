@@ -17,6 +17,7 @@ const EditProduct = () => {
     const [images, setImages] = useState(null);
     const [cleared, setCleared] = useState(false);
     const [imageOrder, setImageOrder] = useState([]);
+    const [customSize, setCustomSize] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
@@ -24,6 +25,7 @@ const EditProduct = () => {
             setProduct(data.product);
             setImages(data.product.images);
             setImageOrder(data.product.imageOrder);
+            setCustomSize(data.product.customSize);
         }
         fetch();
 
@@ -52,6 +54,8 @@ const EditProduct = () => {
             setImageOrder(order);
         }
     }, [])
+
+    const updateCustomSize = event => setCustomSize(event.target.checked);
 
     const addImage = () => {
         document.getElementById('creator-portal-image-input').click();
@@ -87,6 +91,7 @@ const EditProduct = () => {
             data.append('images', images);
             data.append('imagesCleared', cleared);
             data.append('imageOrder', imageOrder);
+            data.append('customSize', customSize);
     
             var res = await updateProduct(data, username, token);
             if(res.success) Flash("Product Updated", "dark");
@@ -158,7 +163,8 @@ const EditProduct = () => {
                             <Form.Text>Count</Form.Text>
                             <Form.Control required name="count" min="0" type="number" defaultValue={product.count} className="custom-input mb-2"/>
                             <Form.Text>Sizes (comma seperated)</Form.Text>
-                            <Form.Control required name="sizes" placeholder="'Small, Medium, Large', or '1 Size' ..." className="custom-input mb-2" defaultValue={product.sizes}/>
+                            <Form.Control required name="sizes" placeholder="'Small, Medium, Large', or '1 Size' ..." className="custom-input" defaultValue={product.sizes}/>
+                            <Form.Check label="Allow custom sizes" onChange={updateCustomSize} checked={customSize} className="custom-input mb-2"/>
                             <Form.Select required name="type" className="custom-input mb-2" defaultValue={product.type}>
                                 <option value="made">Made By</option>
                                 <option value="own">Creator's Own</option>

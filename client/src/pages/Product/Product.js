@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import './Product.css';
 import { useParams } from 'react-router-dom';
 import { getProduct } from '../../controllers/creators';
-import { Button } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import Carousel from 'nuka-carousel';
 import { useNavigate } from 'react-router';
 import { CartContext } from '../../services/CartContext';
@@ -15,6 +15,7 @@ const ProductPage = () => {
     const [size, setSize] = useState(null);
     const { productURI, type } = useParams();
     const [purchasable, setPurchasable] = useState(false);
+    const [customSize, setCustomSize] = useState('');
     const { addToCart, products } = useContext(CartContext);
 
     useEffect(() => {
@@ -32,13 +33,14 @@ const ProductPage = () => {
     const selectSize = (_size) => {
         setSize(_size.trim());
     }
+    const updateCustomSize = event => setCustomSize(event.target.value.trim());
 
     const AddToCart = (_uri, _size, _price, _name, _creator, _count, _type) => {
         if(_count > 0){
             var productJSON = {
                 uri: _uri,
                 name: _name,
-                size: _size,
+                size: (customSize) ? customSize : _size,
                 price: _price,
                 creator: _creator,
                 type: _type
@@ -81,17 +83,24 @@ const ProductPage = () => {
                         </Carousel>
                     </Mobile>
                     <div id="product-info">
-                        <div id="product-sizing">
-                            {product.sizes.map((_size, index) => {
-                                var className=(index == product.sizes.length-1)?"product-sizing-item":"product-sizing-item-left";
-                                var activeClassName=(size === _size)?" active":"";
-                                return (
-                                    <span key={_size} onClick={() => selectSize(_size)} className={"product-sizing-item "+className+activeClassName}>{_size}</span>
-                                )
-                            })}
+                        <div id="product-sizing-parent">
+                            <div id="product-sizing">
+                                {product.sizes.map((_size, index) => {
+                                    var className=(index == product.sizes.length-1)?"product-sizing-item":"product-sizing-item-left";
+                                    var activeClassName=(size.trim() === _size.trim())?" active":"";
+                                    return (
+                                        <span key={_size} onClick={() => selectSize(_size)} className={"product-sizing-item "+className+activeClassName}>{_size}</span>
+                                    )
+                                })}
+                            </div>
+                            {product.customSize &&
+                                <div id="product-custom-size">
+                                    <Form.Control onChange={updateCustomSize} type="text" className="custom-input" placeholder="enter custom size"/>
+                                </div>
+                            }
                         </div>
                         <div id="product-info-details-add">
-                            <span className="fs-3 mb-2 product-price">£{product.price} <span className="text-muted fs-5">: {product.count >= 0 ? product.count : 0} {purchasable ? 'LEFT' : 'AVAILABLE'}</span></span>
+                            <span className="fs-3 product-price">£{product.price} <span className="text-muted fs-5">: {product.count >= 0 ? product.count : 0} {purchasable ? 'LEFT' : 'AVAILABLE'}</span></span>
                             <span className="fs-2 fw-bold" id="product-name">{product.name}</span>
                             <span className="fs-6 fw-light mb-2" id="product-description">{product.description}</span>
                             <Button disabled={addToCartDisabled}

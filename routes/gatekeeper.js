@@ -10,7 +10,8 @@ var { gatekeeperCheck } = require('../middleware/auth');
 var multer = require('multer');
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './client/public/images/products/');
+        if(file.fieldname == "creatorImage") cb(null, './client/public/images/');
+        else cb(null, './client/public/images/products/');
     },
     filename: (req, file, cb) => {
         const uniqueSuffix = '-' + Date.now() + '-' + Math.round(Math.random()*1E9)+'.';
@@ -62,7 +63,7 @@ router.post('/products/add', upload.array('images'), gatekeeperCheck, (req, res,
         imageNameList.push(req.files[i].filename)
     }
     var sizes = req.body.sizes.replace(`'`, '').split(',').filter((e) => e.trim());
-
+    console.log(req.body);
     Creator.findOne({ tag: creatorUsername }).then((user, err) => {
         var newProduct = new CreatorProduct({
             creator: user._id,
@@ -75,6 +76,7 @@ router.post('/products/add', upload.array('images'), gatekeeperCheck, (req, res,
             type: req.body.type,
             dateToPost: req.body.dateToPost,
             sizes: sizes,
+            customSize: req.body.customSizeAccept,
             imageOrder: req.body.imageOrder.split(",")
         });
         newProduct.save((err) => {
@@ -136,6 +138,7 @@ router.post('/products/update', upload.array('images'), gatekeeperCheck, (req, r
                 type: req.body.type,
                 sizes: sizes,
                 dateToPost: req.body.dateToPost,
+                customSize: req.body.customSize,
                 imageOrder: req.body.imageOrder.split(",")
             }
         }, (err, docs) => {
@@ -182,8 +185,24 @@ router.post('/:creatorTag', gatekeeperCheck, (req, res, next) => {
     })
 })
 
-router.post('/update/:creatorTag', gatekeeperCheck, (req, res, next) => {
+router.post('/update/:creatorTag', upload.single('creatorImage'), gatekeeperCheck, (req, res, next) => {
     var username = req.params.creatorTag;
+    if(req.file){
+        Creator.findOne({tag: username }).then((doc,err) => {
+            if(doc.image){
+                fs.unlink(`./client/public/images/${doc.image}`, function(err) {
+                    if(err) console.log('Err removing old product images');
+                    console.log(req.file);
+                    Creator.findOneAndUpdate({ tag: username }, { $set: {
+                        image: req.file.filename
+                    }}).then((doc2, err2) => {
+                        console.log(err2);
+                        console.log(doc2);
+                    })
+                });
+            }
+        })
+    }
     Creator.findOneAndUpdate({ tag: username }, { $set: {
         links: {
             instagram: req.body.instagramLink ? req.body.instagramLink : '',
@@ -191,6 +210,7 @@ router.post('/update/:creatorTag', gatekeeperCheck, (req, res, next) => {
             twitter: req.body.twitterLink ? req.body.twitterLink : '',
             twitch: req.body.twitchLink ? req.body.twitchLink : ''
         },
+        shippingDetails: req.body.shippingDetails,
         name: req.body.name ? req.body.name : '',
         email: req.body.email ? req.body.email : ''
     }}).then((doc, err) => {

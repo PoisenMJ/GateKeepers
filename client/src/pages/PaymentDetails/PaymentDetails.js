@@ -163,7 +163,7 @@ const PaymentDetails = () => {
                     <br/>
                     <span className="text-muted" id="payment-details-subtotals">Products : £{total}</span>
                     <br/>
-                    <span className="text-muted" id="payment-details-subtotals">Shipping : £{shippingPrice}</span>
+                    <span className="text-muted" id="payment-details-subtotals">Shipping : {shippingPrice > 0 ? "£"+shippingPrice : "Free"}</span>
                 </div>
                 <Button onClick={goToStripeCheckout} variant="dark">BUY<FaArrowRight style={{marginBottom: '3px', marginLeft: '5px'}}/></Button>
             </div>

@@ -8,4 +8,30 @@
 #creator-profile{
     width: 100%;
     padding: 2rem;
+    top: 0;
+    position: absolute;
+}
+#creator-image-src{
+    width: 100%;
+}
+#creator-image-src-parent{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "image";
+}
+#creator-image-src{ grid-area: image; }
+#creator-image-src-overlay{
+    grid-area: image;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    z-index:30;
+    background-color: rgba(200,200,200,0.5);
+    transition: .15s;
+}
+#creator-image-src-overlay:hover{
+    background-color: rgba(200,200,200,0.3)!important;
 }

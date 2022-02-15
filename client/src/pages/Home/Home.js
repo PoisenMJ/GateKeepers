@@ -57,23 +57,23 @@ const Home = () => {
                 </div>
                     {creatorPosts && creatorPosts.map((post, index) => {
                         var lastPost = index == creatorPosts.length - 1;
-                        var socialsHTML1 = (post.creator.links) ?
+                        var socialsHTML1 = (post.links) ?
                         (
                             <div className="socials">
-                                {post.creator.links.instagram &&
-                                    <a key={post.creator.links.instagram} className="socials-icon" href={post.creator.links.instagram}><FaInstagram size={35} color='#fff'/></a>
-                                }{post.creator.links.tiktok &&
-                                    <a key={post.creator.links.tiktok} className="socials-icon mb-1" href={post.creator.links.tiktok}><FaTiktok size={35} color='#fff'/></a>
+                                {post.links.instagram &&
+                                    <a key={post.links.instagram} className="socials-icon" href={post.links.instagram}><FaInstagram size={35} color='#fff'/></a>
+                                }{post.links.tiktok &&
+                                    <a key={post.links.tiktok} className="socials-icon mb-1" href={post.links.tiktok}><FaTiktok size={35} color='#fff'/></a>
                                 }
                             </div>
                         ) : '';
-                        var socialsHTML2 = (post.creator.links) ?
+                        var socialsHTML2 = (post.links) ?
                         (
                             <div className="socials">
-                                {post.creator.links.twitch &&
-                                    <a key={post.creator.links.twitch} className="socials-icon-right" href={post.creator.links.twitch}><FaTwitch size={35} color='#fff'/></a>
-                                }{post.creator.links.twitter &&
-                                    <a key={post.creator.links.twitter} className="socials-icon-right" href={post.creator.links.twitter}><FaTwitter size={35} color='#fff'/></a>
+                                {post.links.twitch &&
+                                    <a key={post.links.twitch} className="socials-icon-right" href={post.links.twitch}><FaTwitch size={35} color='#fff'/></a>
+                                }{post.links.twitter &&
+                                    <a key={post.links.twitter} className="socials-icon-right" href={post.links.twitter}><FaTwitter size={35} color='#fff'/></a>
                                 }
                             </div>
                         ):'';
@@ -89,9 +89,9 @@ const Home = () => {
                                 <div className={`slide-info ${(lastPost)?" last-slide":""}`}>
                                     {socialsHTML1}
                                     <div className="slide-creator">
-                                        <span className="fs-1 slide-tag">{post.creator.tag.toUpperCase()}</span>
+                                        <span className="fs-1 slide-tag">{post.tag.toUpperCase()}</span>
                                         <hr/>
-                                        <Button variant="light" className="shop-creator" onClick={() => navigate(`/${post.creator.tag}/made`)}>
+                                        <Button variant="light" className="shop-creator" onClick={() => navigate(`/${post.tag}/made`)}>
                                             SHOP
                                             <FaShoppingBag style={{marginLeft: '6px', marginBottom: '4px'}}/>
                                         </Button>
@@ -137,23 +137,23 @@ const Home = () => {
                 </div>
                 {creatorPosts && creatorPosts.map((post, index) => {
                         var lastPost = index == creatorPosts.length - 1;
-                        var socialsHTML1 = (post.creator.links) ?
+                        var socialsHTML1 = (post.links) ?
                         (
                             <div className="socials">
-                                {post.creator.links.instagram &&
-                                    <a key={post.creator.links.instagram} className="socials-icon" href={post.creator.links.instagram}><FaInstagram size={35} color='#fff'/></a>
-                                }{post.creator.links.tiktok &&
-                                    <a key={post.creator.links.tiktok} className="socials-icon mb-1" href={post.creator.links.tiktok}><FaTiktok size={35} color='#fff'/></a>
+                                {post.links.instagram &&
+                                    <a key={post.links.instagram} className="socials-icon" href={post.links.instagram}><FaInstagram size={35} color='#fff'/></a>
+                                }{post.links.tiktok &&
+                                    <a key={post.links.tiktok} className="socials-icon mb-1" href={post.links.tiktok}><FaTiktok size={35} color='#fff'/></a>
                                 }
                             </div>
                         ) : '';
-                        var socialsHTML2 = (post.creator.links) ?
+                        var socialsHTML2 = (post.links) ?
                         (
                             <div className="socials">
-                                {post.creator.links.twitch &&
-                                    <a key={post.creator.links.twitch} className="socials-icon-right" href={post.creator.links.twitch}><FaTwitch size={35} color='#fff'/></a>
-                                }{post.creator.links.twitter &&
-                                    <a key={post.creator.links.twitter} className="socials-icon-right" href={post.creator.links.twitter}><FaTwitter size={35} color='#fff'/></a>
+                                {post.links.twitch &&
+                                    <a key={post.links.twitch} className="socials-icon-right" href={post.links.twitch}><FaTwitch size={35} color='#fff'/></a>
+                                }{post.links.twitter &&
+                                    <a key={post.links.twitter} className="socials-icon-right" href={post.links.twitter}><FaTwitter size={35} color='#fff'/></a>
                                 }
                             </div>
                         ):'';
@@ -168,9 +168,9 @@ const Home = () => {
                                 <div className={`slide-info ${(lastPost)?" last-slide":""}`}>
                                     {socialsHTML1}
                                     <div className="slide-creator">
-                                        <span style={{fontSize: '3.5rem'}} className="slide-tag">{post.creator.tag.toUpperCase()}</span>
+                                        <span style={{fontSize: '3.5rem'}} className="slide-tag">{post.tag.toUpperCase()}</span>
                                         <hr/>
-                                        <Button style={{fontSize: '1.2rem'}} variant="light" className="shop-creator" onClick={() => navigate(`/${post.creator.tag}/made`)} size='lg'>
+                                        <Button style={{fontSize: '1.2rem'}} variant="light" className="shop-creator" onClick={() => navigate(`/${post.tag}/made`)} size='lg'>
                                             SHOP
                                             <FaShoppingBag style={{marginLeft: '6px', marginBottom: '4px'}}/>
                                         </Button>

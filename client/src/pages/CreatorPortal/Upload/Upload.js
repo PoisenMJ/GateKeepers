@@ -19,6 +19,7 @@ const Upload = () => {
     const [type, setType] = useState("made");
     const [count, setCount] = useState(null);
     const [sizes, setSizes] = useState(null);
+    const [customSize, setCustomSize] = useState(false);
 
     const [imageOrder, setImageOrder] = useState([]);
     const { username, token } = useContext(AuthContext);
@@ -42,6 +43,9 @@ const Upload = () => {
                 break;
             case 'sizes':
                 setSizes(event.target.value);
+                break;
+            case 'customSize':
+                setCustomSize(event.target.checked);
                 break;
         }
     }
@@ -94,7 +98,7 @@ const Upload = () => {
         
         if(orderList.length === images.length){
             if(images && price && name && description && type && count && sizes){
-                var res = await addProduct(formdata, username, token, imageOrder, images);
+                var res = await addProduct(formdata, username, token, imageOrder, images, customSize);
                 if(res.success) {
                     Flash("Successfully added", "success");
                     navigate('../products');
@@ -152,7 +156,8 @@ const Upload = () => {
                 </Form.Group>
                 <Form.Group>
                     <Form.Text>Enter Sizes</Form.Text>
-                    <Form.Control onChange={handleInputChange} name="sizes" placeholder="'Small, Medium, Large', or '1 Size' ..." className="custom-input mb-2"/>
+                    <Form.Control onChange={handleInputChange} name="sizes" placeholder="'Small, Medium, Large', or '1 Size' ..." className="custom-input"/>
+                    <Form.Check onChange={handleInputChange} name="customSize" label="Allow custom size" className="custom-input"/>
                 </Form.Group>
                 <Form.Group>
                     <Form.Text>Type</Form.Text>

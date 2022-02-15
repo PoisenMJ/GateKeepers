@@ -1,11 +1,10 @@
 const express = require('express');
 const creator = require('../client/src/models/creator');
-const creatorPost = require('../client/src/models/creatorPost');
 const creatorProduct = require('../client/src/models/creatorProduct');
 var router = express.Router();
 
 router.get('/all-posts', (req, res, next) => {
-    creatorPost.find({}).populate('creator', 'links tag -_id').select('-_id ').exec((err, docs) => {
+    creator.find({}).select('-_id image tag links').exec((err, docs) => {
         if(err) return res.status(400).json(err);
         else return res.json(docs);
     })

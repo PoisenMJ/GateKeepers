@@ -41,6 +41,10 @@ const creatorProductSchema = mongoose.Schema({
         type: [String],
         required: true
     },
+    customSize: {
+        type: Boolean,
+        default: false
+    },
     color: {
         type: String
     },

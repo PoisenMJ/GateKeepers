@@ -7,7 +7,7 @@ const ExchangeRates = {
 }
 
 const ShippingPrices = {
-    'united-kingdom': 5.4,
+    'united-kingdom': 0.0,
     'france': 15.2,
     'italy': 18,
     'netherlands': 13.6,

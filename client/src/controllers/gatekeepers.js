@@ -1,8 +1,9 @@
-async function addProduct(data, username, token, order, images){
+async function addProduct(data, username, token, order, images, customSize){
     var data = new FormData(data);
     data.append('username', username);
     data.append('token', token);
     data.append('imageOrder', order);
+    data.append('customSizeAccept', customSize);
 
     for(var i = 0; i < images.length; i++){
         data.append("images", images[i]);
@@ -96,11 +97,10 @@ async function getGatekeeper(username, token){
     return json;
 }
 
-async function updateGatekeeper(jsonData, username){
+async function updateGatekeeper(data, username){
     var res = await fetch(`/gatekeeper/update/${username}`, {
         method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(jsonData)
+        body: data
     });
     var json = await res.json();
     console.log(json);
