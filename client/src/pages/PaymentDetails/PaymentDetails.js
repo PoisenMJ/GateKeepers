@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { CartContext } from '../../services/CartContext';
 import { GetShippingPrice } from '../../services/Shipping';
-import { getProduct } from '../../controllers/creators';
+import { getProduct, getCreatorShippingCountries } from '../../controllers/creators';
 import { checkProduct, getCheckoutUrl } from '../../controllers/payment';
 import { FaArrowRight } from 'react-icons/fa';
 import { Flash } from '../../components/FlashMessage/FlashMessage';
@@ -21,6 +21,7 @@ const PaymentDetails = () => {
     const [streetAddress, setStreetAddress] = useState(null);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [availableShippingCountries, setAvailableShippingCountries] = useState({});
 
     const [productsData, setProductsData] = useState(null);
     const { products, total, setShippingAddress } = useContext(CartContext);
@@ -50,6 +51,7 @@ const PaymentDetails = () => {
     }
 
     useEffect(() => {
+        getCreatorShippingCountries()
         if(products.length > 0){
             var productsArray = []
             const getData = async () => {
@@ -63,15 +65,20 @@ const PaymentDetails = () => {
                         "uri": res.product.uri,
                     });
                 }
+
+                var res = await getCreatorShippingCountries(products[0].creator);
+                var shippingDetails = res.shippingDetails;
+
                 setProductsData(productsArray);
+                setAvailableShippingCountries(shippingDetails);
+                setCountry(Object.keys(shippingDetails)[0]);
+                setShippingPrice(Object.values(shippingDetails)[0]);
             }
             getData();
         } else {
             navigate('/');
         }
         // first country in list
-        setShippingPrice(GetShippingPrice('austria'));
-        setCountry("austria");
     }, []);
 
     const goToStripeCheckout = async event => {
@@ -113,7 +120,7 @@ const PaymentDetails = () => {
 
     const onCountryChange = event => {
         setCountry(event.target.value);
-        setShippingPrice(GetShippingPrice(event.target.value));
+        setShippingPrice(availableShippingCountries[event.target.value]);
     }
 
     return (
@@ -136,17 +143,11 @@ const PaymentDetails = () => {
                     <Form.Group className='text-start'>
                         <Form.Text>Country</Form.Text>
                         <Form.Select required className="custom-input mb-2" onChange={onCountryChange}>
-                            <option value="austria">Austria</option>
-                            <option value="canada">Canada</option>
-                            <option value="france">France</option>
-                            <option value="germany">Germany</option>
-                            <option value="hong-kong">Hong Kong</option>
-                            <option value="italy">Italy</option>
-                            <option value="netherlands">Netherlands</option>
-                            <option value="singapore">Singapore</option>
-                            <option value="south-korea">South Korea</option>
-                            <option value="united-kingdom">United Kingdom</option>
-                            <option value="united-states">United States</option>
+                            {availableShippingCountries && Object.keys(availableShippingCountries).map((country, index) => {
+                                console.log(Object.keys(availableShippingCountries));
+                                return <option value={country} key={index}>{country}</option>
+                            })
+                            }
                         </Form.Select>
                     </Form.Group>
                     <Form.Group className='text-start'>

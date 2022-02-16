@@ -1,9 +1,6 @@
-@media screen and (min-width: 1224px){
+@media screen and (min-width: 1224px) {
     #creator-nav{
-        right: 50%!important;
-        transform: translate(50%, 0);
         width: 60%!important;
-        place-self: center;
     }
 }
 
@@ -15,6 +12,9 @@
 @media screen and (min-width: 600px) {
     #creator-nav{
         width: 85%!important;
+        right: 50%!important;
+        transform: translate(50%, 0);
+        place-self: center;
     }
 }
 
@@ -26,11 +26,11 @@
 }
 #creator-nav{
     background-color: rgb(10,10,10);
-    width: 77.5%;
+    width: 82%;
     position: fixed;
     z-index: 999;
-    top: 10px;
-    right: 10px;
+    top: 0px;
+    right: 0;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     justify-content: center;

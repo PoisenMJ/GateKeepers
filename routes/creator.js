@@ -68,4 +68,11 @@ router.get('/:creatorTag', (req, res, next) => {
     })
 })
 
+router.get('/shipping/:creatorTag', (req, res, next) => {
+    creator.findOne({ tag: req.params.creatorTag }).select('-_id shippingDetails').then((docs, err) => {
+        if(err) return res.json({ success: false });
+        else return res.json({ success: true, shippingDetails: docs.shippingDetails });
+    })
+})
+
 module.exports = router;

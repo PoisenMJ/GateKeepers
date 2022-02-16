@@ -12,7 +12,7 @@ import { Mobile, Desktop } from '../../components/Query';
 const ProductPage = () => {
     let navigate = useNavigate();
     const [product, setProduct] = useState(null);
-    const [size, setSize] = useState(null);
+    const [size, setSize] = useState('');
     const { productURI, type } = useParams();
     const [purchasable, setPurchasable] = useState(false);
     const [customSize, setCustomSize] = useState('');
@@ -33,7 +33,11 @@ const ProductPage = () => {
     const selectSize = (_size) => {
         setSize(_size.trim());
     }
-    const updateCustomSize = event => setCustomSize(event.target.value.trim());
+    const updateCustomSize = event => {
+        var input = event.target.value.trim();
+        setCustomSize(input);
+        if(input) setSize('');
+    }
 
     const AddToCart = (_uri, _size, _price, _name, _creator, _count, _type) => {
         if(_count > 0){
@@ -45,8 +49,9 @@ const ProductPage = () => {
                 creator: _creator,
                 type: _type
             };
-            addToCart(productJSON);
-            Flash("Added to cart", "dark");
+            var success = addToCart(productJSON);
+            if(success) Flash("Added to cart", "dark");
+            else Flash("Can't have multiple creator products in cart", "warning");
         } else Flash("No products left", "dark");
     }
 

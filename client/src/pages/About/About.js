@@ -16,19 +16,10 @@ const About = () => {
                 <Accordion.Item eventKey={1} className="about-accordion-item">
                     <Accordion.Header className="about-accordion-header">FAQ</Accordion.Header>
                     <Accordion.Body className="about-accordion-body">
-                            <span>COUNTRIES:</span><br/>
-                            <span style={{fontSize: '.95rem'}} className="text-muted">Currently shipping to:
-                                    <br/>■ Austria<br/>
-                                    ■ Canada<br/>
-                                    ■ France<br/>
-                                    ■ Germany<br/>
-                                    ■ Hong Kong<br/>
-                                    ■ Italy<br/>
-                                    ■ Netherlands<br/>
-                                    ■ Singapore<br/>
-                                    ■ South Korea<br/>
-                                    ■ United Kingdom<br/>
-                                    ■ United States<br/></span><br/>
+                            <span>SHIPPING:</span><br/>
+                                <span style={{fontSize: '.95rem'}} className="text-muted">
+                                    Each creator will ship to countries of their choosing you can view the list of each creators shipping countries under their respective product pages. They may update what countries they ship to depending on demand.
+                                </span><br/><br/>
                             <span>DELIVERY:</span><br/>
                             <span style={{fontSize: '.95rem'}} className="text-muted">Delivery times is roughly a week you will recieve an email with the tracking number when it has been posted.</span><br/><br/>
                             <span>AVAILABILITY:</span><br/>

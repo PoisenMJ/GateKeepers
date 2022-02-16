@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { getGatekeeper, updateGatekeeper } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext';
-import { Button, Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap';
+import { Button, CloseButton, Col, Form, InputGroup, Row } from 'react-bootstrap';
 import './CreatorProfile.css';
 import { FaInstagram, FaTiktok, FaTwitch, FaTwitter } from 'react-icons/fa';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
 import { useNavigate } from 'react-router';
-import Compressor from 'compressorjs';
+import { ShippingCountries } from '../../../services/Shipping';
 
 const CreatorProfile = () => {
     let navigate = useNavigate();
@@ -87,10 +87,9 @@ const CreatorProfile = () => {
         formData.append('name', name);
         formData.append('email', email);
         formData.append('creatorImage', (typeof image === 'src') ? '' : image);
-        formData.append('shippingDetails', shippingDetails);
+        formData.append('shippingDetails', JSON.stringify(shippingDetails));
         formData.append('username', username);
         formData.append('token', token);
-        console.log(formData);
 
         if(password && confPassword){
             if(password !== confPassword) return Flash("Password Don't Match", "dark");
@@ -107,9 +106,13 @@ const CreatorProfile = () => {
     }
 
     const addCountry = () => {
-        var a = shippingDetails;
         var b = {...shippingDetails, 'new-country': true};
         setShippingDetails(b);
+    }
+    const removeCountry = (event, country) => {
+        var a = {...shippingDetails};
+        delete a[country];
+        setShippingDetails(a);
     }
     const updateCountry = (event, country) => {
         var a = {...shippingDetails};
@@ -129,17 +132,10 @@ const CreatorProfile = () => {
         var imageInput = document.getElementById("creator-profile-image-upload");
         imageInput.click();
         imageInput.onchange = function(event){
-            console.log(event);
             var newFile = new File([event.target.files[0]], event.target.files[0].name, {
                 type: event.target.files[0].type
             });
             setImage(newFile);
-
-            // new Compressor(event.target.files[0], {
-            //     quality: 0.7,
-            //     success(result){
-            //     }
-            // })
         }
     }
 
@@ -156,13 +152,19 @@ const CreatorProfile = () => {
                         {shippingDetails && Object.entries(shippingDetails).map((country, index) => {
                             return (
                                 <Row className="g-1 mb-1" key={index}>
-                                    <Col className="col-8"><Form.Control onChange={(e) => updateCountry(e, country[0])} type="text" defaultValue={country[0]} className="custom-input"/></Col>
+                                    <Col className="col-8">
+                                        <Form.Select onChange={(e) => updateCountry(e, country[0])} defaultValue={country[0]} className="custom-input">
+                                            {ShippingCountries.map((country2, index2) => (
+                                                <option value={country2} key={index2}>{country2}</option>
+                                            ))}
+                                        </Form.Select></Col>
                                     <Col>
                                         <InputGroup>
                                             <InputGroup.Text className="custom-input">£</InputGroup.Text>
                                             <Form.Control step={.1} type="number" onChange={(e) => updatePrice(e, country[0])} defaultValue={country[1]} className="custom-input"/>
                                         </InputGroup>
                                     </Col>
+                                    <CloseButton style={{placeSelf: 'center'}} onClick={(e) => removeCountry(e, country)}/>
                                 </Row>
                             )
                         })}

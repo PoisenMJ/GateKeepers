@@ -28,10 +28,26 @@ async function getProduct(productURI, type){
     return json;
 }
 
+async function getCreatorShippingCountries(creatorTag){
+    var res = await fetch(`/creator/shipping/${creatorTag}`);
+    var json = await res.json();
+    return json;
+}
+
+async function getMultipleCreatorsShippingCountries(...creators){
+    var res = await fetch('/creator/shipping/multiple', {
+        method: "POST",
+        body: JSON.stringify({
+            users: creators
+        })
+    })
+}
+
 export {
     getCreatorPosts,
     getOwnProducts,
     getMadeProducts,
     getCreators,
-    getProduct
+    getProduct,
+    getCreatorShippingCountries
 };

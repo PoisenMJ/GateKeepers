@@ -12,10 +12,16 @@
         justify-self: center;
         height: 90vh!important;
     }
-    .item{ display: grid; width: 100%!important; height: auto!important; }
+    .item{ 
+        display: grid;
+        width: 100%!important;
+        height: auto!important;
+    }
     #product-image{
         height: 90vh!important;
         justify-self: center;
+        padding-bottom: 20px;
+        padding-left: 20px;
     }
     #product-info-details-add{
         width: 100%!important;

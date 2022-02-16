@@ -5,18 +5,12 @@ import { getProduct } from '../../controllers/creators';
 import './ShoppingBasket.css';
 import { FaArrowRight } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
-import { AuthContext } from '../../services/AuthContext';
 
 const ShoppingBasket = () => {
     let navigate = useNavigate();
     
-    const { products, total, removeFromCart, clearCart } = useContext(CartContext);
-    const { username } = useContext(AuthContext);
+    const { products, total, removeFromCart } = useContext(CartContext);
     const [productsData, setProductsData] = useState(null);
-
-    // localStorage.removeItem('cart');
-    // localStorage.removeItem('cartTotal');
-    // console.log(total);
     
     useEffect(() => {
         console.log(products);
@@ -53,9 +47,11 @@ const ShoppingBasket = () => {
 
     return (
         <div id="shopping-basket" className='text-center'>
-            <span className="fs-1">▣ BASKET ▣</span>
-            <hr className="mx-5"/>
-            <div id="shopping-basket-products" className="mb-3">
+            <div style={{alignSelf: 'start'}}>
+                <span className="fs-1">▣ BASKET ▣</span>
+                <hr className="mx-5"/>
+            </div>
+            <div id="shopping-basket-products">
                 {productsData ?
                     productsData.map((product, index) => {
                         return (
@@ -84,13 +80,13 @@ const ShoppingBasket = () => {
                         </div>
                     </div>
                 }
-                {productsData &&
-                    <div id="shopping-basket-totals">
-                        <span className='fs-2 shopping-basket-total-work'>TOTAL:   £{total}</span>
-                        <Button className="shopping-basket-proceed" onClick={goToPaymentDetails} variant="dark">Proceed<FaArrowRight style={{marginLeft: '6px', marginBottom: '3px'}}/></Button>
-                    </div>
-                }
             </div>
+            {productsData &&
+                <div id="shopping-basket-totals">
+                    <span className='fs-2 shopping-basket-total-work'>TOTAL:   £{total}</span>
+                    <Button className="shopping-basket-proceed" onClick={goToPaymentDetails} variant="dark">Proceed<FaArrowRight style={{marginLeft: '6px', marginBottom: '3px'}}/></Button>
+                </div>
+            }
         </div>
     )
 }

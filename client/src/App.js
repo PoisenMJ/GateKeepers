@@ -56,14 +56,14 @@ function App() {
             </Route>
             
             // products routes
-            <Route path=":creator" element={ <PageLayout header={<Header navbar={<Navbar/>} body={<NonCreatorRoute/>} navigation={<ProductsNavbar/>}/>} cartEnabled={true} />}>
+            <Route path=":creator" element={ <PageLayout header={<Header navbar={<Navbar/>} body={<NonCreatorRoute/>} navigation={<ProductsNavbar/>}/>} cartEnabled={false} />}>
               <Route index element={<ProductsPage type="made"/>}/>
               <Route path="own" element={<ProductsPage type="own"/>}/>
               <Route path="made" element={<ProductsPage type="made"/>}/>
               <Route path="customs" element={<CustomsPage/>}/>
               <Route path=":productURI/:type" element={<ProductPage/>}/>
             </Route>
-
+    
             <Route element={<PageLayout header={<Header navbar={<Navbar/>}/>} body={<ProtectedRoute/>} cartEnabled={false}/>}>
               <Route path="profile" element={<Profile/>}/>
             </Route>

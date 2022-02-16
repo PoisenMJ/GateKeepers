@@ -13,4 +13,17 @@ const Desktop = ({ children }) => (
     </MediaQuery>
 )
 
-export { Mobile, Desktop };
+const CartMobileBreakpoint = ({ children }) => (
+    <MediaQuery maxWidth={600}>
+        {children}
+    </MediaQuery>
+)
+
+const CartDesktopBreakpoint = ({ children }) => (
+    <MediaQuery minWidth={600}>
+        {children}
+    </MediaQuery>
+)
+
+export { Mobile, Desktop,
+    CartDesktopBreakpoint, CartMobileBreakpoint};

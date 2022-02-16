@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
 import { CartContext } from '../../services/CartContext';
 import { useNavigate } from 'react-router';
 import './Cart.css';
 
-const Cart = ({clicked}) => {
+const Cart = ({clicked, inNavigation}) => {
     let navigate = useNavigate();
     const { products } = useContext(CartContext);
 
@@ -14,9 +14,9 @@ const Cart = ({clicked}) => {
     }
 
     return (
-        <div className="cart-button fs-3" onClick={navigateToShoppingBasket}>
+        <div className={inNavigation ? "cart-button fs-3" : "cart-button-lone fs-3"} onClick={navigateToShoppingBasket}>
             {products.length}
-            <FaShoppingCart className="cart-icon" color='#fff' size={30}/>
+            <FaShoppingCart style={{marginBottom: '4px'}} className="cart-icon" color='#fff' size={30}/>
         </div>
     )
 }

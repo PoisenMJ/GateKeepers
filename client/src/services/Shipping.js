@@ -18,9 +18,34 @@ const ShippingPrices = {
     'hong-kong': 13.4,
     'singapore': 18.2,
     'south-korea': 17.8,
-
 }
+
+const ShippingCountries = [
+    'United Kingdom',
+    'United States',
+    'Canada',
+    'Germany',
+    'France',
+    'Spain',
+    'China',
+    'Hong Kong',
+    'Japan',
+    'Taiwan',
+    'Netherlands',
+    'Sweden',
+    'Denmark',
+    'Austria',
+    'Australia',
+    'New Zealand',
+    'India',
+    'Poland',
+    'Russia',
+    'Italy',
+    'Finland',
+    'Norway',
+    'Scotland'
+]
 
 const GetShippingPrice = (country) => ShippingPrices[country];
 
-export { GetShippingPrice }
+export { GetShippingPrice, ShippingCountries }

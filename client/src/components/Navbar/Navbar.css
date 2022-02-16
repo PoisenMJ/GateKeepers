@@ -1,7 +1,7 @@
 .toggle{
     position: fixed;
-    top: 10px;
-    left: 20px;
+    top: 5px;
+    left: 15px;
     z-index: 1001;
 }
 .toggle a{
@@ -23,13 +23,25 @@
     transition: 0.5s;
 }
 @media screen and (min-width: 1224px){
+    .toggle{
+        left: 25px!important;
+    }
     #menu{
-        width: 20%!important;
-        box-shadow: 4px 0px 3px 0px rgba(201, 201, 201, 0.5);
+        width: 22.5%!important;
+        box-shadow: 4px 0px 3px 0px rgba(201, 201, 201, 0.5)!important;
     }
     .navbar-ul{
         left: 45%!important;
     }
+}
+@media screen and (min-width: 1000px) and (max-width: 1223px){
+    #menu{
+        width: 30%!important;
+        box-shadow: 4px 0px 3px 0px rgba(201, 201, 201, 0.5)!important;
+    }
+}
+.navbar-ul{
+    padding-right: 10px;
 }
 .creator {
     font-size: .85rem;

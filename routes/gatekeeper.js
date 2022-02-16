@@ -210,7 +210,7 @@ router.post('/update/:creatorTag', upload.single('creatorImage'), gatekeeperChec
             twitter: req.body.twitterLink ? req.body.twitterLink : '',
             twitch: req.body.twitchLink ? req.body.twitchLink : ''
         },
-        shippingDetails: req.body.shippingDetails,
+        shippingDetails: JSON.parse(req.body.shippingDetails),
         name: req.body.name ? req.body.name : '',
         email: req.body.email ? req.body.email : ''
     }}).then((doc, err) => {

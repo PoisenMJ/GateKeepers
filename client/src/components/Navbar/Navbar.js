@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './Navbar.css';
-import { FaBars, FaInstagram, FaSignOutAlt, FaSortDown, FaTwitter } from 'react-icons/fa';
+import { FaBars, FaInstagram, FaSignOutAlt, FaChevronDown, FaTwitter, FaChevronUp } from 'react-icons/fa';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { getCreators } from '../../controllers/creators';
 import Cart from '../Cart/Cart';
 import { LogOut } from '../../services/auth';
 
 import { AuthContext } from '../../services/AuthContext';
-import { Mobile } from '../Query';
+import { CartMobileBreakpoint } from '../Query';
 import { CartContext } from '../../services/CartContext';
 
 const Navbar = () => {
     let navigate = useNavigate();
     const [creators, setCreators] = useState(null);
+    const [dropdownToggled, setDropdownToggled] = useState(false);
 
     const { loggedIn, token, setLoggedIn, username, setUsername, setToken } = useContext(AuthContext);
     const { clearCart } = useContext(CartContext);
@@ -28,7 +29,9 @@ const Navbar = () => {
         fetchData();
     }, []);
 
-    const toggleNavbar = () => document.getElementById("menu").classList.toggle("active");
+    const toggleNavbar = () => {
+        document.getElementById("menu").classList.toggle("active");
+    }
     const logOutButton = () => {
         setLoggedIn(false);
         setUsername('');
@@ -45,15 +48,22 @@ const Navbar = () => {
             </div>
 
             <div id="menu">
-                <Mobile>
-                    <Cart clicked={toggleNavbar}/>
-                </Mobile>
+                <CartMobileBreakpoint>
+                    <Cart clicked={toggleNavbar} inNavigation={false}/>
+                </CartMobileBreakpoint>
                 <ul className="navbar-ul">
                     <li><NavLink to="/" className={"mb-2"} onClick={toggleNavbar}>Home</NavLink></li>
                     <li><a href="#" className={"d-flex mb-2"} style={{marginLeft: '40px'}}
-                        onClick={() => document.getElementById("creator-list").classList.toggle("open")}>
+                        onClick={() => {
+                            document.getElementById("creator-list").classList.toggle("open");
+                            setDropdownToggled(!dropdownToggled);
+                            }}>
                         Gatekeepers
-                        <FaSortDown style={{marginLeft: '4px', marginBottom: '3px'}}/></a>
+                        {dropdownToggled ?
+                            <FaChevronUp style={{marginTop: '10px', marginLeft: '10px'}}/>
+                            :<FaChevronDown style={{marginTop: '10px', marginLeft: '10px'}}/>
+                        }
+                        </a>
                         <div id="creator-list">
                             {creators && creators.map((creator, index) => (
                                     <NavLink key={creator.tag} onClick={toggleNavbar} to={`/${creator.tag}/made`} className="mb-1 text-secondary creator">{creator.tag}</NavLink>

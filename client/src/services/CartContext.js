@@ -15,18 +15,23 @@ const CartProvider = ({ children }) => {
     const localProducts = JSON.parse(localStorage.getItem('cart')) || [];
     const localTotal = JSON.parse(localStorage.getItem('cartTotal')) || 0;
     const localShippingAddress = JSON.parse(localStorage.getItem('shippingAddress')) || null;
+    
     const [products, setProducts] = useState(localProducts);
     const [total, setTotal] = useState(localTotal);
     const [shippingAddress, setShippingAddress] = useState(localShippingAddress);
 
     const add = (product) => {
+        for(var i = 0; i < products.length; i++){
+            if(products[i].creator !== product.creator) return false;
+        }
+
         products.push(product);
         setProducts(products);
-        console.log(products);
         setTotal(total+product.price);
 
         localStorage.setItem('cart', JSON.stringify(products));
         localStorage.setItem('cartTotal', total+product.price);
+        return true;
     }
 
     const remove = (product) => {

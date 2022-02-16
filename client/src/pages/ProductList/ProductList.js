@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ProductList.css';
-import { getOwnProducts, getMadeProducts } from '../../controllers/creators';
+import { getOwnProducts, getMadeProducts, getCreatorShippingCountries } from '../../controllers/creators';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const ProductsPage = ({ type }) => {
     const [products, setProducts] = useState(null);
+    const [shippingCountries, setShippingCountries] = useState([]);
     const {creator} = useParams();
     let navigate = useNavigate();
 
@@ -20,6 +21,9 @@ const ProductsPage = ({ type }) => {
                 if(products.success === false) navigate("/");
             }
             setProducts(products.products);
+
+            var res = await getCreatorShippingCountries(creator);
+            if(res.success) setShippingCountries(Object.keys(res.shippingDetails));
         }
         fetchData();
     }, [type, creator])
@@ -32,10 +36,20 @@ const ProductsPage = ({ type }) => {
         <div id="products-page">
             <div className="w-100 text-center mb-3">
                 {type === "own" ?
-                    <span className="text-uppercase">
-                        Worn by @{creator}
-                        <p className="text-lowercase text-muted">Clothes from @{creator}'s own wardrobe.</p>
-                    </span>
+                    <div>
+                        <p className="text-uppercase text-muted fw-bold" style={{marginBottom: '6px'}}>
+                            Clothes from <span className="text-danger">@{creator}'s</span> wardrobe.</p>
+                        {shippingCountries.length > 0 &&
+                            <div style={{display: 'inline'}}>
+                                <span style={{fontSize: '.85rem'}} className="text-secondary">SHIPS TO:    </span>
+                                <select className="black-custom-input" style={{border: 'none', padding: '2px 4px 2px 4px'}}>
+                                    {shippingCountries.map((country, index) => (
+                                        <option key={index}>{country}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        }
+                    </div>
                     :
                     <span className="text-uppercase">
                         Made by @{creator}
@@ -63,7 +77,7 @@ const ProductsPage = ({ type }) => {
                     var strTime = hours + ':' + minutes + ' ' + ampm;
 
                     return (
-                        <div key={product.name} className={"product mb-2"+c} onClick={() => viewProduct(product.uri)}>
+                        <div key={product.name} className={"product mb-3"+c} onClick={() => viewProduct(product.uri)}>
                             <div className="product-image-parent">
                                 <img src={`/images/products/${product.images[product.imageOrder[0]]}`} className={"product-image"+imageC}/>
                                 {available &&
@@ -82,7 +96,7 @@ const ProductsPage = ({ type }) => {
                                 }
                             </div>
                             <div className="product-info">
-                                <span className="fs-4 fw-light">{product.name}</span>
+                                <span className="fs-4 fw-light">◆ {product.name} ◆</span>
                                 <span className="fs-5">£{product.price}</span>
                             </div>
                         </div>
