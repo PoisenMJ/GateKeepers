@@ -34,13 +34,10 @@ async function getCreatorShippingCountries(creatorTag){
     return json;
 }
 
-async function getMultipleCreatorsShippingCountries(...creators){
-    var res = await fetch('/creator/shipping/multiple', {
-        method: "POST",
-        body: JSON.stringify({
-            users: creators
-        })
-    })
+async function getCreatorAccentColor(creatorTag){
+    var res = await fetch(`/creator/accent/${creatorTag}`);
+    var json = await res.json();
+    return json;
 }
 
 export {
@@ -49,5 +46,6 @@ export {
     getMadeProducts,
     getCreators,
     getProduct,
-    getCreatorShippingCountries
+    getCreatorShippingCountries,
+    getCreatorAccentColor
 };

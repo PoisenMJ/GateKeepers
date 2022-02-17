@@ -4,7 +4,7 @@ const creatorProduct = require('../client/src/models/creatorProduct');
 var router = express.Router();
 
 router.get('/all-posts', (req, res, next) => {
-    creator.find({}).select('-_id image tag links').exec((err, docs) => {
+    creator.find({}).select('-_id image tag links accent').exec((err, docs) => {
         if(err) return res.status(400).json(err);
         else return res.json(docs);
     })
@@ -71,7 +71,14 @@ router.get('/:creatorTag', (req, res, next) => {
 router.get('/shipping/:creatorTag', (req, res, next) => {
     creator.findOne({ tag: req.params.creatorTag }).select('-_id shippingDetails').then((docs, err) => {
         if(err) return res.json({ success: false });
-        else return res.json({ success: true, shippingDetails: docs.shippingDetails });
+        else return res.json({ success: true, shippingDetails: docs.toObject().shippingDetails });
+    })
+})
+
+router.get('/accent/:creatorTag', (req, res, next) => {
+    creator.findOne({ tag: req.params.creatorTag }).select('-_id accent').then((docs, err) => {
+        if(err) return res.json({ success: false });
+        else return res.json({ success: true, accentColor: docs.toObject().accent });
     })
 })
 

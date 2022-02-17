@@ -90,7 +90,7 @@ const Home = () => {
                                     {socialsHTML1}
                                     <div className="slide-creator">
                                         <span className="fs-1 slide-tag">{post.tag.toUpperCase()}</span>
-                                        <hr/>
+                                        <p className="custom-divider-white">GK</p>
                                         <Button variant="light" className="shop-creator" onClick={() => navigate(`/${post.tag}/made`)}>
                                             SHOP
                                             <FaShoppingBag style={{marginLeft: '6px', marginBottom: '4px'}}/>
@@ -158,6 +158,11 @@ const Home = () => {
                             </div>
                         ):'';
                         var prevID = (index == 0) ? 'top' : 'slide-'+index;
+                        
+                        var col = post.accent.match(/.{1,2}/g);
+                        var luma = ((0.299 * parseInt(col[0], 16)) + (0.587 * parseInt(col[1], 16)) + (0.114 * parseInt(col[2], 16)));
+                        var textCol = (luma > 0.5) ? '#000': '#fff';
+
                         return(
                             <div className="slide" id={`slide-${index+1}`} key={index}>
                                 <div className="arrow-up-container" onClick={() => prevSlide(prevID)}>
@@ -169,10 +174,10 @@ const Home = () => {
                                     {socialsHTML1}
                                     <div className="slide-creator">
                                         <span style={{fontSize: '3.5rem'}} className="slide-tag">{post.tag.toUpperCase()}</span>
-                                        <hr/>
-                                        <Button style={{fontSize: '1.2rem'}} variant="light" className="shop-creator" onClick={() => navigate(`/${post.tag}/made`)} size='lg'>
+                                        <p className="custom-divider-white">GK</p>
+                                        <Button style={{fontSize: '1.2rem', backgroundColor: post.accent, color: textCol, borderColor: post.accent}} className="shop-creator" onClick={() => navigate(`/${post.tag}/made`)} size='lg'>
                                             SHOP
-                                            <FaShoppingBag style={{marginLeft: '6px', marginBottom: '4px'}}/>
+                                            <FaShoppingBag style={{marginLeft: '6px', marginBottom: '6px'}}/>
                                         </Button>
                                     </div>
                                     {socialsHTML2}

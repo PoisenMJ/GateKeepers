@@ -73,7 +73,7 @@ const CreatorProducts = () => {
             <div id="creator-portal-product-list">
             {filteredProducts && filteredProducts.length > 0 && filteredProducts.map((product, index) => {
                 return (
-                    <div key={product.name} className="product mb-4">
+                    <div key={product.name} className="product mb-4" style={{boxShadow: '1px 1px #3E3E3E, 2px 2px #3E3E3E, 3px 3px #3E3E3E, 4px 4px #3E3E3E, 5px 5px #3E3E3E, 6px 6px #3E3E3E, 7px 7px #3E3E3E, 8px 8px #3E3E3E'}}>
                         <div className="product-image-parent">
                             <img src={`/images/products/${product.images[product.imageOrder[0]]}`} className="product-image"/>
                         </div>

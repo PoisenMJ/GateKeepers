@@ -12,7 +12,7 @@ import './Upload.css';
 
 const Upload = () => {
     let navigate = useNavigate();
-    const [images, setImages] = useState(null);
+    const [images, setImages] = useState([]);
     const [price, setPrice] = useState(0);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -60,24 +60,27 @@ const Upload = () => {
 
     useEffect(() => {
         var imageInput = document.getElementById('image-input');
-        imageInput.onchange = async function(event){
+        imageInput.onchange = function(event){
             var list = [];
             var order = [];
             for(var i = 0; i < event.target.files.length; i++){
                 //compress images
-                new Compressor(event.target.files[i], {
-                    quality: 0.7,
-                    success(result){
-                        var newFile = new File([result], result.name, {
-                            type: result.type
-                        });
-                        list.push(newFile);
-                        if(i === event.target.files.length){
-                            setImages(list);
+                if(i <= 10){
+                    new Compressor(event.target.files[i], {
+                        quality: 0.7,
+                        success(result){
+                            var newFile = new File([result], result.name, {
+                                type: result.type
+                            });
+                            list.push(newFile);
+                            setImages([]);
+                            if(i === event.target.files.length){
+                                setImages(list);
+                            }
                         }
-                    }
-                })
-                order.push(i);
+                    })
+                    order.push(i);
+                } else break;
             }
             setImageOrder(order);
         }
@@ -87,16 +90,18 @@ const Upload = () => {
         event.preventDefault();
         var formdata = document.getElementById('upload-form');
 
-        // check image re-order has right numbers
-        var orderList = [];
+        // check order is valid
+        var orderTotal = 0;
+        var desiredTotal = 0;
         for(var i = 0; i < images.length; i++){
             if(imageOrder[i] <= images.length-1){
-                orderList.push(i);
-            }
+                orderTotal += imageOrder[i]; 
+            } else orderTotal += 100;
+            desiredTotal += i;
         }
 
         
-        if(orderList.length === images.length){
+        if(orderTotal === desiredTotal){
             if(images && price && name && description && type && count && sizes){
                 var res = await addProduct(formdata, username, token, imageOrder, images, customSize);
                 if(res.success) {
@@ -122,25 +127,36 @@ const Upload = () => {
                 <Form.Control onChange={handleInputChange} name="name" type="text" placeholder="Product Name" className="mb-2 custom-input"/>
                 <Form.Control multiple id="image-input" accept="image/jpeg,image/jpg" type="file" className="mb-2 visually-hidden"/>
                 <div id="product-images" className="mb-2">
-                    <Carousel className="carousel mb-3" width={'100%'} height='40vh' dragging>
-                        {images ?
-                            images.map((image, index) => (
-                                <img className="product-upload-image" src={URL.createObjectURL(image)} key={index}/>
-                            ))
+                    <Carousel className="carousel mb-2" width={'100%'} height='40vh' dragging>
+                        {images.length > 0 ? images.map((image, index) => {
+                                return <img className="product-upload-image" src={URL.createObjectURL(image)} key={index+"1"}/>
+                            })
                             :
                             <img className="product-upload-image" src="/images/default.jpg"/>
                         }
                     </Carousel>
                     <Button onClick={openFileInput} variant="secondary" className="w-100 mb-1 radius-zero">Set Images</Button>
                 </div>
-                <Form.Text>Image Order</Form.Text>
-                <div id="image-order" className="mb-2">
-                    {imageOrder.length > 0 &&
-                        imageOrder.map((order, index) => (
-                            <Form.Control className="black-custom-input image-order-element" key={index} type="number" defaultValue={imageOrder[index]+1} onChange={(e) => changeImageOrder(e, index)}/>
-                        ))
-                    }
-                </div>
+                {images &&
+                    <div>
+                        <Form.Text>Image Order</Form.Text>
+                        <div id="image-order" className="mb-2">
+                            {imageOrder.length > 0 &&
+                                imageOrder.map((order, index) => {
+                                    return(
+                                        <div className="order-image-parent">
+                                            {images[index] && 
+                                                <img src={URL.createObjectURL(images[index])} className="image-order-picture"/>
+                                            }
+                                            <Form.Control className="image-order-element" key={index} type="number" defaultValue={order+1} onChange={(e) => changeImageOrder(e, index)}/>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+                }
+
                 <Form.Group>
                     <Form.Text>Price</Form.Text>
                     <InputGroup>

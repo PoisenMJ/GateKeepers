@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import './ProductList.css';
-import { getOwnProducts, getMadeProducts, getCreatorShippingCountries } from '../../controllers/creators';
+import './ProductList.scss';
+import { getOwnProducts, getMadeProducts, getCreatorShippingCountries, getCreatorAccentColor } from '../../controllers/creators';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const ProductsPage = ({ type }) => {
     const [products, setProducts] = useState(null);
     const [shippingCountries, setShippingCountries] = useState([]);
+    const [accentColor, setAccentColor] = useState('#000000');
     const {creator} = useParams();
     let navigate = useNavigate();
 
@@ -24,6 +25,8 @@ const ProductsPage = ({ type }) => {
 
             var res = await getCreatorShippingCountries(creator);
             if(res.success) setShippingCountries(Object.keys(res.shippingDetails));
+            var res = await getCreatorAccentColor(creator);
+            if(res.success) setAccentColor(res.accentColor);
         }
         fetchData();
     }, [type, creator])
@@ -35,10 +38,13 @@ const ProductsPage = ({ type }) => {
     return (
         <div id="products-page">
             <div className="w-100 text-center mb-3">
-                {type === "own" ?
-                    <div>
-                        <p className="text-uppercase text-muted fw-bold" style={{marginBottom: '6px'}}>
-                            Clothes from <span className="text-danger">@{creator}'s</span> wardrobe.</p>
+                    <div className='mb-2'>
+                        {type === "own" ?
+                            <p className="text-muted fw-bold fs-5" style={{marginBottom: '6px', fontVariant: 'small-caps'}}>
+                                Clothes from <span style={{color: accentColor}}>@{creator}'s</span> wardrobe.</p>
+                            :<p className="text-muted fw-bold fs-5" style={{marginBottom: '6px', fontVariant: 'small-caps'}}>
+                                Clothes hand made by <span style={{color: accentColor}}>@{creator}</span>.</p>
+                        }
                         {shippingCountries.length > 0 &&
                             <div style={{display: 'inline'}}>
                                 <span style={{fontSize: '.85rem'}} className="text-secondary">SHIPS TO:    </span>
@@ -50,21 +56,16 @@ const ProductsPage = ({ type }) => {
                             </div>
                         }
                     </div>
-                    :
-                    <span className="text-uppercase">
-                        Made by @{creator}
-                        <p className="text-lowercase text-muted">Clothes hand made by @{creator}.</p>
-                    </span>
-                }
+                    <p className="custom-divider">GK</p>
             </div>
-            <hr className="mx-5"/>
+            {/* <hr className="mx-5"/> */}
             <div id="products">
                 {products && products.map((product, index) => {
                     var date = new Date(product.dateToPost);
                     var available = (new Date() < date);
                     var outOfStock = (product.count <= 0);
                     // if not ready yet change class
-                    var c = (available) ? ' unavailable-product' : (outOfStock) ? ' out-of-stock-product' : '';
+                    var c = (outOfStock) ? ' out-of-stock-product' : (available) ? ' unavailable-product' : '';
                     var imageC = (available || outOfStock) ? ' unavailable-product-image' : '';
                     
                     // time format
@@ -77,10 +78,13 @@ const ProductsPage = ({ type }) => {
                     var strTime = hours + ':' + minutes + ' ' + ampm;
 
                     return (
-                        <div key={product.name} className={"product mb-3"+c} onClick={() => viewProduct(product.uri)}>
+                        <div key={product.name}
+                            className={"product mb-3"+c} 
+                            onClick={() => viewProduct(product.uri)}
+                            style={{boxShadow: `1px 1px ${accentColor}, 2px 2px ${accentColor}, 3px 3px ${accentColor}, 4px 4px ${accentColor}, 5px 5px ${accentColor}, 6px 6px ${accentColor}, 7px 7px ${accentColor}, 8px 8px ${accentColor}`}}>
                             <div className="product-image-parent">
                                 <img src={`/images/products/${product.images[product.imageOrder[0]]}`} className={"product-image"+imageC}/>
-                                {available &&
+                                {available && !outOfStock &&
                                         <span className="product-image-text">
                                             RELEASING SOON
                                             <br/>

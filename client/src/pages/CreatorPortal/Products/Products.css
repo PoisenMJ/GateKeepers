@@ -21,6 +21,8 @@
     display: grid;
     width: 100%;
     grid-template-columns: 50% 50%;
+    padding: 0rem 1rem;
+    margin-bottom: 1rem;
 }
 .border2{
     border-width: 3px!important;

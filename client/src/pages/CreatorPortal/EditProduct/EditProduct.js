@@ -14,7 +14,7 @@ const EditProduct = () => {
     var {productID} = useParams();
     const [product, setProduct] = useState(null);
     const { username, token } = useContext(AuthContext);
-    const [images, setImages] = useState(null);
+    const [images, setImages] = useState([]);
     const [cleared, setCleared] = useState(false);
     const [imageOrder, setImageOrder] = useState([]);
     const [customSize, setCustomSize] = useState(false);
@@ -35,19 +35,22 @@ const EditProduct = () => {
             var order = [];
             for(var i = 0; i < event.target.files.length; i++){
                 //compress images
-                new Compressor(event.target.files[i], {
-                    quality: 0.7,
-                    success(result){
-                        var newFile = new File([result], result.name, {
-                            type: result.type
-                        });
-                        list.push(newFile);
-                        if(i === event.target.files.length){
-                            setImages(list);
+                if(i <= 10){
+                    new Compressor(event.target.files[i], {
+                        quality: 0.7,
+                        success(result){
+                            var newFile = new File([result], result.name, {
+                                type: result.type
+                            });
+                            list.push(newFile);
+                            setImages([]);
+                            if(i === event.target.files.length){
+                                setImages(list);
+                            }
                         }
-                    }
-                })
-                order.push(i);
+                    })
+                    order.push(i);
+                } else break;
             }
             setImages(list);
             setCleared(true);
@@ -72,14 +75,16 @@ const EditProduct = () => {
         event.preventDefault();
 
         // check order is valid
-        var count = [...imageOrder];
-        var length = count.length;
-        for(var i = 0; i < length; i++){
-            var search = count.indexOf(i);
-            if(search !== -1) count.splice(search, 1);
+        var orderTotal = 0;
+        var desiredTotal = 0;
+        for(var i = 0; i < images.length; i++){
+            if(imageOrder[i] <= images.length-1){
+                orderTotal += imageOrder[i]; 
+            } else orderTotal += 100;
+            desiredTotal += i;
         }
 
-        if(count.length === 0){
+        if(orderTotal === desiredTotal){
             var form = document.getElementById('creator-portal-edit-form');
             var data = new FormData(form);
             
@@ -112,7 +117,7 @@ const EditProduct = () => {
                     <div id="creator-portal-images" className="mb-3">
                         <Desktop>
                             <Carousel className="carousel custom-upload-creator-carousel mb-2" dragging>
-                                {images ?
+                                {images.length > 0 ?
                                     images.map((image, index) => 
                                     {
                                         var imageSRC = (typeof images[index] === 'string') ? `/images/products/${images[index]}` : URL.createObjectURL(images[index]); 
@@ -127,10 +132,10 @@ const EditProduct = () => {
                         </Desktop>
                         <Mobile>
                             <Carousel className="carousel mb-2" width={'100%'} height='100%' dragging>
-                                {images ?
+                                {images.length > 0 ?
                                     images.map((image, index) => 
                                     {
-                                        var imageSRC = (typeof images[index] === 'string') ? `/images/products/${images[index]}` : URL.createObjectURL(images[index]); 
+                                        var imageSRC = (typeof image === 'string') ? `/images/products/${image}` : URL.createObjectURL(image); 
                                         return(
                                             <img className="creator-portalproduct-upload-image" src={imageSRC} key={index}/>
                                         )
@@ -144,12 +149,32 @@ const EditProduct = () => {
                     </div>
                     {product &&
                         <div>
-                            <Form.Text>Image Order</Form.Text>
+                            {images &&
+                                <div>
+                                    <Form.Text>Image Order</Form.Text>
+                                    <div id="image-order" className="mb-2">
+                                        {imageOrder.length > 0 &&
+                                            imageOrder.map((order, index) => {
+                                                var imageSRC = (typeof images[index] === 'string') ? `/images/products/${images[index]}` : URL.createObjectURL(images[index]);
+                                                return(
+                                                    <div className="order-image-parent">
+                                                        {images[index] && 
+                                                            <img src={imageSRC} className="image-order-picture"/>
+                                                        }
+                                                        <Form.Control className="image-order-element" key={index} type="number" defaultValue={order+1} onChange={(e) => updateOrder(e, index)}/>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            {/* <Form.Text>Image Order</Form.Text>
                             <div id="edit-image-order" className="mb-2">
                                 {product && product.imageOrder.map((order, index) => (
                                     <Form.Control onChange={(e) => updateOrder(e, index)} type="number" defaultValue={order+1} className="black-custom-input"/>
                                 ))}
-                            </div>
+                            </div> */}
                             <Form.Text>Name</Form.Text>
                             <Form.Control required name="name" type="text" defaultValue={product.name} className="mb-2 custom-input"/>
                             <Form.Text>Price</Form.Text>

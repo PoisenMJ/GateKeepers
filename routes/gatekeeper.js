@@ -196,7 +196,6 @@ router.post('/update/:creatorTag', upload.single('creatorImage'), gatekeeperChec
                     Creator.findOneAndUpdate({ tag: username }, { $set: {
                         image: req.file.filename
                     }}).then((doc2, err2) => {
-                        console.log(err2);
                         console.log(doc2);
                     })
                 });
@@ -211,6 +210,7 @@ router.post('/update/:creatorTag', upload.single('creatorImage'), gatekeeperChec
             twitch: req.body.twitchLink ? req.body.twitchLink : ''
         },
         shippingDetails: JSON.parse(req.body.shippingDetails),
+        accent: req.body.accent,
         name: req.body.name ? req.body.name : '',
         email: req.body.email ? req.body.email : ''
     }}).then((doc, err) => {

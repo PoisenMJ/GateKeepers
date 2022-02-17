@@ -19,6 +19,7 @@ const CreatorProfile = () => {
     const [name, setName] = useState('');
     const [image, setImage] = useState('');
     const [email, setEmail] = useState('');
+    const [accentColor, setAccentColor] = useState('');
 
     const [dataFetched, setDataFetched] = useState(false);
     const [password, setPassword] = useState('');
@@ -38,6 +39,7 @@ const CreatorProfile = () => {
                 setName(data.user.name);
                 setEmail(data.user.email);
                 setShippingDetails(data.user.shippingDetails);
+                setAccentColor(data.user.accent);
                 setDataFetched(true);
             }
             else {
@@ -73,6 +75,9 @@ const CreatorProfile = () => {
             case "confPassword":
                 setConfPassword(event.target.value);
                 break;
+            case "accent":
+                setAccentColor(event.target.value);
+                break;
         }
     }
 
@@ -90,6 +95,7 @@ const CreatorProfile = () => {
         formData.append('shippingDetails', JSON.stringify(shippingDetails));
         formData.append('username', username);
         formData.append('token', token);
+        formData.append('accent', accentColor);
 
         if(password && confPassword){
             if(password !== confPassword) return Flash("Password Don't Match", "dark");
@@ -177,6 +183,10 @@ const CreatorProfile = () => {
                             <div id="creator-image-src-overlay">Click to change</div>
                         </div>
                         <Form.Control accept='image/gif' className='visually-hidden' type='file' id='creator-profile-image-upload'/>
+                    </div>
+                    <div className='mb-2'>
+                        <span>ACCENT</span>
+                        <Form.Control value={accentColor} name="accent" onChange={handleInputChange} type="color" className='w-100'/>
                     </div>
                     <div id="creator-profile-socials" className="mb-3">
                         <span>SOCIALS</span>

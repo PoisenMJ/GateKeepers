@@ -38,6 +38,10 @@ const creatorSchema = mongoose.Schema({
     shippingDetails: {
         type: Object,
         default: {'united-kingdom': 0.0}
+    },
+    accent: {
+        type: String,
+        default: '#000000'
     }
 });
 
