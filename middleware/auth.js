@@ -19,7 +19,6 @@ module.exports.userCheck = async function userCheck(req, res, next){
     if(key){
         var signingKey = Buffer.from(key, 'base64');
         nJwt.verify(token, signingKey, function(err, verifiedJwt){
-            console.log(verifiedJwt);
             if(err){
                 return res.json({ success: false });
             } else {

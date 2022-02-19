@@ -42,7 +42,6 @@ async function checkCreatorToken() {
 }
 
 function LogOut(){
-    console.log("Log Out");
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     localStorage.removeItem("auth");

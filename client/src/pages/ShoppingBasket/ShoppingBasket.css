@@ -6,7 +6,7 @@
     #shopping-basket-totals{
         width: 50%!important;
     }
-    .shopping-basket-total-work{ justify-self: center;}
+    .shopping-basket-total-work{ justify-self: start;}
     .shopping-basket-product-name{
         width: initial!important;
     }

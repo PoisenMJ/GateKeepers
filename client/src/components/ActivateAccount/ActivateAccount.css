@@ -7,5 +7,7 @@
     color: white!important;
     box-shadow: none!important;
     border-radius: 0!important;
+    border: black;
+    padding: 4px 0px 4px 0px;
 }
 .radius-zero{ border-radius: 0!important; }

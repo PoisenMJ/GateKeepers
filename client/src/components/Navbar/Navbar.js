@@ -44,7 +44,7 @@ const Navbar = () => {
     return (
         <div>
             <div className="toggle" onClick={toggleNavbar}>
-                <FaBars style={{cursor: 'pointer', top: '10px', position: 'relative'}} size={30}/>
+                <FaBars style={{cursor: 'pointer', padding: '5px', color: 'white'}} size={40}/>
             </div>
 
             <div id="menu">

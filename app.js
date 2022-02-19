@@ -34,6 +34,7 @@ app.use('/gatekeeper', gatekeeperRouter);
 app.use('/payment', paymentRouter);
 
 app.use(express.static(path.join(__dirname, './client/build')))
+app.use(express.static(path.join(__dirname, './client/public/')))
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler

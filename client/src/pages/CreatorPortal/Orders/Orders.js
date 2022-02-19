@@ -29,7 +29,6 @@ const CreatorsOrders = () => {
 
     const sendMarkOrderSent = async (orderID, index) => {
         var res = await markOrderSent(orderID, username, token);
-        console.log(res);
         if(res.success){
             var a = orders;
             a[index].sent = true;
@@ -37,7 +36,7 @@ const CreatorsOrders = () => {
             setOrders([]);
             setOrders(a);
         } else {
-            console.log('failed');
+            // console.log('failed');
         }
     }
 

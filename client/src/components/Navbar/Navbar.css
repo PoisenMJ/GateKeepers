@@ -1,8 +1,9 @@
 .toggle{
     position: fixed;
-    top: 5px;
-    left: 15px;
+    top: 10px;
+    left: 10px;
     z-index: 1001;
+    background-color: rgb(60,60,60);
 }
 .toggle a{
     text-decoration: none;

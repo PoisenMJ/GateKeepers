@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ProductList.scss';
 import { getOwnProducts, getMadeProducts, getCreatorShippingCountries, getCreatorAccentColor } from '../../controllers/creators';
 import { useParams, useNavigate } from 'react-router-dom';
+import { FaChevronDown } from 'react-icons/fa';
 
 const ProductsPage = ({ type }) => {
     const [products, setProducts] = useState(null);
@@ -48,10 +49,10 @@ const ProductsPage = ({ type }) => {
                         {shippingCountries.length > 0 &&
                             <div style={{display: 'inline'}}>
                                 <span style={{fontSize: '.85rem'}} className="text-secondary">SHIPS TO:    </span>
-                                <select className="black-custom-input" style={{border: 'none', padding: '2px 4px 2px 4px'}}>
-                                    {shippingCountries.map((country, index) => (
-                                        <option key={index}>{country}</option>
-                                    ))}
+                                <select className="black-custom-input apple-select" style={{border: 'none', padding: '2px 4px 2px 4px'}}>
+                                    {shippingCountries.map((country, index) => {
+                                        return <option key={index}>{country}</option>
+                                    })}
                                 </select>
                             </div>
                         }

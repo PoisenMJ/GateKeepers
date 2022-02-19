@@ -103,7 +103,6 @@ async function updateGatekeeper(data, username){
         body: data
     });
     var json = await res.json();
-    console.log(json);
     return json;
 }
 

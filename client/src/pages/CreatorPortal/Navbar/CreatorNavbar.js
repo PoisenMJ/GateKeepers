@@ -22,7 +22,7 @@ const CreatorNavbar = () => {
     return (
         <div>
             <div className="toggle" onClick={toggleNavbar}>
-                <FaBars style={{cursor: 'pointer', top: '10px', position: 'relative', backgroundColor: 'rgba(255,255,255,0.5)', paddingLeft: '3px', paddingRight: '3px'}} size={30}/>
+                <FaBars style={{cursor: 'pointer', padding: '5px', color: 'white'}} size={40}/>
             </div>
 
             <div id="menu">

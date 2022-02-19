@@ -144,7 +144,6 @@ const PaymentDetails = () => {
                         <Form.Text>Country</Form.Text>
                         <Form.Select required className="custom-input mb-2" onChange={onCountryChange}>
                             {availableShippingCountries && Object.keys(availableShippingCountries).map((country, index) => {
-                                console.log(Object.keys(availableShippingCountries));
                                 return <option value={country} key={index}>{country}</option>
                             })
                             }

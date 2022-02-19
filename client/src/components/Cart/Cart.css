@@ -31,9 +31,7 @@
     cursor: pointer;
     transition: .15s;
     z-index: 199;
-    width: fit-content;
-    height: fit-content;
-    padding: .6rem .8rem;
+    padding: .6rem .8rem .6rem .8rem;
     position: absolute;
     top: 10px;
     right: 10px;

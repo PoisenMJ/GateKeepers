@@ -11,7 +11,7 @@ const PageLayout = ({ header, body, footer, cartEnabled}) => {
         <div id="page-layout">
             <CartDesktopBreakpoint>
                 {cartEnabled === true &&
-                    <Cart clicked={() => console.log('1')} inNavigation={false}/>
+                    <Cart clicked={() => {}} inNavigation={false}/>
                 }
             </CartDesktopBreakpoint>
             {header}

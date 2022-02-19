@@ -72,16 +72,14 @@ const AuthVerify = (props) => {
         if(username && token && loggedIn){
             const decodedJwt = parseJwt(token);
             if(decodedJwt.exp * 1000 < Date.now()) {
-                console.log("EXPIRED");
                 setUsername(null);
                 setToken(null);
                 setLoggedIn(false);
                 LogOut();
             } else {
-                console.log('VALID');
+                // console.log('VALID');
             }
         } else {
-            console.log("NO USER");
             setUsername(null);
             setToken(null);
             setLoggedIn(false);

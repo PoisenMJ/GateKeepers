@@ -7,6 +7,7 @@ import { AuthContext } from '../../../services/AuthContext';
 import DateTime from 'react-datetime';
 import { useNavigate } from 'react-router';
 import Compressor from 'compressorjs';
+import heic2any from 'heic2any';
 import 'react-datetime/css/react-datetime.css';
 import './Upload.css';
 
@@ -60,13 +61,24 @@ const Upload = () => {
 
     useEffect(() => {
         var imageInput = document.getElementById('image-input');
-        imageInput.onchange = function(event){
+        imageInput.onchange = async function(event){
             var list = [];
             var order = [];
             for(var i = 0; i < event.target.files.length; i++){
                 //compress images
                 if(i <= 10){
-                    new Compressor(event.target.files[i], {
+                    var workingFile;
+                    if(event.target.files[i].type.toLowerCase() === "image/heic"){
+                        var currentFile = event.target.files[i];
+                        await heic2any({ blob: currentFile, toType: "image/jpg", quality: 1 }).then((convertedImage) => {
+                            var filename = currentFile.name.split('.');
+                            workingFile = new File([convertedImage], filename.slice(0,filename.length-1).join('')+'.png', {
+                                type: convertedImage.type
+                            });
+                        })
+                    } else workingFile = event.target.files[i];
+
+                    new Compressor(workingFile, {
                         quality: 0.7,
                         success(result){
                             var newFile = new File([result], result.name, {
@@ -125,7 +137,7 @@ const Upload = () => {
             <hr className="mb-4"/>
             <Form onSubmit={sendAddProduct} id="upload-form">
                 <Form.Control onChange={handleInputChange} name="name" type="text" placeholder="Product Name" className="mb-2 custom-input"/>
-                <Form.Control multiple id="image-input" accept="image/jpeg,image/jpg" type="file" className="mb-2 visually-hidden"/>
+                <Form.Control multiple id="image-input" accept="image/jpeg,image/jpg,image/heic" type="file" className="mb-2 visually-hidden"/>
                 <div id="product-images" className="mb-2">
                     <Carousel className="carousel mb-2" width={'100%'} height='40vh' dragging>
                         {images.length > 0 ? images.map((image, index) => {
@@ -144,7 +156,7 @@ const Upload = () => {
                             {imageOrder.length > 0 &&
                                 imageOrder.map((order, index) => {
                                     return(
-                                        <div className="order-image-parent">
+                                        <div className="order-image-parent" key={index+"2"}>
                                             {images[index] && 
                                                 <img src={URL.createObjectURL(images[index])} className="image-order-picture"/>
                                             }

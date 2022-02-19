@@ -30,13 +30,13 @@ const ProductPage = () => {
         fetchProduct();
     }, [])
 
-    const selectSize = (_size) => {
-        setSize(_size.trim());
+    const selectSize = (event) => {
+        if(customSize) setCustomSize('');
+        setSize(event.target.value);
     }
     const updateCustomSize = event => {
         var input = event.target.value.trim();
         setCustomSize(input);
-        if(input) setSize('');
     }
 
     const AddToCart = (_uri, _size, _price, _name, _creator, _count, _type) => {
@@ -66,8 +66,7 @@ const ProductPage = () => {
                             slidesToShow={1}
                             cellAlign='center'
                             dragging
-                            className='custom-carousel-classses'
-                        >
+                            className='custom-carousel-classses'>
                             {product.images.map((image, index) => (
                                 <div key={index} className="item">
                                     <img key={index} id="product-image" src={`/images/products/${product.images[product.imageOrder[index]]}`}/> 
@@ -76,10 +75,7 @@ const ProductPage = () => {
                         </Carousel>
                     </Desktop>
                     <Mobile>
-                    <Carousel
-                            dragging
-                            className='carousel mb-1 custom-carousel-classses'
-                        >
+                        <Carousel dragging className='carousel mb-1 custom-carousel-classses'>
                             {product.images.map((image, index) => (
                                 <div key={index} className="item">
                                     <img key={index} id="product-image" src={`/images/products/${product.images[product.imageOrder[index]]}`}/> 
@@ -88,32 +84,30 @@ const ProductPage = () => {
                         </Carousel>
                     </Mobile>
                     <div id="product-info">
+                        <span className="fs-3 product-price">£{product.price} <span className="text-muted fs-5">: {product.count >= 0 ? product.count : 0} {purchasable ? 'LEFT' : 'AVAILABLE'}</span></span>
+                        <span className="fs-2 fw-bold" id="product-name"> {product.name} </span>
+                        <span className="fs-6 fw-light mb-2" id="product-description">{product.description}</span>
                         <div id="product-sizing-parent">
                             <div id="product-sizing">
-                                {product.sizes.map((_size, index) => {
-                                    var className=(index == product.sizes.length-1)?"product-sizing-item":"product-sizing-item-left";
-                                    var activeClassName=(size.trim() === _size.trim())?" active":"";
-                                    return (
-                                        <span key={_size} onClick={() => selectSize(_size)} className={"product-sizing-item "+className+activeClassName}>{_size}</span>
-                                    )
-                                })}
+                                <select onChange={selectSize} className="black-custom-input-round w-100">
+                                    {product.sizes.map((_size, index) => {
+                                        if(index < product.sizes.length)
+                                            return <option className="text-center" key={index} value={_size.trim()}>{_size.trim()}</option>
+                                    })}
+                                    <option className="text-center" value="OTHER_SIZE">Other Size</option>
+                                </select>
                             </div>
-                            {product.customSize &&
-                                <div id="product-custom-size">
+                            {size === "OTHER_SIZE" &&
+                                <div id="product-custom-size" className='mb-1'>
                                     <Form.Control onChange={updateCustomSize} type="text" className="custom-input" placeholder="enter custom size"/>
                                 </div>
                             }
                         </div>
-                        <div id="product-info-details-add">
-                            <span className="fs-3 product-price">£{product.price} <span className="text-muted fs-5">: {product.count >= 0 ? product.count : 0} {purchasable ? 'LEFT' : 'AVAILABLE'}</span></span>
-                            <span className="fs-2 fw-bold" id="product-name">{product.name}</span>
-                            <span className="fs-6 fw-light mb-2" id="product-description">{product.description}</span>
-                            <Button disabled={addToCartDisabled}
-                                    onClick={() => AddToCart(product.uri, size, product.price, product.name, product.creator.tag, product.count, product.type)}
-                                    variant={"dark"}
-                                    style={{alignSelf: 'end', width: '60%', justifySelf: 'center', marginBottom: '.5rem'}}>Add To Cart</Button>
-                            <span className="text-muted">@{product.creator.tag}</span>
-                        </div>
+                        <Button disabled={addToCartDisabled}
+                                id="add-to-cart"
+                                onClick={() => AddToCart(product.uri, size, product.price, product.name, product.creator.tag, product.count, product.type)}
+                                variant={"dark"}
+                                style={{alignSelf: 'end', justifySelf: 'center', marginBottom: '.5rem'}}>{purchasable ? 'Add To Cart' : 'Unavailable'}</Button>
                     </div>
                 </div>
             }

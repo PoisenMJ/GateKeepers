@@ -8,6 +8,7 @@ import Carousel from 'nuka-carousel';
 import DateTime from 'react-datetime';
 import { Desktop, Mobile } from '../../../components/Query';
 import Compressor from 'compressorjs';
+import heic2any from 'heic2any';
 import './EditProduct.css';
 
 const EditProduct = () => {
@@ -36,19 +37,33 @@ const EditProduct = () => {
             for(var i = 0; i < event.target.files.length; i++){
                 //compress images
                 if(i <= 10){
-                    new Compressor(event.target.files[i], {
-                        quality: 0.7,
-                        success(result){
-                            var newFile = new File([result], result.name, {
-                                type: result.type
+                    if(event.target.files[i].type.toLowerCase() === "image/heic"){
+                        var currentFile = event.target.files[i];
+                        heic2any({ blob: currentFile, toType: "image/jpg", quality: 0.75 }).then((convertedImage) => {
+                            var newFile = new File([convertedImage], currentFile.name, {
+                                type: convertedImage.type
                             });
                             list.push(newFile);
                             setImages([]);
                             if(i === event.target.files.length){
                                 setImages(list);
                             }
-                        }
-                    })
+                        })
+                    } else {
+                        new Compressor(event.target.files[i], {
+                            quality: 0.7,
+                            success(result){
+                                var newFile = new File([result], result.name, {
+                                    type: result.type
+                                });
+                                list.push(newFile);
+                                setImages([]);
+                                if(i === event.target.files.length){
+                                    setImages(list);
+                                }
+                            }
+                        })
+                    }
                     order.push(i);
                 } else break;
             }
