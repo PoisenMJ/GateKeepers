@@ -114,13 +114,15 @@ const Upload = () => {
 
         
         if(orderTotal === desiredTotal){
-            if(images && price && name && description && type && count && sizes){
-                var res = await addProduct(formdata, username, token, imageOrder, images, customSize);
-                if(res.success) {
-                    Flash("Successfully added", "success");
-                    navigate('../products');
-                }
-                else Flash("Failed", "dark");
+            if(images && price && name && description && type && count){
+                if((!sizes && customSize) || sizes){
+                    var res = await addProduct(formdata, username, token, imageOrder, images, customSize);
+                    if(res.success) {
+                        Flash("Successfully added", "success");
+                        navigate('../products');
+                    }
+                    else Flash("Failed", "dark");
+                } else Flash("Enter size or allow custom size", "dark");
             } else {
                 Flash("Fill all fields", "dark");
             }

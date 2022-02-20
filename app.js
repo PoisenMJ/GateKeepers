@@ -8,6 +8,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+var compression = require('compression');
 
 var indexRouter = require('./routes/index');
 var creatorRouter = require('./routes/creator');
@@ -21,6 +22,7 @@ require('./client/src/models/index');
 var app = express();
 
 app.use(cors());
+app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

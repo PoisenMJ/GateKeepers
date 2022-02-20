@@ -18,6 +18,10 @@ var orderSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    subTotal: {
+        type: Number,
+        required: true
+    },
     customerID: {
         type: String,
         required: true

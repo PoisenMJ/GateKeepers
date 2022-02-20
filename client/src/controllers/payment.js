@@ -28,7 +28,7 @@ async function checkProduct(urisAndNames){
     return { outOfStock: json.outOfStock, name: json.name }
 }
 
-async function saveOrder(customerID, orderID, items, total, username, shippingAddress, creators){
+async function saveOrder(customerID, orderID, items, total, subTotal, username, shippingAddress, creators){
     var res = await fetch('/payment/save-order', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
@@ -37,6 +37,7 @@ async function saveOrder(customerID, orderID, items, total, username, shippingAd
             customerID,
             shippingAddress,
             items,
+            subTotal,
             username,
             date: new Date(),
             total,

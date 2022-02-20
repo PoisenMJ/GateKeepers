@@ -60,6 +60,7 @@ router.post('/save-order', async (req, res, next) => {
                 items: req.body.items,
                 date: req.body.date,
                 total: req.body.total,
+                subTotal: req.body.subTotal,
                 customerID,
                 user: username,
                 address: req.body.shippingAddress,

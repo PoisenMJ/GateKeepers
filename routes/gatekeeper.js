@@ -67,8 +67,8 @@ router.post('/products/add', upload.array('images'), gatekeeperCheck, (req, res,
     Creator.findOne({ tag: creatorUsername }).then((user, err) => {
         var newProduct = new CreatorProduct({
             creator: user._id,
-            name: req.body.name,
-            description: req.body.description,
+            name: req.body.name.trim(),
+            description: req.body.description.trim(),
             uri: req.body.uri,
             price: req.body.price,
             count: parseInt(req.body.count),
@@ -109,7 +109,7 @@ router.post('/products/update', upload.array('images'), gatekeeperCheck, (req, r
     var imagesCleared = req.body.imagesCleared == 'true';
     var originalImages = [];
 
-    var sizes = req.body.sizes.replace(`'`, '').split(',').filter((e) => e.trim());
+    var sizes = req.body.sizes ? req.body.sizes.replace(`'`, '').split(',').filter((e) => e.trim()) : [];
 
     CreatorProduct.findOne({ _id: productID }, (err, product) => {
         if(err) return res.json({ success: false });
@@ -130,8 +130,8 @@ router.post('/products/update', upload.array('images'), gatekeeperCheck, (req, r
 
         CreatorProduct.findOneAndUpdate({ _id: productID }, {
             $set: {
-                name: req.body.name,
-                description: req.body.description,
+                name: req.body.name.trim(),
+                description: req.body.description.trim(),
                 price: req.body.price,
                 count: req.body.count,
                 images: (imagesChanged && imagesCleared) ? fileNames : originalImages,

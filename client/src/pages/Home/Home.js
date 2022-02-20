@@ -39,11 +39,11 @@ const Home = () => {
             <Mobile>
                 <div id="home-page-first-slide">
                     <img src={'/images/background.jpg'} id="home-page-background" alt='background'/>
-                    <div className="home-page-initial-content">
-                        {/* <span className="fs-1 fw-bold">GateKeepers</span> */}
-                        <h1 className="fs-1 fw-bold">GateKeepers</h1>
-                        <h1 className="visually-hidden">Gatekeepers Store</h1>
-                        <span className="text-lead mb-3 fw-light">Fashion Collection</span>
+                    <div className="home-page-initial-content text-center">
+                        <div className='text-center w-100'>
+                            <h1 className="fw-bold" id="site-title" style={{fontSize: '2.5rem'}}>GATE<span className="text-muted fw-light fst-italic">KEEPERS</span></h1>
+                        </div>
+                        <h3 className="text-lead mb-3 fw-light" style={{fontSize: '1.25rem'}}>Fashion Collection</h3>
                         <Button onClick={exploreButton} variant="dark" style={{paddingBottom: '7.5px'}} className="explore-button">
                             Explore
                             <span className="arrow"></span>
@@ -121,9 +121,8 @@ const Home = () => {
                 <div id="home-page-first-slide">
                     <img src={'/images/background.jpg'} id="home-page-background"/>
                     <div className="home-page-initial-content lg">
-                        <span className="fw-bold" style={{fontSize: '4rem'}}>GateKeepers</span>
-                        <h1 className="visually-hidden">Gatekeepers Store</h1>
-                        <span className="text-lead mb-3 fw-light" style={{fontSize: '1.25rem'}}>Fashion Collection</span>
+                        <h1 className="fw-bold" id="site-title" style={{fontSize: '4rem'}}>GATE<span className="text-muted fw-light fst-italic">KEEPERS</span></h1>
+                        <h3 className="text-lead mb-3 fw-light" style={{fontSize: '1.25rem'}}>Fashion Collection</h3>
                         <Button onClick={exploreButton} variant="dark" style={{paddingBottom: '7.5px'}} className="explore-button">
                             Explore
                             <span className="arrow"></span>

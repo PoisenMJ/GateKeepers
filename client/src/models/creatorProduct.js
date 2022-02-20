@@ -39,7 +39,7 @@ const creatorProductSchema = mongoose.Schema({
     },
     sizes: {
         type: [String],
-        required: true
+        default: []
     },
     customSize: {
         type: Boolean,

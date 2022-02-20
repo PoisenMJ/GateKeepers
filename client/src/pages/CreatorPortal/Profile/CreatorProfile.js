@@ -117,6 +117,7 @@ const CreatorProfile = () => {
     }
     const removeCountry = (event, country) => {
         var a = {...shippingDetails};
+        console.log(country)
         delete a[country];
         setShippingDetails(a);
     }
@@ -170,7 +171,7 @@ const CreatorProfile = () => {
                                             <Form.Control step={.1} type="number" onChange={(e) => updatePrice(e, country[0])} defaultValue={country[1]} className="custom-input"/>
                                         </InputGroup>
                                     </Col>
-                                    <CloseButton style={{placeSelf: 'center'}} onClick={(e) => removeCountry(e, country)}/>
+                                    <CloseButton style={{placeSelf: 'center'}} onClick={(e) => removeCountry(e, country[0])}/>
                                 </Row>
                             )
                         })}

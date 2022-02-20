@@ -34,7 +34,7 @@ const PaymentSuccess = () => {
                     var u = (username) ? username : "Guest";
                     var items = products.map((item, index) => { return { uri: item.uri, name: item.name, size: item.size } });
                     var creators = [...new Set(products.map((item, index) => item.creator))];
-                    await saveOrder(res.customerID, res.orderID, items, (total+shippingAddress.shippingPrice), u, shippingAddress, creators);
+                    await saveOrder(res.customerID, res.orderID, items, (total+shippingAddress.shippingPrice), total, u, shippingAddress, creators);
                     await sendConfirmationEmail(res.orderID, res.email, items, (total+shippingAddress.shippingPrice));
                     clearCart();
                 } else navigate("/");

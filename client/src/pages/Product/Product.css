@@ -53,6 +53,12 @@
     #product-info{
         grid-template-rows: auto auto!important;
     }
+    #product-description{ margin-bottom: 10px; }
+}
+@media screen and (max-height: 650px) {
+    #product-parent{
+        grid-template-rows: 60% 40%!important;
+    }
 }
 #product-info{
     margin-top: 10px;
@@ -61,6 +67,8 @@
     display: grid;
     grid-auto-flow: row;
     place-content: center;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 #product-info-details-add{
     display: grid;
@@ -81,7 +89,7 @@
 }
 #product-sizing-parent{
     display: grid;
-    width: 50vw;
+    width: 100%;
     place-self: center;
     margin-bottom: 2px;
 }
@@ -130,3 +138,8 @@
     height: 100%!important;
 }
 .slider-list, .slider-slide { height: 100%!important; }
+
+.breaker{
+    width: 20%;
+    justify-self: center;
+}

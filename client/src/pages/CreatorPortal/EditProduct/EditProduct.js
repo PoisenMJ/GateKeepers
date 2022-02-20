@@ -203,7 +203,7 @@ const EditProduct = () => {
                             <Form.Text>Count</Form.Text>
                             <Form.Control required name="count" min="0" type="number" defaultValue={product.count} className="custom-input mb-2"/>
                             <Form.Text>Sizes (comma seperated)</Form.Text>
-                            <Form.Control required name="sizes" placeholder="'Small, Medium, Large', or '1 Size' ..." className="custom-input" defaultValue={product.sizes}/>
+                            <Form.Control name="sizes" placeholder="'Small, Medium, Large', or '1 Size' ..." className="custom-input" defaultValue={product.sizes}/>
                             <Form.Check label="Allow custom sizes" onChange={updateCustomSize} checked={customSize} className="custom-input mb-2"/>
                             <Form.Select required name="type" className="custom-input mb-2" defaultValue={product.type}>
                                 <option value="made">Made By</option>

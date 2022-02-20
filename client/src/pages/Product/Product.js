@@ -84,22 +84,29 @@ const ProductPage = () => {
                         </Carousel>
                     </Mobile>
                     <div id="product-info">
-                        <span className="fs-3 product-price">£{product.price} <span className="text-muted fs-5">: {product.count >= 0 ? product.count : 0} {purchasable ? 'LEFT' : 'AVAILABLE'}</span></span>
-                        <span className="fs-2 fw-bold" id="product-name"> {product.name} </span>
-                        <span className="fs-6 fw-light mb-2" id="product-description">{product.description}</span>
+                        <span className="fs-3 product-price mb-3">£{product.price} <span className="text-muted fs-5">: {product.count >= 0 ? product.count : 0} {purchasable ? 'LEFT' : 'AVAILABLE'}</span></span>
+                        <span className="fs-2 fw-bold mb-1" id="product-name"> {product.name} </span>
+                        <span className="fs-6 fw-light" id="product-description">{product.description}</span>
+                        <Desktop>
+                            <hr className="breaker"/>
+                        </Desktop>
                         <div id="product-sizing-parent">
-                            <div id="product-sizing">
-                                <select onChange={selectSize} className="black-custom-input-round w-100">
-                                    {product.sizes.map((_size, index) => {
-                                        if(index < product.sizes.length)
-                                            return <option className="text-center" key={index} value={_size.trim()}>{_size.trim()}</option>
-                                    })}
-                                    <option className="text-center" value="OTHER_SIZE">Other Size</option>
-                                </select>
-                            </div>
-                            {size === "OTHER_SIZE" &&
+                            {product.sizes.length > 0 &&
+                                <div id="product-sizing">
+                                    <select onChange={selectSize} className="black-custom-input-round w-100">
+                                        {product.sizes.map((_size, index) => {
+                                            if(index < product.sizes.length)
+                                                return <option className="text-center" key={index} value={_size.trim()}>{_size.trim()}</option>
+                                        })}
+                                        {product.customSize &&
+                                            <option className="text-center" value="OTHER_SIZE">Other Size</option>
+                                        }
+                                    </select>
+                                </div>
+                            }
+                            {size === "OTHER_SIZE" || product.sizes.length === 0 &&
                                 <div id="product-custom-size" className='mb-1'>
-                                    <Form.Control onChange={updateCustomSize} type="text" className="custom-input" placeholder="enter custom size"/>
+                                    <Form.Control onChange={updateCustomSize} type="text" className="custom-input" placeholder="ENTER SIZE (e.g. 40 EU)"/>
                                 </div>
                             }
                         </div>
