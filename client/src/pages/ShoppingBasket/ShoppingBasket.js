@@ -46,48 +46,69 @@ const ShoppingBasket = () => {
     }
 
     return (
-        <div id="shopping-basket" className='text-center'>
-            <div style={{alignSelf: 'start'}}>
-                <span className="fs-1">▣ BASKET ▣</span>
-                <hr className="mx-5"/>
-            </div>
-            <div id="shopping-basket-products">
-                {productsData ?
-                    productsData.map((product, index) => {
-                        return (
-                            <div key={index}>
-                                <div className="shopping-basket-product">
-                                    <img className="shopping-basket-product-image" src={`/images/products/${product.image}`} alt="product-image"/>
-                                    <span className="shopping-basket-product-name fs-4">{product.name}</span>
-                                    <div className="shopping-basket-product-info">
-                                        <span className="shopping-basket-product-creator">{product.creator}</span>
-                                        <span className="shopping-basket-product-size">{product.size}</span>
-                                    </div>
-                                    <span className="shopping-basket-product-price">£{product.price}</span>
-                                    <div className="shopping-basket-product-remove">
-                                        <CloseButton onClick={() => removeFromBasket(product.uri, product.price, index)} variant="white"/>
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    })
-                :
-                    <div style={{height: '40vh', display: 'grid', placeItems: 'center'}}>
-                        <div>
-                            <span className="fs-3">CART IS EMPTY</span>
-                            <br/>
-                            <span className="go-to-products" onClick={() => navigate("/maksie_aki/own")}>Go to products</span>
-                        </div>
+        <div id="shopping-basket-parent" className="pb-2 pt-1">
+            <div>
+                {productsData ? productsData.map((product, index) => (
+                    <div className="shopping-basket-product-parent"><img className="shopping-basket-product-image" src={`/images/products/${product.image}`}/>
+                        <div className="my-auto shopping-basket-product-details"><span className="shopping-basket-product-name">CHAIN MASK</span>
+                            <div><span className="text-muted">@maksie_aki</span><span className="shopping-basket-product-size">ONE SIZE</span></div>
+                        </div><span className="shopping-basket-product-price">£35</span><i className="fa fa-times shopping-basket-close-button"></i>
+                    </div>
+                )) :
+                    <div className="h-100 d-flex align-items-center">
+                        <span className="m-auto fs-1">
+                            Empty Cart
+                        </span>
                     </div>
                 }
             </div>
             {productsData &&
-                <div id="shopping-basket-totals">
-                    <span className='fs-2 shopping-basket-total-work'>TOTAL:   £{total}</span>
-                    <Button className="shopping-basket-proceed" onClick={goToPaymentDetails} variant="dark">Proceed<FaArrowRight style={{marginLeft: '6px', marginBottom: '3px'}}/></Button>
+                <div className="justify-content-evenly" id="shopping-basket-totals-parent">
+                    <div id="shopping-basket-totals-amount">
+                        <span>TOTAL:&nbsp;</span>
+                        <span>£{total}</span>
+                    </div>
+                    <button className="btn btn-dark fw-bold" type="button" onClick={goToPaymentDetails}>
+                        PROCEED
+                        <FaArrowRight className="icon-3"/>
+                    </button>
                 </div>
             }
         </div>
+
+        
+        
+                    // productsData.map((product, index) => {
+                        // return (
+                            // <div key={index}>
+                                    // {/* <img className="shopping-basket-product-image" src={`/images/products/${product.image}`} alt="product-image"/> */}
+                                    // {/* <span className="shopping-basket-product-name fs-4">{product.name}</span> */}
+                                    // {/* <div className="shopping-basket-product-info"> */}
+                                        //{/* <span className="shopping-basket-product-creator">{product.creator}</span> */}
+                                        //{/* <span className="shopping-basket-product-size">{product.size}</span> */}
+                                    //{/* </div> */}
+                                    //{/* <span className="shopping-basket-product-price">£{product.price}</span> */}
+                                    //{/* <div className="shopping-basket-product-remove"> */}
+//                                        {/* <CloseButton onClick={() => removeFromBasket(product.uri, product.price, index)} variant="white"/> */}
+//                                    {/* </div> */}
+//                                {/* </div> */}
+//                            {/* </div> */}
+//                    // <div style={{height: '40vh', display: 'grid', placeItems: 'center'}}>
+//                        // <div>
+//                            // <span className="fs-3">CART IS EMPTY</span>
+//                            // <br/>
+//                            // <span className="go-to-products" onClick={() => navigate("/maksie_aki/own")}>Go to products</span>
+//                        // </div>
+//                    // </div>
+//                {/* } */}
+//            // </div>
+//            {/* {productsData && */}
+//                // <div id="shopping-basket-totals">
+//                    {/* <span className='fs-2 shopping-basket-total-work'>TOTAL:   £{total}</span> */}
+//                    {/* <Button className="shopping-basket-proceed" onClick={goToPaymentDetails} variant="dark">Proceed<FaArrowRight style={{marginLeft: '6px', marginBottom: '3px'}}/></Button> */}
+//                {/* </div> */}
+//            // }
+//        {/* </div> */}
     )
 }
 

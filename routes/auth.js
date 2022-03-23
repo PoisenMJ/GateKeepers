@@ -23,13 +23,12 @@ router.post('/login', async (req, res, next) => {
     if(!user) return res.json({ success: false, message: 'Username or password incorrect' })
     else if(user.accountActivated === false && user.accountType !== "creator") return res.json({ success: false, message: "activate account" });
     else if(!(user.checkPassword(password))) return res.json({ success: false, message: 'Username or password incorrect' });
-
-    var scope = user.accountType == 'user' ? 'user' : 'creator';
+    else if(user.accountType === "creator") return res.json({ success: false });
 
     var signingKey = secureRandom(256, {type: 'Buffer'});
     var claims = {
         iss: process.env.HOST,
-        scope: scope
+        scope: 'user'
     };
     var jwt = nJwt.create(claims, signingKey);
     var token = jwt.compact();
@@ -44,7 +43,7 @@ router.post('/login', async (req, res, next) => {
     if(result){
         key.updateOne({ user: user.username }, { $set: { key: b64SigningKey } }, (err, updatedDoc) => {
             if(err) return res.status(400).json(err);
-            else return res.json({ success: true, token, type: user.accountType });
+            else return res.json({ success: true, token });
         });
     } else {
         var newKey = new key({
@@ -53,7 +52,7 @@ router.post('/login', async (req, res, next) => {
         });
         newKey.save((err, key) => {
             if(err) return res.status(400).json(err);
-            else return res.json({ success: true, token, type: user.accountType });
+            else return res.json({ success: true, token });
         })
     }
 });

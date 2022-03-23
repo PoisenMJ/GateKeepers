@@ -12,7 +12,6 @@ const CreatorProfile = () => {
     let navigate = useNavigate();
     const { username, token } = useContext(AuthContext);
 
-    const [twitch, setTwitch] = useState('');
     const [twitter, setTwitter] = useState('');
     const [tiktok, setTiktok] = useState('');
     const [instagram, setInstagram] = useState('');
@@ -31,7 +30,6 @@ const CreatorProfile = () => {
         const fetch = async () => {
             var data = await getGatekeeper(username, token);
             if(data.success){
-                setTwitch(data.user.links.twitch);
                 setTwitter(data.user.links.twitter);
                 setTiktok(data.user.links.tiktok);
                 setInstagram(data.user.links.instagram);
@@ -51,9 +49,6 @@ const CreatorProfile = () => {
 
     const handleInputChange = event => {
         switch(event.target.name){
-            case "twitchLink":
-                setTwitch(event.target.value);
-                break;
             case "twitterLink":
                 setTwitter(event.target.value);
                 break;
@@ -87,7 +82,6 @@ const CreatorProfile = () => {
         var formData = new FormData();
         formData.append('instagramLink', instagram);
         formData.append('twitterLink', twitter);
-        formData.append('twitchLink', twitch);
         formData.append('tiktokLink', tiktok);
         formData.append('name', name);
         formData.append('email', email);
@@ -147,113 +141,177 @@ const CreatorProfile = () => {
     }
 
     return (
-        <div id="creator-profile">
-            <div className="w-100 text-center">
-                <span className="fs-3">▶ GATEKEEPER PROFILE ◀</span>
-                <hr className="mb-3"/>
-            </div>
-            {dataFetched &&
-                <Form onSubmit={updateCreatorProfile}>
-                    <div className='mb-3' id="shipping-countries">
-                        <span>SHIPPING</span>
-                        {shippingDetails && Object.entries(shippingDetails).map((country, index) => {
-                            return (
-                                <Row className="g-1 mb-1" key={index}>
-                                    <Col className="col-8">
-                                        <Form.Select onChange={(e) => updateCountry(e, country[0])} defaultValue={country[0]} className="custom-input">
-                                            {ShippingCountries.map((country2, index2) => (
-                                                <option value={country2} key={index2}>{country2}</option>
-                                            ))}
-                                        </Form.Select></Col>
-                                    <Col>
-                                        <InputGroup>
-                                            <InputGroup.Text className="custom-input">£</InputGroup.Text>
-                                            <Form.Control step={.1} type="number" onChange={(e) => updatePrice(e, country[0])} defaultValue={country[1]} className="custom-input"/>
-                                        </InputGroup>
-                                    </Col>
-                                    <CloseButton style={{placeSelf: 'center'}} onClick={(e) => removeCountry(e, country[0])}/>
-                                </Row>
-                            )
-                        })}
-                        <Button onClick={addCountry} className="w-100" variant="success">Add Country</Button>
-                    </div>
-                    <div className='mb-2' id="creator-image">
-                        <span>IMAGE <span className='text-muted'>(GIF)</span></span>
-                        <div id="creator-image-src-parent" className='mt-1' onClick={openImageUpload}>
-                            <img id="creator-image-src" src={typeof image === 'string' ? `/images/${image}` : URL.createObjectURL(image)}/>
-                            <div id="creator-image-src-overlay">Click to change</div>
-                        </div>
-                        <Form.Control accept='image/gif' className='visually-hidden' type='file' id='creator-profile-image-upload'/>
-                    </div>
-                    <div className='mb-2'>
-                        <span>ACCENT</span>
-                        <Form.Control value={accentColor} name="accent" onChange={handleInputChange} type="color" className='w-100'/>
-                    </div>
-                    <div id="creator-profile-socials" className="mb-3">
-                        <span>SOCIALS</span>
-                        <InputGroup className="mb-1">
-                            <InputGroup.Text id="instagram" className="custom-input"><FaInstagram/></InputGroup.Text>
-                            <Form.Control
-                                placeholder="instagram link"
-                                aria-label="instagram link"
-                                aria-describedby='instagram'
-                                className="custom-input"
-                                name="instagramLink"
-                                value={instagram}
-                                onChange={handleInputChange}
-                            />
-                        </InputGroup>
-                        <InputGroup className="mb-1">
-                            <InputGroup.Text id="tiktok" className="custom-input"><FaTiktok/></InputGroup.Text>
-                            <Form.Control
-                                placeholder="tiktok link"
-                                aria-label="tiktok link"
-                                aria-describedby='tiktok'
-                                className="custom-input"
-                                name="tiktokLink"
-                                value={tiktok}
-                                onChange={handleInputChange}
-                            />
-                        </InputGroup>
-                        <InputGroup className="mb-1">
-                            <InputGroup.Text id="twitter" className="custom-input"><FaTwitter/></InputGroup.Text>
-                            <Form.Control
-                                placeholder="twitter link"
-                                aria-label="twitter link"
-                                aria-describedby='twitter'
-                                className="custom-input"
-                                name="twitterLink"
-                                value={twitter}
-                                onChange={handleInputChange}
-                            />
-                        </InputGroup>
-                        <InputGroup className="mb-1">
-                            <InputGroup.Text id="twitch" className="custom-input"><FaTwitch/></InputGroup.Text>
-                            <Form.Control
-                                placeholder="twitch link"
-                                aria-label="twitch link"
-                                aria-describedby='twitch'
-                                className="custom-input"
-                                name="twitchLink"
-                                value={twitch}
-                                onChange={handleInputChange}
-                            />
-                        </InputGroup>
-                    </div>
-                    <div id="creator-profile-password" className="mb-3">
-                        <span>PASSWORD</span>
-                        <Form.Control className="custom-input mb-1" type="password" placeholder="password" name="password" value={password} onChange={handleInputChange}/>
-                        <Form.Control className="custom-input" type="password" placeholder="confirm password" name="confPassword" value={confPassword} onChange={handleInputChange}/>
-                    </div>
-                    <div id="creator-profile-personal-info" className="mb-2">
-                        <span>INFO</span>
-                        <Form.Control className="custom-input mb-1" value={name} onChange={handleInputChange} type="text" name="name" placeholder="name"/>
-                        <Form.Control className="custom-input mb-1" value={email} onChange={handleInputChange} type="email" name="email" placeholder="email"/>
-                    </div>
-                    <Button className="w-100" variant="dark" type="submit">UPDATE</Button>
-                </Form>
-            }
+        <div id="admin-profile-parent">
+            <form onSubmit={updateCreatorProfile}>
+                <input type="file" className="visually-hidden" id="creator-profile-image-upload"/>
+                <div id="admin-profile-image-parent" className="mb-2" onClick={openImageUpload}>
+                    <img id="admin-profile-image" src={typeof image === 'string' ? `/images/${image}` : URL.createObjectURL(image)}/>
+                    <span id="admin-profile-image-text">CLICK TO CHANGE</span>
+                </div>
+                <div id="admin-profile-shipping-parent" className="mb-2">
+                    <label className="form-label">SHIPPING</label>
+                    {shippingDetails && Object.entries(shippingDetails).map((country, index) => {
+                        return (
+                            <div className="admin-profile-shipping mb-1" key={index}>
+                                <select className="me-1" onChange={(e) => updateCountry(e, country[0])} defaultValue={country[0]}>
+                                    {ShippingCountries.map((country2, index2) => (
+                                        <option value={country2} key={index2+1}>{country2}</option>
+                                    ))}
+                                </select>
+                                <input onChange={(e) => updatePrice(e, country[0])}
+                                        defaultValue={country[1]}
+                                        type="number" className="me-1"
+                                        required min="0" step="0.01"
+                                        placeholder="0.00"/>
+                                <button onClick={(e) => removeCountry(e, country[0])} className="btn btn-dark" type="button">DELETE</button>
+                            </div>
+                    )})}
+                    <button onClick={addCountry} className="btn btn-secondary w-100 mb-1" type="button">ADD COUNTRY</button>
+                </div>
+                <label className="form-label">SOCIALS</label>
+                <div className="input-group mb-1">
+                    <span className="input-group-text"><FaInstagram/></span>
+                    <input onChange={handleInputChange} name="instagramLink"
+                            className="form-control" type="text"
+                            placeholder='instagram' defaultValue={instagram}/>
+                </div>
+                <div className="input-group mb-1">
+                    <span className="input-group-text"><FaTiktok/></span>
+                    <input onChange={handleInputChange} name="tiktokLink"
+                            className="form-control" type="text"
+                            placeholder="tiktok" defaultValue={tiktok}/>
+                </div>
+                <div className="input-group mb-2">
+                    <span className="input-group-text"><FaTwitter/></span>
+                    <input onChange={handleInputChange} name="twitterLink"
+                            className="form-control" type="text"
+                            placeholder="twitter" defaultValue={twitter}/>
+                </div>
+                <div className="d-flex flex-column mb-1" id="admin-profile-password-parent">
+                    <label className="form-label">PASSWORD</label>
+                    <input onChange={handleInputChange} name="password"
+                            type="password" className="form-control mb-1"
+                            placeholder="NEW PASSWORD"/>
+                    <input onChange={handleInputChange} name="confPassword"
+                            type="password" className="form-control mb-1"
+                            placeholder="CONFIRM PASSWORD"/>
+                </div>
+                <div className="d-flex flex-column" id="admin-profile-info-parent">
+                    <label className="form-label">INFO</label>
+                    <input onChange={handleInputChange} type="text"
+                            className="form-control mb-2" value={email}
+                            name="email" placeholder="email@gmail.com"/>
+                    <button className="btn btn-success btn-lg w-100" type="submit">UPDATE</button>
+                </div>
+            </form>
         </div>
+        // <div id="creator-profile">
+        //     <div className="w-100 text-center">
+        //         <span className="fs-3">▶ GATEKEEPER PROFILE ◀</span>
+        //         <hr className="mb-3"/>
+        //     </div>
+        //     {dataFetched &&
+        //         <Form onSubmit={updateCreatorProfile}>
+        //             <div className='mb-3' id="shipping-countries">
+        //                 <span>SHIPPING</span>
+        //                 {shippingDetails && Object.entries(shippingDetails).map((country, index) => {
+        //                     return (
+        //                         <Row className="g-1 mb-1" key={index}>
+        //                             <Col className="col-8">
+        //                                 <Form.Select onChange={(e) => updateCountry(e, country[0])} defaultValue={country[0]} className="custom-input">
+        //                                     {ShippingCountries.map((country2, index2) => (
+        //                                         <option value={country2} key={index2}>{country2}</option>
+        //                                     ))}
+        //                                 </Form.Select></Col>
+        //                             <Col>
+        //                                 <InputGroup>
+        //                                     <InputGroup.Text className="custom-input">£</InputGroup.Text>
+        //                                     <Form.Control step={.1} type="number" onChange={(e) => updatePrice(e, country[0])} defaultValue={country[1]} className="custom-input"/>
+        //                                 </InputGroup>
+        //                             </Col>
+        //                             <CloseButton style={{placeSelf: 'center'}} onClick={(e) => removeCountry(e, country[0])}/>
+        //                         </Row>
+        //                     )
+        //                 })}
+        //                 <Button onClick={addCountry} className="w-100" variant="success">Add Country</Button>
+        //             </div>
+        //             <div className='mb-2' id="creator-image">
+        //                 <span>IMAGE <span className='text-muted'>(GIF)</span></span>
+        //                 <div id="creator-image-src-parent" className='mt-1' onClick={openImageUpload}>
+        //                     <img id="creator-image-src" src={typeof image === 'string' ? `/images/${image}` : URL.createObjectURL(image)}/>
+        //                     <div id="creator-image-src-overlay">Click to change</div>
+        //                 </div>
+        //                 <Form.Control accept='image/gif' className='visually-hidden' type='file' id='creator-profile-image-upload'/>
+        //             </div>
+        //             <div className='mb-2'>
+        //                 <span>ACCENT</span>
+        //                 <Form.Control value={accentColor} name="accent" onChange={handleInputChange} type="color" className='w-100'/>
+        //             </div>
+        //             <div id="creator-profile-socials" className="mb-3">
+        //                 <span>SOCIALS</span>
+        //                 <InputGroup className="mb-1">
+        //                     <InputGroup.Text id="instagram" className="custom-input"><FaInstagram/></InputGroup.Text>
+        //                     <Form.Control
+        //                         placeholder="instagram link"
+        //                         aria-label="instagram link"
+        //                         aria-describedby='instagram'
+        //                         className="custom-input"
+        //                         name="instagramLink"
+        //                         value={instagram}
+        //                         onChange={handleInputChange}
+        //                     />
+        //                 </InputGroup>
+        //                 <InputGroup className="mb-1">
+        //                     <InputGroup.Text id="tiktok" className="custom-input"><FaTiktok/></InputGroup.Text>
+        //                     <Form.Control
+        //                         placeholder="tiktok link"
+        //                         aria-label="tiktok link"
+        //                         aria-describedby='tiktok'
+        //                         className="custom-input"
+        //                         name="tiktokLink"
+        //                         value={tiktok}
+        //                         onChange={handleInputChange}
+        //                     />
+        //                 </InputGroup>
+        //                 <InputGroup className="mb-1">
+        //                     <InputGroup.Text id="twitter" className="custom-input"><FaTwitter/></InputGroup.Text>
+        //                     <Form.Control
+        //                         placeholder="twitter link"
+        //                         aria-label="twitter link"
+        //                         aria-describedby='twitter'
+        //                         className="custom-input"
+        //                         name="twitterLink"
+        //                         value={twitter}
+        //                         onChange={handleInputChange}
+        //                     />
+        //                 </InputGroup>
+        //                 <InputGroup className="mb-1">
+        //                     <InputGroup.Text id="twitch" className="custom-input"><FaTwitch/></InputGroup.Text>
+        //                     <Form.Control
+        //                         placeholder="twitch link"
+        //                         aria-label="twitch link"
+        //                         aria-describedby='twitch'
+        //                         className="custom-input"
+        //                         name="twitchLink"
+        //                         value={twitch}
+        //                         onChange={handleInputChange}
+        //                     />
+        //                 </InputGroup>
+        //             </div>
+        //             <div id="creator-profile-password" className="mb-3">
+        //                 <span>PASSWORD</span>
+        //                 <Form.Control className="custom-input mb-1" type="password" placeholder="password" name="password" value={password} onChange={handleInputChange}/>
+        //                 <Form.Control className="custom-input" type="password" placeholder="confirm password" name="confPassword" value={confPassword} onChange={handleInputChange}/>
+        //             </div>
+        //             <div id="creator-profile-personal-info" className="mb-2">
+        //                 <span>INFO</span>
+        //                 <Form.Control className="custom-input mb-1" value={name} onChange={handleInputChange} type="text" name="name" placeholder="name"/>
+        //                 <Form.Control className="custom-input mb-1" value={email} onChange={handleInputChange} type="email" name="email" placeholder="email"/>
+        //             </div>
+        //             <Button className="w-100" variant="dark" type="submit">UPDATE</Button>
+        //         </Form>
+        //     }
+        // </div>
     )
 }
 

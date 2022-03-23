@@ -1,0 +1,31 @@
+.library-gatekeeper-image {
+    width: 100%;
+    grid-area: libraryImage;
+    filter: opacity(0.5);
+    transition: 0.2s;
+}
+
+.library-gatekeeper-image-parent {
+    display: grid;
+    width: 100%;
+    height: auto;
+    grid-template-areas: "libraryImage";
+}
+
+.library-gatekeeper-image-text {
+    color: black;
+    font-weight: 800;
+    grid-area: libraryImage;
+    top: 50%;
+    left: 50%;
+    position: relative;
+    width: fit-content;
+    height: min-content;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transform: translateX(-50%);
+}
+
+.library-gatekeeper-image-parent:hover .library-gatekeeper-image {
+    filter: opacity(0.6) !important;
+}

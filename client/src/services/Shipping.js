@@ -1,11 +1,3 @@
-import React, { useState, useEffect, useContext } from 'react';
-
-const ExchangeRates = {
-    GB: 1.0,
-    EU: 1.2 ,
-    US: 1.36
-}
-
 const ShippingPrices = {
     'united-kingdom': 0.0,
     'france': 15.2,

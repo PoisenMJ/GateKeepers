@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { LogOut } from './auth';
 
 const AuthContext = React.createContext({
@@ -64,6 +64,7 @@ const parseJwt = (token) => {
 // }
 
 const AuthVerify = (props) => {
+    let navigate = useNavigate();
     const {username, token, loggedIn,
             setUsername, setToken, setLoggedIn} = useContext(AuthContext);
     var location = useLocation();
@@ -77,6 +78,12 @@ const AuthVerify = (props) => {
                 setLoggedIn(false);
                 LogOut();
             } else {
+                if(localStorage.getItem("creator") === "true"){
+                    var nonCreatorLocation = location.pathname ?
+                        location.pathname.split('/')[0] === "creators" : false;
+                    if(nonCreatorLocation) navigate("/creators/profile");
+
+                }
                 // console.log('VALID');
             }
         } else {
@@ -86,6 +93,7 @@ const AuthVerify = (props) => {
             localStorage.removeItem("token");
             localStorage.removeItem("username");
             localStorage.removeItem("auth");
+            localStorage.removeItem("creator");
         }
     }, [location])
 

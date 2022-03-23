@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 import './PaymentSuccess.css';
 import { CartContext } from '../../services/CartContext';
 import { AuthContext } from '../../services/AuthContext';
-import { saveOrder, sendConfirmationEmail, sendOrderToCreatorEmail } from '../../controllers/payment';
+import { saveOrder, sendConfirmationEmail } from '../../controllers/payment';
 
 const PaymentSuccess = () => {
     let navigate = useNavigate();

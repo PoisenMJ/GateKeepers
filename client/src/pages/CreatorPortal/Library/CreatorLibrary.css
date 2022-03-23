@@ -1,0 +1,38 @@
+.admin-library-image-parent {
+    display: grid;
+    grid-template-areas: "adminLibraryImage";
+}
+.admin-library-add {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(200,200,200);
+    cursor: pointer;
+    transition: .2s;
+}
+.admin-library-add-text {
+    grid-area: adminLibraryImage;
+    place-self: center;
+    cursor: pointer;
+    transition: .2s;
+}
+.admin-library-add:hover{
+    background-color: rgb(180,180,180);
+}
+.admin-library-add-text:hover {
+    color: rgb(100,100,100)!important;
+}
+
+.admin-library-image {
+    height: 91vh;
+    width: 100%;
+    object-fit: cover;
+    grid-area: adminLibraryImage;
+}
+
+.admin-library-buttons {
+    grid-area: adminLibraryImage;
+    height: min-content;
+    bottom: 5px;
+    align-self: end;
+    justify-self: center;
+}

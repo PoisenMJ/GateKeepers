@@ -1,108 +1,70 @@
-@media screen and (min-width: 1224px) {
-    #shopping-basket{
-        width: 50%!important;
-        place-self: center!important;
-    }
-    #shopping-basket-totals{
-        width: 50%!important;
-    }
-    .shopping-basket-total-work{ justify-self: start;}
-    .shopping-basket-product-name{
-        width: initial!important;
-    }
-    .shopping-basket-proceed{
-        place-self: end!important;
+.shopping-basket-product-parent {
+    display: grid;
+    background-color: black;
+    height: min-content;
+    color: white;
+    margin: 0 5px 5px;
+    grid-template-columns: 15% 45% 30% auto;
+    grid-template-areas: "image details price close";
+}
+
+.shopping-basket-product-image {
+    grid-area: image;
+    width: 100%;
+    height: 9vh;
+    object-fit: cover;
+}
+
+.shopping-basket-product-details {
+    grid-area: details;
+    color: white;
+    padding-left: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.shopping-basket-product-size {
+    font-size: 0.8rem;
+    padding-left: 5px;
+}
+
+.shopping-basket-product-price {
+    font-size: 1.5rem;
+    place-self: center;
+}
+
+.shopping-basket-close-button {
+    align-self: center;
+    justify-self: start;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.shopping-basket-close-button:hover {
+    color: rgb(220, 220, 220);
+}
+
+@media(min-width: 1200px) {
+    #shopping-basket-parent {
+        width: 50vw;
+        margin: auto;
     }
 }
 
-#shopping-basket{
-    width: 100%;
-    min-height: 90vh;
+#shopping-basket-parent {
     display: grid;
-    grid-template-rows: min-content auto;
-}
-#shopping-basket-products{
-    align-self: start;
-    padding-bottom: 10vh;
-}
-.shopping-basket-product{
-    display: grid;
-    width: 100%;
-    grid-template-columns: 1fr 40% 3fr 1fr;
-    grid-template-rows: max-content min-content;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    grid-template-areas: "image name price remove"
-                        "image info price remove";
-    background-color: black;
-    color: white;
-    margin-bottom: .5rem;
-}
-.shopping-basket-product-image{
-    height: 60px;
-    width: 60px;
-    object-fit: cover;
-    place-self: center;
-    margin-left: 10px;
-    grid-area: image;
-}
-.shopping-basket-product-name{
-    grid-area: name;
-    width: inherit;
-    justify-self: start;
-    align-self: center;
-    margin-left: 1rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: start;
-}
-.shopping-basket-product-info{
-    grid-area: info;
-    font-size: .85rem;
-    display: flex;
-    padding-left: 20px;
-}
-.shopping-basket-product-creator{
-    align-self: start;
-    justify-self: start;
-}
-.shopping-basket-product-size{
-    align-self: start;
-    justify-self: start;
-    margin-left: 1rem;
-    color: rgb(200,200,200);
-}
-.shopping-basket-product-price{
-    font-size: 2rem;
-    grid-area: price;
-    align-self: center;
-}
-.shopping-basket-product-remove{
-    height: 100%!important;
-    display: grid;
-    place-items: center!important;
-    grid-area: remove;
-}
-#shopping-basket-totals{
-    display: grid;
-    grid-template-columns: 50% 50%;
-    background-color: white;
-    position: fixed;
-    align-self: end;
-    bottom: 0px;
-    width: 100%;
-    padding: 1rem 0;
-}
-.shopping-basket-proceed{
-    place-self: center;
     height: 100%;
 }
-.go-to-products{
-    cursor: pointer;
-    color: rgb(80,80,80);
-    transition: .15s;
+
+#shopping-basket-totals-parent {
+    height: min-content;
+    align-self: end;
+    display: flex;
 }
-.go-to-products:hover{
-    color: rgb(110,110,110);
+
+#shopping-basket-totals-amount {
+    font-size: 1.5rem;
+    font-weight: 600;
 }
+

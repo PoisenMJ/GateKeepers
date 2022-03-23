@@ -47,6 +47,7 @@ function LogOut(){
     localStorage.removeItem("auth");
     localStorage.removeItem("cart");
     localStorage.removeItem("cartTotal");
+    localStorage.removeItem("creator");
 }
 
 export { checkTokenExpiration, checkToken, checkCreatorToken, LogOut };

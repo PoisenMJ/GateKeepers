@@ -1,98 +1,146 @@
-.toggle{
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 1001;
-    background-color: rgb(60,60,60);
-}
-.toggle a{
+.mobile-navigation-link {
     text-decoration: none;
-    color: #262626;
-    font-size: 24px;
+    justify-self: center;
+    color: black;
+    font-size: 2rem;
+    font-weight: 500;
+    padding: 4px 16px;
     cursor: pointer;
-}
-#menu{
-    margin: 0;
-    padding: 0;
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: #FFF;
-    z-index: 1000;
-    transition: 0.5s;
-}
-@media screen and (min-width: 1224px){
-    .toggle{
-        left: 25px!important;
-    }
-    #menu{
-        width: 22.5%!important;
-        box-shadow: 4px 0px 3px 0px rgba(201, 201, 201, 0.5)!important;
-    }
-    .navbar-ul{
-        left: 45%!important;
-    }
-}
-@media screen and (min-width: 1000px) and (max-width: 1223px){
-    #menu{
-        width: 30%!important;
-        box-shadow: 4px 0px 3px 0px rgba(201, 201, 201, 0.5)!important;
-    }
-}
-.navbar-ul{
-    padding-right: 10px;
-}
-.creator {
-    font-size: .85rem;
-    cursor: pointer;
-    padding: .5rem .5rem .5rem .5rem;
-    text-decoration: none;
-}
-.creator:hover {
-    color: rgb(240,240,240)!important;
-    background-color: black;
-}
-#creator-list{
-    display: none;
-    height: auto;
-    position: relative;
-    place-items: center;
-}
-#creator-list.open{
-    display: grid;
-}
-ul{
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     text-align: center;
-}
-ul li{
-    list-style: none;
+    width: auto;
+    transition: 0.15s;
+    margin-bottom: 5px;
 }
 
-ul li > *{
-    padding: 10px;
-    display: inline-block;
-    font-size: 2em;
+.mobile-navigation-link:hover {
+    background-color: black;
+    color: rgb(200, 200, 200) !important;
+}
+
+#mobile-navigation-body {
+    display: grid;
+}
+
+#mobile-navigation-links {
+    align-self: center;
+    flex-direction: column;
+    display: flex;
+    justify-self: center;
+    display: grid;
+}
+
+#mobile-navigation {
+    width: 100vw;
+    height: 100vh;
+}
+
+@media(min-width: 768px) {
+    #mobile-navigation {
+        width: 30vw!important;
+    }
+}
+@media(min-width: 1200px) {
+    #mobile-navigation {
+        width: 25vw!important;
+    }
+}
+
+#custom-navbar-toggle-icon {
+    font-size: 2rem;
+}
+
+#custom-navbar-toggler:active,
+#custom-navbar-toggler:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+#custom-navbar-toggler {
+    border: none;
+    color: white;
+}
+
+#mobile-navigation-gatekeepers-dropdown {
+    width: 100%;
+    margin-left: 30px;
+    padding: 4px !important;
+}
+
+#mobile-navigation-gatekeepers {
+    text-align: center;
+    height: auto;
+    padding: 10px 0;
+    display: none;
+    align-items: center;
+    flex-direction: column;
+}
+
+.mobile-navigation-gatekeeper {
+    font-size: 1rem;
+    color: rgb(110, 110, 110);
+}
+
+.desktop-navbar-link {
     text-decoration: none;
-    text-transform: uppercase;
-    color: #262626;
+    color: rgb(160, 160, 160);
+    font-size: 1.5rem;
+    padding: 4px 12px;
+    margin: 0 12px;
+    transition: 0.15s;
 }
-ul li a.active{
-    background: black;
-    color: rgb(150,150,150);
+
+.desktop-navbar-link:hover {
+    color: rgb(200, 200, 200);
 }
-ul li a:hover{
-    background: #000000;
-    color: rgb(240,240,240);
+
+.desktop-navbar-link.active {
+    color: white !important;
 }
-#menu.active{
-    left: 0;
-    overflow: auto;
+
+.desktop-gatekeeper-dropdown {
+    text-decoration: none;
+    color: rgb(160, 160, 160) !important;
+    font-size: 1.5rem;
+}
+
+.desktop-gatekeeper-dropdown:hover {
+    color: rgb(200, 200, 200) !important;
+}
+
+#mobile-navbar-shopping-basket {
+    background-color: rgb(200, 200, 200);
+    color: black;
+    padding: 4px 16px;
+    font-size: 1.5rem;
+    display: flex;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#mobile-navbar-shopping-basket > i {
+    margin-left: 8px;
+    place-self: center;
+}
+
+#mobile-navbar-shopping-basket:hover {
+    background-color: rgb(30, 30, 30);
+    color: rgb(220, 220, 220) !important;
+}
+
+#desktop-home-cart {
+    color: white;
+    position: absolute;
+    font-size: 1.5rem;
+    top: 10px;
+    right: 30px;
+    background-color: rgba(255, 255, 255, 0.4);
+    display: flex;
+    padding: 4px 16px;
+    border-radius: 2rem;
+}
+
+#desktop-home-cart > i {
+    margin-left: 6px;
+    place-self: center;
 }

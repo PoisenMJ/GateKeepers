@@ -124,50 +124,93 @@ const PaymentDetails = () => {
     }
 
     return (
-        <div id="payment-details">
-            <div id="payment-details-info" className='text-center'>
-                <span className="fs-1">✦ DETAILS ✦</span>
-                <Form className="mt-2">
-                    {!loggedIn &&
-                        <Form.Group className='text-start'>
-                            <Form.Text>Email</Form.Text>
-                            <Form.Control onChange={handleInputChange} required name="email" className="mb-2 custom-input" type="email" placeholder="user@provider.com"/>
-                        </Form.Group>
-                    }
-                    <Form.Group className='mb-2'>
-                        <Row className='g-2'>
-                            <Col><Form.Control onChange={handleInputChange} name="firstname" type="text" placeholder="first name" className="custom-input"/></Col>
-                            <Col><Form.Control onChange={handleInputChange} name="lastname" type="text" placeholder="last name" className="custom-input"/></Col>
-                        </Row>
-                    </Form.Group>
-                    <Form.Group className='text-start'>
-                        <Form.Text>Country</Form.Text>
-                        <Form.Select required className="custom-input mb-2" onChange={onCountryChange}>
-                            {availableShippingCountries && Object.keys(availableShippingCountries).map((country, index) => {
-                                return <option value={country} key={index}>{country}</option>
-                            })
-                            }
-                        </Form.Select>
-                    </Form.Group>
-                    <Form.Group className='text-start'>
-                        <Form.Text>Address</Form.Text>
-                        <Form.Control required onChange={handleInputChange} name="state" type="text" name="state" placeholder="STATE" className="mb-2 custom-input"/>
-                    </Form.Group>
-                    <Form.Control required onChange={handleInputChange} name="zipcode" type="text" name="zipcode" placeholder="Zipcode or NA" className="mb-2 custom-input"/>
-                    <Form.Control required onChange={handleInputChange} name="streetAddress" type="text" placeholder="Street name and apartment number" className="custom-input mb-2"/>
-                </Form>
-            </div>
-            <div id="payment-details-total">
-                <div>
-                    <span className="fs-1">TOTAL : £{total+shippingPrice}</span>
-                    <br/>
-                    <span className="text-muted" id="payment-details-subtotals">Products : £{total}</span>
-                    <br/>
-                    <span className="text-muted" id="payment-details-subtotals">Shipping : {shippingPrice > 0 ? "£"+shippingPrice : "Free"}</span>
+        <div id="payment-details-parent">
+            <form id="payment-details-form">
+                <div class="my-auto" id="payment-details-info">
+                    <label class="form-label">EMAIL</label>
+                    <input class="form-control" type="email" placeholder="johndoe@mail.com"/>
+                    <div class="d-flex mb-2 w-100">
+                        <div class="w-50">
+                            <label class="form-label">FIRST NAME</label>
+                            <input class="form-control" type="text" placeholder="John"/>
+                        </div>
+                        <div class="ps-1 w-50">
+                            <label class="form-label">LAST NAME</label>
+                            <input class="form-control" type="text" placeholder="Doe"/>
+                        </div>
+                    </div>
+                    <label class="form-label">COUNTRY</label>
+                    <select class="form-select mb-3">
+                        <option value="12" selected="">Country</option>
+                        <option value="13">This is item 2</option>
+                        <option value="14">This is item 3</option>
+                    </select>
+                    <label class="form-label">ADDRESS</label>
+                    <input class="form-control mb-1" type="text" placeholder="STATE"/>
+                    <input class="form-control mb-1" type="text" placeholder="ZIPCODE"/>
+                    <input class="form-control" type="text" placeholder="STREET NAME/APARTMENT"/>
                 </div>
-                <Button onClick={goToStripeCheckout} variant="dark">BUY<FaArrowRight style={{marginBottom: '3px', marginLeft: '5px'}}/></Button>
-            </div>
+                <div class="d-flex flex-row justify-content-evenly mt-auto" id="payment-details-totals-parent">
+                    <div class="d-flex flex-column me-auto">
+                        <span class="fs-2 fw-bold">TOTAL:&nbsp;
+                            <span>£46.4</span>
+                        </span>
+                        <span class="text-muted">Products:&nbsp;
+                            <span>£40</span>
+                        </span>
+                        <span class="text-muted">Shipping:&nbsp;
+                            <span>£6.4</span>
+                        </span>
+                    </div>
+                    <button class="btn btn-dark fw-bold w-50" type="button">BUY
+                        <FaArrowRight className="icon-3"/></button>
+                </div>
+            </form>
         </div>
+        // <div id="payment-details">
+        //     <div id="payment-details-info" className='text-center'>
+        //         <span className="fs-1">✦ DETAILS ✦</span>
+        //         <Form className="mt-2">
+        //             {!loggedIn &&
+        //                 <Form.Group className='text-start'>
+        //                     <Form.Text>Email</Form.Text>
+        //                     <Form.Control onChange={handleInputChange} required name="email" className="mb-2 custom-input" type="email" placeholder="user@provider.com"/>
+        //                 </Form.Group>
+        //             }
+        //             <Form.Group className='mb-2'>
+        //                 <Row className='g-2'>
+        //                     <Col><Form.Control onChange={handleInputChange} name="firstname" type="text" placeholder="first name" className="custom-input"/></Col>
+        //                     <Col><Form.Control onChange={handleInputChange} name="lastname" type="text" placeholder="last name" className="custom-input"/></Col>
+        //                 </Row>
+        //             </Form.Group>
+        //             <Form.Group className='text-start'>
+        //                 <Form.Text>Country</Form.Text>
+        //                 <Form.Select required className="custom-input mb-2" onChange={onCountryChange}>
+        //                     {availableShippingCountries && Object.keys(availableShippingCountries).map((country, index) => {
+        //                         return <option value={country} key={index}>{country}</option>
+        //                     })
+        //                     }
+        //                 </Form.Select>
+        //             </Form.Group>
+        //             <Form.Group className='text-start'>
+        //                 <Form.Text>Address</Form.Text>
+        //                 <Form.Control required onChange={handleInputChange} name="state" type="text" name="state" placeholder="STATE" className="mb-2 custom-input"/>
+        //             </Form.Group>
+        //             <Form.Control required onChange={handleInputChange} name="zipcode" type="text" name="zipcode" placeholder="Zipcode or NA" className="mb-2 custom-input"/>
+        //             <Form.Control required onChange={handleInputChange} name="streetAddress" type="text" placeholder="Street name and apartment number" className="custom-input mb-2"/>
+        //         </Form>
+        //     </div>
+        //     <div id="payment-details-total">
+        //         <div>
+        //             <span className="fs-1">TOTAL : £{total+shippingPrice}</span>
+        //             <br/>
+        //             <span className="text-muted" id="payment-details-subtotals">Products : £{total}</span>
+        //             <br/>
+        //             <span className="text-muted" id="payment-details-subtotals">Shipping : {shippingPrice > 0 ? "£"+shippingPrice : "Free"}</span>
+        //         </div>
+        //         <Button onClick={goToStripeCheckout} variant="dark">BUY<FaArrowRight style={{marginBottom: '3px', marginLeft: '5px'}}/></Button>
+        //     </div>
+        // </div>
     )
 }
 

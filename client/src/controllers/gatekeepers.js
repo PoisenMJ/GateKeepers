@@ -1,3 +1,16 @@
+async function login(username, password){
+    var res = await fetch('/gatekeeper/login', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            password
+        })
+    });
+    var json = await res.json();
+    return json;
+}
+
 async function addProduct(data, username, token, order, images, customSize){
     var data = new FormData(data);
     data.append('username', username);
@@ -115,5 +128,6 @@ export {
     getGatekeeper,
     updateGatekeeper,
     getOrders,
-    markOrderSent
+    markOrderSent,
+    login
 }

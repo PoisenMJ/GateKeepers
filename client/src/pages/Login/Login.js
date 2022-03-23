@@ -14,7 +14,7 @@ import { CartContext } from '../../services/CartContext';
 
 const Login = () => {
 
-    const { setLoggedIn, setUsername, setToken, loggedIn, username, token } = useContext(AuthContext);
+    const { setLoggedIn, setUsername, setToken, loggedIn } = useContext(AuthContext);
     const { clearCart } = useContext(CartContext);
 
     let navigate = useNavigate();
@@ -51,12 +51,8 @@ const Login = () => {
                 setUsername(inputUsername);
                 setLoggedIn(true);
                 clearCart();
-
-                if(res.type == 'user')
-                    navigate('/', { state: 'logged-in' });
-                else if(res.type == 'creator')
-                    navigate('/creators/upload', { state: 'logged-in' });
-            Event.emit('loggedIn');
+                navigate('/', { state: 'logged-in' });
+                Event.emit('loggedIn');
             }
             else {
                 if(res.message === "activate account") {
@@ -68,7 +64,7 @@ const Login = () => {
     }
 
     return (
-        <div id="login">
+        <div id="login-parent">
             <PasswordRecoveryBox
                 showPasswordRecovery={showPasswordRecovery}
                 hidePasswordRecovery={() => setShowPasswordRecovery(false)}/>
@@ -78,23 +74,28 @@ const Login = () => {
                 activationSuccess={activationCodeSuccess}
                 hideDialog={() => setShowActivationDialog(false)}/>
 
-            <div className="simple-page-parent">
-                <div style={{width: '100%', textAlign: 'center'}}>
-                    <span className="fs-3">▶ LOGIN ◀</span>
-                </div>
-                <hr className="mb-4"/>
-                <Form onSubmit={sendLogin} className="mb-4">
-                    <Form.Control type="text" onChange={handleUsernameChange} name="username" className="custom-input mb-2" placeholder="USERNAME" />
-                    <Form.Control type="password" onChange={handlePasswordChange} name="password" className="custom-input" placeholder="PASSWORD" />
-                    <span className="forgot-password-link" onClick={() => setShowPasswordRecovery(true)}>Forgot password</span>
-                    <Button className="w-100 mt-3" variant="dark" type="submit">LOGIN</Button>
-                </Form>
-                <div id="no-account">
-                    <span>Don't have an account? </span>
-                    <Link style={{textDecoration: 'none'}} to="/create-account"><span id="create-account-link">Create</span></Link>
-                </div>
-            </div>
+            <form id="login-form" onSubmit={sendLogin}>
+                <label className="form-label" for="#username">USERNAME</label>
+                <input onChange={handleUsernameChange} className="form-control mb-1" type="text" id="username" placeholder="JOHN DOE" required="" name="username" inputmode="katakana"/>
+                <label className="form-label" for="#password">PASSWORD</label>
+                <input onChange={handlePasswordChange} className="form-control mb-2" type="password" id="password" placeholder="PASSWORD123"/>
+                <button className="btn btn-dark fw-bold w-100 mb-1" type="submit">LOGIN</button>
+                <button className="btn btn-primary fw-bold instagram-button w-100" type="button">Sign In
+                    <i className="fab fa-instagram icon-3"></i>
+                </button>
+                <hr className="my-4"/>
+                <span className="text-muted">Don't have an account?
+                    <Link to="/create-account"><span id="create-account-button" className="ps-1 text-primary">CREATE ONE</span></Link>
+                </span>
+                <br/>
+                <a onClick={() => setShowPasswordRecovery(true)} className="text-danger no-text-decoration">Forgot Password</a>
+            </form>
         </div>
+
+        //             <Link style={{textDecoration: 'none'}} to="/create-account"><span id="create-account-link">Create</span></Link>
+        //         </div>
+        //     </div>
+        // </div>
     )
 };
 

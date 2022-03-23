@@ -132,83 +132,145 @@ const Upload = () => {
     }
 
     return (
-        <div id="upload">
-            <div className="text-center">
-                <span className="fs-2">◆ Add Product ◆</span>
-            </div>
-            <hr className="mb-4"/>
-            <Form onSubmit={sendAddProduct} id="upload-form">
-                <Form.Control onChange={handleInputChange} name="name" type="text" placeholder="Product Name" className="mb-2 custom-input"/>
-                <Form.Control multiple id="image-input" accept="image/jpeg,image/jpg,image/heic" type="file" className="mb-2 visually-hidden"/>
-                <div id="product-images" className="mb-2">
-                    <Carousel className="carousel mb-2" width={'100%'} height='40vh' dragging>
-                        {images.length > 0 ? images.map((image, index) => {
-                                return <img className="product-upload-image" src={URL.createObjectURL(image)} key={index+"1"}/>
-                            })
-                            :
-                            <img className="product-upload-image" src="/images/default.jpg"/>
-                        }
-                    </Carousel>
-                    <Button onClick={openFileInput} variant="secondary" className="w-100 mb-1 radius-zero">Set Images</Button>
-                </div>
-                {images &&
-                    <div>
-                        <Form.Text>Image Order</Form.Text>
-                        <div id="image-order" className="mb-2">
-                            {imageOrder.length > 0 &&
-                                imageOrder.map((order, index) => {
-                                    return(
-                                        <div className="order-image-parent" key={index+"2"}>
-                                            {images[index] && 
-                                                <img src={URL.createObjectURL(images[index])} className="image-order-picture"/>
-                                            }
-                                            <Form.Control className="image-order-element" key={index} type="number" defaultValue={order+1} onChange={(e) => changeImageOrder(e, index)}/>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
+        <form id="admin-upload-form" onSubmit={sendAddProduct}>
+            <input onChange={handleInputChange}
+                    className="form-control mb-2" name="name"
+                    type="text" id="admin-upload-product-name" placeholder="Product Name"/>
+            <input onChange={handleInputChange} className="visually-hidden" id="image-input" type="file"/>
+            <div className="carousel slide mb-1" data-bs-ride="carousel" id="admin-upload-images">
+                <div className="carousel-inner" id="admin-upload-images-slides">
+                    <div className="carousel-item active h-100">
+                        <img className="w-100 d-block admin-upload-slide-image" src={"/images/default.jpg"} alt="Slide Image"/>
+                        <span id="admin-upload-initial-slide-text">Click to upload image..</span>
                     </div>
-                }
+                    <div className="carousel-item h-100">
+                        <img className="w-100 d-block admin-upload-slide-image" src={"/images/default.jpg"} alt="Slide Image"/>
+                    </div>
+                </div>
+                <div>
+                    <a className="carousel-control-prev" href="#admin-upload-images" role="button" data-bs-slide="prev">
+                        <span className="carousel-control-prev-icon"></span>
+                        <span className="visually-hidden">Previous</span>
+                    </a>
+                    <a className="carousel-control-next" href="#admin-upload-images" role="button" data-bs-slide="next">
+                        <span className="carousel-control-next-icon"></span>
+                        <span className="visually-hidden">Next</span>
+                    </a>
+                </div>
+                <ol className="carousel-indicators">
+                    <li data-bs-target="#admin-upload-images" data-bs-slide-to="0" className="active"></li>
+                    <li data-bs-target="#admin-upload-images" data-bs-slide-to="1"></li>
+                </ol>
+            </div>
+            <div className="input-group mb-1">
+                <span className="input-group-text">£</span>
+                <input onChange={handleInputChange} name="price"
+                        className="form-control" type="number"
+                        placeholder="0.00" min="0" step="0.01"/>
+            </div>
+            <input onChange={handleInputChange} name="description"
+                    className="form-control mb-1" type="text"
+                    placeholder="Description"/>
+            <input name="dateToPost" className="form-control mb-1" type="date"/>
+            <select onChange={handleInputChange} name="type" className="form-select mb-1">
+                <option value="12" selected="">Type</option>
+                <option value="13">This is item 2</option>
+                <option value="14">This is item 3</option>
+            </select>
+            <input onChange={handleInputChange} name="count"
+                    className="form-control mb-3" type="number"
+                    placeholder="Number of products" min="0" step="1"/>
+            <label className="form-label">SIZES</label>
+            <div id="admin-upload-product-sizes-parent" className="mb-4">
+                <div className="admin-upload-product-size mb-1">
+                    <input className="form-control" type="text" placeholder="ENTER SIZE"/>
+                    <button className="btn btn-dark ms-2" type="button">DELETE</button>
+                </div>
+                <button className="btn btn-secondary w-100 mb-1" type="button">ADD SIZE</button>
+                <div className="form-check">
+                    <input className="form-check-input" type="radio" id="formCheck-1"/>
+                    <label className="form-check-label" htmlFor="formCheck-1">Allow Custom Size</label>
+                </div>
+            </div>
+            <button className="btn btn-success btn-lg fw-bold w-100" type="submit">CREATE</button>
+        </form>
+        // <div id="upload">
+        //     <div className="text-center">
+        //         <span className="fs-2">◆ Add Product ◆</span>
+        //     </div>
+        //     <hr className="mb-4"/>
+        //     <Form onSubmit={sendAddProduct} id="upload-form">
+        //         <Form.Control onChange={handleInputChange} name="name" type="text" placeholder="Product Name" className="mb-2 custom-input"/>
+        //         <Form.Control multiple id="image-input" accept="image/jpeg,image/jpg,image/heic" type="file" className="mb-2 visually-hidden"/>
+        //         <div id="product-images" className="mb-2">
+        //             <Carousel className="carousel mb-2" width={'100%'} height='40vh' dragging>
+        //                 {images.length > 0 ? images.map((image, index) => {
+        //                         return <img className="product-upload-image" src={URL.createObjectURL(image)} key={index+"1"}/>
+        //                     })
+        //                     :
+        //                     <img className="product-upload-image" src="/images/default.jpg"/>
+        //                 }
+        //             </Carousel>
+        //             <Button onClick={openFileInput} variant="secondary" className="w-100 mb-1 radius-zero">Set Images</Button>
+        //         </div>
+        //         {images &&
+        //             <div>
+        //                 <Form.Text>Image Order</Form.Text>
+        //                 <div id="image-order" className="mb-2">
+        //                     {imageOrder.length > 0 &&
+        //                         imageOrder.map((order, index) => {
+        //                             return(
+        //                                 <div className="order-image-parent" key={index+"2"}>
+        //                                     {images[index] && 
+        //                                         <img src={URL.createObjectURL(images[index])} className="image-order-picture"/>
+        //                                     }
+        //                                     <Form.Control className="image-order-element" key={index} type="number" defaultValue={order+1} onChange={(e) => changeImageOrder(e, index)}/>
+        //                                 </div>
+        //                             )
+        //                         })
+        //                     }
+        //                 </div>
+        //             </div>
+        //         }
 
-                <Form.Group>
-                    <Form.Text>Price</Form.Text>
-                    <InputGroup>
-                        <InputGroup.Text className="custom-input">£</InputGroup.Text>
-                        <Form.Control className="custom-input" type="number" placeholder="price" onChange={handleInputChange} name="price"/>
-                    </InputGroup>
+        //         <Form.Group>
+        //             <Form.Text>Price</Form.Text>
+        //             <InputGroup>
+        //                 <InputGroup.Text className="custom-input">£</InputGroup.Text>
+        //                 <Form.Control className="custom-input" type="number" placeholder="price" onChange={handleInputChange} name="price"/>
+        //             </InputGroup>
 
-                </Form.Group>
-                <Form.Control onChange={handleInputChange} name="description" as="textarea" placeholder="Enter description..." className="custom-input mb-2 mt-2"/>
-                <Form.Group>
-                    <Form.Text>Product Count</Form.Text>
-                    <Form.Control onChange={handleInputChange} name="count" type="number" min="1" placeholder="Number of products" className="custom-input mb-1"/>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Text>Enter Sizes</Form.Text>
-                    <Form.Control onChange={handleInputChange} name="sizes" placeholder="'Small, Medium, Large', or '1 Size' ..." className="custom-input"/>
-                    <Form.Check onChange={handleInputChange} name="customSize" label="Allow custom size" className="custom-input"/>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Text>Type</Form.Text>
-                    <Form.Select value={type} onChange={handleInputChange} name="type" className="custom-input">
-                        <option value="made">Made To Order</option>
-                        <option value="own">Creator's Own</option>
-                    </Form.Select>
-                </Form.Group>
-                <DateTime
-                    initialValue={new Date()}
-                    closeOnSelect={true}
-                    className="mb-2 mt-2 w-100"
-                    inputProps={{placeholder: 'Upload Date...',
-                                className: "date-input-upload-form",
-                                readOnly: true,
-                                name: 'dateToPost'
-                    }}
-                />
-                <Button variant="secondary" type="submit" className="w-100">ADD</Button>
-            </Form>
-        </div>
+        //         </Form.Group>
+        //         <Form.Control onChange={handleInputChange} name="description" as="textarea" placeholder="Enter description..." className="custom-input mb-2 mt-2"/>
+        //         <Form.Group>
+        //             <Form.Text>Product Count</Form.Text>
+        //             <Form.Control onChange={handleInputChange} name="count" type="number" min="1" placeholder="Number of products" className="custom-input mb-1"/>
+        //         </Form.Group>
+        //         <Form.Group>
+        //             <Form.Text>Enter Sizes</Form.Text>
+        //             <Form.Control onChange={handleInputChange} name="sizes" placeholder="'Small, Medium, Large', or '1 Size' ..." className="custom-input"/>
+        //             <Form.Check onChange={handleInputChange} name="customSize" label="Allow custom size" className="custom-input"/>
+        //         </Form.Group>
+        //         <Form.Group>
+        //             <Form.Text>Type</Form.Text>
+        //             <Form.Select value={type} onChange={handleInputChange} name="type" className="custom-input">
+        //                 <option value="made">Made To Order</option>
+        //                 <option value="own">Creator's Own</option>
+        //             </Form.Select>
+        //         </Form.Group>
+        //         <DateTime
+        //             initialValue={new Date()}
+        //             closeOnSelect={true}
+        //             className="mb-2 mt-2 w-100"
+        //             inputProps={{placeholder: 'Upload Date...',
+        //                         className: "date-input-upload-form",
+        //                         readOnly: true,
+        //                         name: 'dateToPost'
+        //             }}
+        //         />
+        //         <Button variant="secondary" type="submit" className="w-100">ADD</Button>
+        //     </Form>
+        // </div>
     )
 }
 

@@ -34,60 +34,35 @@ const Profile = () => {
     }
 
     return (
-        <div id="profile">
-            <div className="simple-page-parent">
-                <div style={{width: '100%', textAlign: 'center'}}>
-                    <span className="fs-3">◑ PROFILE ◐</span>
-                </div>
-                <hr className="mb-4"/>
-                <span>INFO</span>
-                <Form.Control className="custom-input mb-2" type="text" disabled defaultValue={profileData ? profileData.username : 'username'}/>
-                <Form.Control className="custom-input mb-2" type="text" disabled defaultValue={profileData ? profileData.email : 'email'}/>
-                <br />
-                <Button onClick={sendUpdatePassword} className="w-100 mb-3" variant="dark" type="submit">UPDATE PASSWORD</Button>
-                <span>ORDERS</span>
-                <div id="profile-page-order-history">
-                    <Accordion>
-                    {orders && orders.length > 0 ? orders.map((order, index) => {
-                        return(
-                            <Accordion.Item className="custom-accordion-item" key={index} eventKey={index}>
-                                <Accordion.Button className="custom-accordion-button">
-                                    <div className="profile-order-item">
-                                        <span className="profile-order-name">{order.items.join(', ')}</span>
-                                        <span className="mx-2">{order.date}</span>
-                                        <span>£{order.total}</span>
+        <div id="profile-parent">
+            <form id="profile-form">
+                <label className="form-label">EMAIL</label>
+                <input className="form-control mb-1" type="text" readOnly defaultValue={profileData?profileData.email:'email'}/>
+                <label className="form-label">USERNAME</label>
+                <input className="form-control mb-3" type="text" readOnly defaultValue={profileData?profileData.username:'username'}/>
+                <button className="btn btn-dark fw-bold w-100 mb-4" type="button" onClick={sendUpdatePassword}>UPDATE PASSWORD</button>
+                <label className="form-label">ORDERS</label>
+                <div id="profile-orders-parent">
+                    <div className="accordion" role="tablist" id="accordion-1">
+                        {orders && orders.length > 0 ? orders.map((order, index) => (
+                            <div key={index} className="accordion-item custom-black-accordion">
+                                <h2 className="accordion-header" role="tab">
+                                    <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={"#accordion-1 .item-"+index} aria-expanded="true">{order.items.length} {order.items.length === 1?'Item':'Items'} - £{order.total} - {order.date}</button>
+                                </h2>
+                                <div className={"accordion-collapse collapse show item-"+index} role="tabpanel" data-bs-parent="#accordion-1">
+                                    <div className="accordion-body d-flex flex-column">
+                                        {order.items.map((item, i2) => (
+                                            <span key={i2}>{item}<span className="text-muted"> {order.sizes[i2]}</span></span>
+                                        ))}
                                     </div>
-                                </Accordion.Button>
-                                <Accordion.Body className="profile-order-body">
-                                    <div className="profile-order-expand">
-                                        {order.items.map((item, i2) => {
-                                            var after = (i2 < order.items.length - 1) ? ", " : "";
-                                            return <span key={i2}>{item} <span className="text-muted">({order.sizes[i2]})</span>{after}</span>
-                                        })}
-                                    </div>
-                                </Accordion.Body>
-                            </Accordion.Item>
-                        )
-                        // var hr = (index < orders.length-1) ? <hr style={{margin: '2px 30px 2px 30px'}}/> : "";
-                        // return (
-                        //     <div>
-                        //         <div key={index} className="profile-page-order">
-                        //             <span className="order-names">{order.items.join(', ')}</span>
-                        //             <span className="text-muted">{order.date}</span>
-                        //             <span>${order.total}</span>
-                        //         </div>
-                        //         {hr}
-                        //     </div>
-                        // )
-                        })
-                        : 
-                        <div className="p-2 text-center">
+                                </div>
+                            </div>
+                        )):
                             <span>No Orders</span>
-                        </div>
-                    }
-                    </Accordion>
+                        }
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     )
 };

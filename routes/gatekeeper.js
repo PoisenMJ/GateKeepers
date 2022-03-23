@@ -5,6 +5,9 @@ const Creator = require('../client/src/models/creator');
 const CreatorProduct = require('../client/src/models/creatorProduct');
 const User = require('../client/src/models/user');
 const Order = require('../client/src/models/order');
+const key = require('../client/src/models/key');
+const nJwt = require('njwt');
+const secureRandom = require('secure-random');
 var { gatekeeperCheck } = require('../middleware/auth');
 
 var multer = require('multer');
@@ -21,7 +24,51 @@ var storage = multer.diskStorage({
 })
 var upload = multer({ storage: storage });
 
+router.post('/login', async (req, res, next) => {
+    var username = req.body.username;
+    var password = req.body.password;
 
+    var user;
+    try {
+        user = await User.findOne({ username: username });
+    } catch(err) {
+        return res.status(400).json(err);
+    }
+    if(!user) return res.json({ success: false, message: 'Username or password incorrect' })
+    else if(!(user.checkPassword(password))) return res.json({ success: false, message: 'Username or password incorrect' });
+    else if(user.accountType === "user") return res.json({ success: false });
+
+    var signingKey = secureRandom(256, {type: 'Buffer'});
+    var claims = {
+        iss: process.env.HOST,
+        scope: 'creator'
+    };
+    var jwt = nJwt.create(claims, signingKey);
+    var token = jwt.compact();
+    var b64SigningKey = signingKey.toString('base64');
+
+    var result;
+    try {
+        result = await key.exists({ user: user.username });
+    } catch(err) {
+        return res.status(400).json(err);
+    }
+    if(result){
+        key.updateOne({ user: user.username }, { $set: { key: b64SigningKey } }, (err, updatedDoc) => {
+            if(err) return res.status(400).json(err);
+            else return res.json({ success: true, token });
+        });
+    } else {
+        var newKey = new key({
+            user: user.username,
+            key: b64SigningKey
+        });
+        newKey.save((err, key) => {
+            if(err) return res.status(400).json(err);
+            else return res.json({ success: true, token });
+        })
+    }
+})
 
 router.post('/orders', gatekeeperCheck, async (req, res, next) => {
     var creatorUsername = req.body.username;
@@ -187,6 +234,13 @@ router.post('/:creatorTag', gatekeeperCheck, (req, res, next) => {
 
 router.post('/update/:creatorTag', upload.single('creatorImage'), gatekeeperCheck, (req, res, next) => {
     var username = req.params.creatorTag;
+    // check shipping details are valid
+    var shippingKeys = Object.keys(req.body.shippingDetails);
+    var _shippingDetails = req.body.shippingDetails;
+    for(var i = 0; i < shippingKeys.length; i++){
+        if(typeof _shippingDetails[shippingKeys[i]] !== "number") delete _shippingDetails[shippingKeys[i]];
+    }
+
     if(req.file){
         Creator.findOne({tag: username }).then((doc,err) => {
             if(doc.image){
@@ -209,7 +263,7 @@ router.post('/update/:creatorTag', upload.single('creatorImage'), gatekeeperChec
             twitter: req.body.twitterLink ? req.body.twitterLink : '',
             twitch: req.body.twitchLink ? req.body.twitchLink : ''
         },
-        shippingDetails: JSON.parse(req.body.shippingDetails),
+        shippingDetails: JSON.parse(_shippingDetails),
         accent: req.body.accent,
         name: req.body.name ? req.body.name : '',
         email: req.body.email ? req.body.email : ''

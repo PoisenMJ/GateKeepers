@@ -1,39 +1,55 @@
-@media screen and (min-width: 1224px){
-    #creator-profile{
-        width: 40%!important;
-        place-self: center!important;
+#admin-profile-parent {
+    padding: 20px;
+}
+
+#admin-profile-image {
+    margin: auto;
+    height: 50vh !important;
+    max-width: 100%;
+    object-fit: cover;
+    grid-area: content;
+    filter: opacity(0.75);
+}
+#admin-profile-image-parent:hover #admin-profile-image{
+    filter: opacity(0.6)!important;
+}
+
+#admin-profile-image-text {
+    grid-area: content;
+    top: 50%;
+    left: 50%;
+    position: relative;
+    z-index: 100;
+    width: fit-content;
+    height: min-content;
+    color: white;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+}
+
+#admin-profile-image-parent {
+    display: grid;
+    grid-template-areas: "content";
+    cursor: pointer;
+    background-color: rgb(30,30,30);
+}
+
+.admin-profile-shipping {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 55% 20% 25%;
+}
+
+@media(min-width: 768px) {
+    #admin-profile-parent {
+        width: 60vw !important;
+        margin: auto;
     }
 }
 
-#creator-profile{
-    width: 100%;
-    padding: 2rem;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%);
-    position: absolute;
-}
-#creator-image-src{
-    width: 100%;
-}
-#creator-image-src-parent{
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    grid-template-areas: "image";
-}
-#creator-image-src{ grid-area: image; }
-#creator-image-src-overlay{
-    grid-area: image;
-    width: 100%;
-    height: 100%;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-    z-index:30;
-    background-color: rgba(200,200,200,0.5);
-    transition: .15s;
-}
-#creator-image-src-overlay:hover{
-    background-color: rgba(200,200,200,0.3)!important;
+@media(min-width: 1200px) {
+    #admin-profile-parent {
+        width: 40vw !important;
+        margin: auto;
+    }
 }

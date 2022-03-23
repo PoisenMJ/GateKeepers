@@ -5,11 +5,14 @@ import "./FlashMessage.css";
 
 const styles = {
     position: 'fixed',
-    width: '100%',
+    display: 'grid',
+    width: '100vw',
     bottom: 0,
     zIndex: 100,
     padding: '0 1rem 0 1rem',
-    textAlign: 'center'
+    textAlign: 'center',
+    left: '50%',
+    transform: "translateX(-50%)"
 }
 
 const FlashMessage = () => {

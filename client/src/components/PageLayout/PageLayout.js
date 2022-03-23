@@ -5,24 +5,21 @@ import FlashMessage from '../FlashMessage/FlashMessage';
 import { AuthVerify } from '../../services/AuthContext';
 import Cart from '../Cart/Cart';
 import { CartDesktopBreakpoint, Desktop } from '../Query';
+import Navbar from '../Navbar/Navbar';
 
-const PageLayout = ({ header, body, footer, cartEnabled}) => {
+const PageLayout = ({ nav, offcanvas, body, footer, cartEnabled}) => {
     return (
-        <div id="page-layout">
-            <CartDesktopBreakpoint>
-                {cartEnabled === true &&
-                    <Cart clicked={() => {}} inNavigation={false}/>
-                }
-            </CartDesktopBreakpoint>
-            {header}
-            {body}
-            {footer}
+        <>
+            <Navbar nav={nav} offcanvas={offcanvas}/>
             <FlashMessage/>
-            {!body &&
-                <Outlet/>
-            }
+            <main id="main-normal">
+                {!body ?
+                    <Outlet/> : body
+                }
+            </main>
+            {footer}
             <AuthVerify/>
-        </div>
+        </>
     )
 }
 

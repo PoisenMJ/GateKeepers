@@ -1,32 +1,21 @@
-@media screen and (min-width: 1224px) {
-    #edit-product{
-        width: 40%!important;
-        justify-self: center!important;
-    }
-    #creator-portal-iamges{
-        width: 100%!important;
-    }
-    .product-upload-image{
-        height: 50vh!important;
-        object-fit: conver;
-    }
-    .custom-upload-creator-carousel{
-        height: 50vh!important;
-    }
+.admin-upload-image-order-image {
+    height: 10vh;
+    width: 100%;
+    object-fit: cover;
+    grid-area: adminUploadImageOrder;
+}
+.admin-empty-slide > img{ transition: .15s; }
+.admin-empty-slide:hover > img{
+    filter: brightness(1.5);
 }
 
-#edit-image-order{
+.admin-upload-image-order {
     display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-areas: "adminUploadImageOrder";
 }
-#edit-product{
-    height: fit-content;
-    padding: 0rem 1rem 2rem 1rem;
-    width: 100%;   
-}
-#creator-portal-images{
-    height: auto;
-}
-.creator-portalproduct-upload-image{
-    width: 100%;
+
+.admin-upload-image-order-input {
+    grid-area: adminUploadImageOrder;
+    place-self: center;
+    opacity: 0.6;
 }

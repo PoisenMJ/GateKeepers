@@ -37,81 +37,61 @@ const ProductsPage = ({ type }) => {
     }
 
     return (
-        <div id="products-page">
-            <div className="w-100 text-center mb-3">
-                    <div className='mb-2'>
-                        {type === "own" ?
-                            <p className="text-muted fw-bold fs-5" style={{marginBottom: '6px', fontVariant: 'small-caps'}}>
-                                Clothes from <span style={{color: accentColor}}>@{creator}'s</span> wardrobe.</p>
-                            :<p className="text-muted fw-bold fs-5" style={{marginBottom: '6px', fontVariant: 'small-caps'}}>
-                                Clothes hand made by <span style={{color: accentColor}}>@{creator}</span>.</p>
-                        }
-                        {shippingCountries.length > 0 &&
-                            <div style={{display: 'inline'}}>
-                                <span style={{fontSize: '.85rem'}} className="text-secondary">SHIPS TO:    </span>
-                                <select className="black-custom-input apple-select" style={{border: 'none', padding: '2px 4px 2px 4px'}}>
-                                    {shippingCountries.map((country, index) => {
-                                        return <option key={index}>{country}</option>
-                                    })}
-                                </select>
+        <>
+            <div className="row g-0 my-3">
+                <div className="col text-center">
+                    {type === "made" ?
+                        <p className="fw-bold text-muted text-center my-0">Clothes made by&nbsp;<span className="text-dark"><strong>@MAKSIE_AKI</strong></span>.</p>:
+                        <p className="fw-bold text-muted text-center my-0">Clothes from&nbsp;<span className="text-dark"><strong>@MAKSIE_AKI'S</strong></span> own wardrobe.</p>
+                    }
+                    <div className="d-flex flex-row justify-content-center align-items-center my-1"><span className="fw-bold text-muted t-9">SHIPS TO:</span>
+                        <div className="dropdown mx-2"><button className="btn btn-dark btn-sm dropdown-toggle fw-bold black-dropdown" aria-expanded="false" data-bs-toggle="dropdown" type="button">UNITED KINGDOM&nbsp;</button>
+                            <div className="dropdown-menu">
+                                {shippingCountries && shippingCountries.map((country, index) => (
+                                    <a className="dropdown-item pointer" key={index}>{country}</a>
+                                ))}
                             </div>
-                        }
+                        </div>
                     </div>
-                    <p className="custom-divider">GK</p>
+                    <p className="custom-divider my-2">GK</p>
+                </div>
             </div>
-            {/* <hr className="mx-5"/> */}
-            <div id="products">
+            <div className="row g-0 products">
                 {products && products.map((product, index) => {
                     var date = new Date(product.dateToPost);
-                    var available = (new Date() < date);
+                    var available = !(new Date() < date);
                     var outOfStock = (product.count <= 0);
+
                     // if not ready yet change class
-                    var c = (outOfStock) ? ' out-of-stock-product' : (available) ? ' unavailable-product' : '';
-                    var imageC = (available || outOfStock) ? ' unavailable-product-image' : '';
-                    
-                    // time format
-                    var hours = date.getHours();
-                    var minutes = date.getMinutes();
-                    minutes = ('0'+minutes).slice(-2);
-                    var ampm = hours >= 12 ? 'PM' : 'AM';
-                    hours = hours % 12;
-                    hours = hours ? hours : 12; // the hour '0' should be '12'
-                    var strTime = hours + ':' + minutes + ' ' + ampm;
+                    var productClass = (outOfStock) ? ' out-of-stock-product' : (!available) ? ' unavailable-product' : '';
+                    var imageClass = (!available || outOfStock) ? ' unavailable-product-image' : '';                 
+
+                    // time format for (releasing soon)
+                    var strTime;
+                    if(!available && !outOfStock){
+                        var hours = date.getHours() % 12;
+                        hours = hours ? hours : 12; // the hour '0' should be '12'
+                        var minutes = ('0'+date.getMinutes()).slice(-2);
+                        var ampm = hours >= 12 ? 'PM' : 'AM';
+                        strTime = hours + ':' + minutes + ' ' + ampm;
+                    }
 
                     return (
-                        <div key={product.name}
-                            className={"product mb-3"+c} 
-                            onClick={() => viewProduct(product.uri)}
-                            style={{boxShadow: `1px 1px ${accentColor}, 2px 2px ${accentColor}, 3px 3px ${accentColor}, 4px 4px ${accentColor}, 5px 5px ${accentColor}, 6px 6px ${accentColor}, 7px 7px ${accentColor}, 8px 8px ${accentColor}`}}>
-                            <div className="product-image-parent">
-                                <img src={`/images/products/${product.images[product.imageOrder[0]]}`} className={"product-image"+imageC}/>
-                                {available && !outOfStock &&
-                                        <span className="product-image-text">
-                                            RELEASING SOON
-                                            <br/>
-                                            {date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()}
-                                            <br/>
-                                            <span style={{fontSize: '.9rem', color: 'rgb(200,200,200)'}}>{strTime}</span>
-                                        </span>
-                                }
-                                {outOfStock &&
-                                    <span className='product-image-text text-white'>
-                                        OUT OF STOCK
-                                    </span>
-                                }
-                            </div>
-                            <div className="product-info">
-                                <span className="fs-4 fw-light">◆ {product.name} ◆</span>
-                                <span className="fs-5">£{product.price}</span>
+                        <div className="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-3"
+                            key={index}
+                            onClick={() => viewProduct(product.uri)}>
+                            <div className={"product-list"+productClass}>
+                                <img className={"product-image"+imageClass} src={`/images/products/${product.images[product.imageOrder[0]]}`}/>
+                                <div className="d-flex flex-column justify-content-center align-items-center">
+                                    <span className="fw-normal fs-4">◎ {product.name} ◎</span>
+                                    <span className="fw-bolder fs-5"><strong>£{product.price}</strong></span>
+                                </div>
                             </div>
                         </div>
                     )
                 })}
-                {products && products.length === 0 &&
-                    <span className="text-center fs-1 no-prods-available">No Products Available</span>
-                }
             </div>
-        </div>
+        </>
     )
 };
 
