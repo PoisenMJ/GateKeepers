@@ -163,12 +163,16 @@ body {
 
 .custom-black-select {
   font-family: 'Oswald', sans-serif;
-  background-color: black;
+  background-color: black!important;
   color: white;
   border-radius: .2rem;
-  padding: 3px 4px;
+  padding: 3px 4px 4px 4px;
   text-align: center;
   border: 1px solid black;
+  -webkit-appearance: none;
+
+  background: url('data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0Ljk1IDEwIj48ZGVmcz48c3R5bGU+LmNscy0ye2ZpbGw6I2ZmZjt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmFycm93czwvdGl0bGU+PHBvbHlnb24gY2xhc3M9ImNscy0yIiBwb2ludHM9IjEuNDEgNC42NyAyLjQ4IDMuMTggMy41NCA0LjY3IDEuNDEgNC42NyIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtMiIgcG9pbnRzPSIzLjU0IDUuMzMgMi40OCA2LjgyIDEuNDEgNS4zMyAzLjU0IDUuMzMiLz48L3N2Zz4=') no-repeat 95% 50%;
+	-moz-appearance: none; 
 }
 
 .icon-3 {
@@ -211,6 +215,3 @@ input, select {
   color: white!important;
 }
 .pointer{ cursor: pointer; }
-input:active{
-  
-}

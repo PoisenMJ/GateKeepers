@@ -13,7 +13,11 @@
 }
 
 .instagram-button {
-    background: linear-gradient(45deg, #405de6, #5851db 20%, #833ab4 40%, #c13584 60%, #e1306c 80%, #fd1d1d 100%);
+    background: linear-gradient(to right, rgba(64, 93, 230, 1) 0%, rgba(88, 81, 219, 1) 20%, rgba(131, 58, 180, 1) 40%, rgba(193, 53, 132, 1) 60%, rgba(225, 48, 108, 1) 80%, rgba(253, 29, 29, 1) 100%);
+    background: -webkit-linear-gradient(to right, rgba(64, 93, 230, 1) 0%, rgba(88, 81, 219, 1) 20%, rgba(131, 58, 180, 1) 40%, rgba(193, 53, 132, 1) 60%, rgba(225, 48, 108, 1) 80%, rgba(253, 29, 29, 1) 100%);
+    background: -moz-linear-gradient(to right, rgba(64, 93, 230, 1) 0%, rgba(88, 81, 219, 1) 20%, rgba(131, 58, 180, 1) 40%, rgba(193, 53, 132, 1) 60%, rgba(225, 48, 108, 1) 80%, rgba(253, 29, 29, 1) 100%);
+    background: -o-linear-gradient(to right, rgba(64, 93, 230, 1) 0%, rgba(88, 81, 219, 1) 20%, rgba(131, 58, 180, 1) 40%, rgba(193, 53, 132, 1) 60%, rgba(225, 48, 108, 1) 80%, rgba(253, 29, 29, 1) 100%);
+    -webkit-appearance: none;
     border: none;
     padding: 6px;
 }

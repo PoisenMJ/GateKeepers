@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
-import Carousel from 'nuka-carousel';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
 import { addProduct } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext';
@@ -18,8 +17,8 @@ const Upload = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [type, setType] = useState("made");
-    const [count, setCount] = useState(null);
-    const [sizes, setSizes] = useState(null);
+    const [count, setCount] = useState(0);
+    const [sizes, setSizes] = useState([]);
     const [customSize, setCustomSize] = useState(false);
 
     const [imageOrder, setImageOrder] = useState([]);
@@ -42,17 +41,31 @@ const Upload = () => {
             case 'count':
                 setCount(event.target.value);
                 break;
-            case 'sizes':
-                setSizes(event.target.value);
-                break;
             case 'customSize':
                 setCustomSize(event.target.checked);
                 break;
         }
     }
+    
+    const updateSizes = (event, index) => {
+        var _sizes = sizes;
+        sizes[index] = event.target.value;
+        setSizes([]);
+        setSizes(_sizes);
+    }
+    const addSize = event => {
+        var _sizes = sizes;
+        _sizes.push('empty');
+        setSizes([..._sizes]);
+    }
+    const deleteSize = index => {
+        var _sizes = sizes;
+        _sizes.splice(index, 1);
+        setSizes([..._sizes]);
+    }
 
     const openFileInput = () => document.getElementById('image-input').click();
-    const changeImageOrder = (event, index) => {
+    const updateOrder = (event, index) => {
         var order = imageOrder;
         imageOrder[index] = parseInt(event.target.value)-1;
         setImageOrder([]);
@@ -100,7 +113,7 @@ const Upload = () => {
 
     const sendAddProduct = async event => {
         event.preventDefault();
-        var formdata = document.getElementById('upload-form');
+        var formdata = document.getElementById('admin-upload-form');
 
         // check order is valid
         var orderTotal = 0;
@@ -116,7 +129,7 @@ const Upload = () => {
         if(orderTotal === desiredTotal){
             if(images && price && name && description && type && count){
                 if((!sizes && customSize) || sizes){
-                    var res = await addProduct(formdata, username, token, imageOrder, images, customSize);
+                    var res = await addProduct(formdata, username, token, imageOrder, images, customSize, sizes);
                     if(res.success) {
                         Flash("Successfully added", "success");
                         navigate('../products');
@@ -139,13 +152,19 @@ const Upload = () => {
             <input onChange={handleInputChange} className="visually-hidden" id="image-input" type="file"/>
             <div className="carousel slide mb-1" data-bs-ride="carousel" id="admin-upload-images">
                 <div className="carousel-inner" id="admin-upload-images-slides">
-                    <div className="carousel-item active h-100">
-                        <img className="w-100 d-block admin-upload-slide-image" src={"/images/default.jpg"} alt="Slide Image"/>
-                        <span id="admin-upload-initial-slide-text">Click to upload image..</span>
-                    </div>
-                    <div className="carousel-item h-100">
-                        <img className="w-100 d-block admin-upload-slide-image" src={"/images/default.jpg"} alt="Slide Image"/>
-                    </div>
+                    {images.length > 0 ? images.map((image, index) => {
+                        return (
+                            <div className={index===0?"carousel-item h-100 active":"carousel-item h-100"}>
+                                <img className={"w-100 d-block admin-upload-slide-image"}
+                                        src={URL.createObjectURL(image)} alt="Slide Image"/>
+                            </div>
+                        )
+                    }) :
+                        <div className="carousel-item active h-100 pointer" onClick={openFileInput}>
+                            <img className="w-100 d-block admin-upload-slide-image" src={"/images/default.jpg"} alt="Slide Image"/>
+                            <span id="admin-upload-initial-slide-text">Click to upload image..</span>
+                        </div>
+                    }
                 </div>
                 <div>
                     <a className="carousel-control-prev" href="#admin-upload-images" role="button" data-bs-slide="prev">
@@ -158,9 +177,28 @@ const Upload = () => {
                     </a>
                 </div>
                 <ol className="carousel-indicators">
-                    <li data-bs-target="#admin-upload-images" data-bs-slide-to="0" className="active"></li>
-                    <li data-bs-target="#admin-upload-images" data-bs-slide-to="1"></li>
+                    {images.length > 0 ? images.map((image, index) => (
+                        <li data-bs-target="#admin-upload-images" data-bs-slide-to={index} className={index===0?"active":""}></li>
+                    )) :
+                        <li data-bs-target="#admin-upload-images" data-bs-slide-to="0" className={"active"}></li>
+                    }
                 </ol>
+            </div>
+            <div id="admin-upload-image-order-parent" className="mb-2">
+                <label className="form-label">IMAGE ORDER</label>
+                <div className="row g-0">
+                    {images.length > 0 && images.map((image, index) => {
+                        var imageSRC = (typeof image === 'string') ? `/images/products/${image}` : URL.createObjectURL(image); 
+                        return (
+                            <div className="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 admin-upload-image-order" key={index}>
+                                <img className="admin-upload-image-order-image" src={imageSRC}/>
+                                <input onChange={(e) => updateOrder(e, index)} defaultValue={index+1}
+                                        className="form-control admin-upload-image-order-input"
+                                        type="number" min="1" step="1" />
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
             <div className="input-group mb-1">
                 <span className="input-group-text">£</span>
@@ -171,22 +209,34 @@ const Upload = () => {
             <input onChange={handleInputChange} name="description"
                     className="form-control mb-1" type="text"
                     placeholder="Description"/>
-            <input name="dateToPost" className="form-control mb-1" type="date"/>
+            <DateTime
+                initialValue={new Date()}
+                closeOnSelect={true}
+                className="mb-2 mt-2 w-100"
+                inputProps={{placeholder: 'Upload Date...',
+                            className: "date-input-upload-form w-100 form-control bg-white",
+                            readOnly: true,
+                            name: 'dateToPost'
+            }}/>
             <select onChange={handleInputChange} name="type" className="form-select mb-1">
-                <option value="12" selected="">Type</option>
-                <option value="13">This is item 2</option>
-                <option value="14">This is item 3</option>
+                <option value="own" selected="">OWN</option>
+                <option value="made">MADE</option>
             </select>
             <input onChange={handleInputChange} name="count"
                     className="form-control mb-3" type="number"
                     placeholder="Number of products" min="0" step="1"/>
             <label className="form-label">SIZES</label>
             <div id="admin-upload-product-sizes-parent" className="mb-4">
-                <div className="admin-upload-product-size mb-1">
-                    <input className="form-control" type="text" placeholder="ENTER SIZE"/>
-                    <button className="btn btn-dark ms-2" type="button">DELETE</button>
-                </div>
-                <button className="btn btn-secondary w-100 mb-1" type="button">ADD SIZE</button>
+                    {sizes.length > 0 && sizes.map((size, index) => (
+                        <div className="admin-upload-product-size mb-1" key={2+index}>
+                            <input className="form-control"
+                                    type="text" value={size}
+                                    onChange={(e) => updateSizes(e, index)}
+                                    placeholder="ENTER SIZE"/>
+                            <button className="btn btn-dark ms-2" onClick={() => deleteSize(index)} type="button">DELETE</button>
+                        </div>
+                    ))}
+                    <button className="btn btn-secondary w-100 mb-1" onClick={addSize} type="button">ADD SIZE</button>
                 <div className="form-check">
                     <input className="form-check-input" type="radio" id="formCheck-1"/>
                     <label className="form-check-label" htmlFor="formCheck-1">Allow Custom Size</label>

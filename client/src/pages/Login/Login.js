@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './Login.css';
-import { Form, Button } from 'react-bootstrap';
 import { login } from '../../controllers/auth';
 import { getActivationToken } from '../../controllers/users';
 import { Flash } from '../../components/FlashMessage/FlashMessage';
@@ -11,6 +10,8 @@ import Event from '../../utils/events';
 import ActivateAccount from '../../components/ActivateAccount/ActivateAccount';
 import PasswordRecoveryBox from '../../components/PasswordRecoveryBox/PasswordRecoveryBox';
 import { CartContext } from '../../services/CartContext';
+import { APP_ID, APP_REDIRECT } from '../../services/Instagram';
+import { FaInstagram } from 'react-icons/fa';
 
 const Login = () => {
 
@@ -75,14 +76,16 @@ const Login = () => {
                 hideDialog={() => setShowActivationDialog(false)}/>
 
             <form id="login-form" onSubmit={sendLogin}>
-                <label className="form-label" for="#username">USERNAME</label>
-                <input onChange={handleUsernameChange} className="form-control mb-1" type="text" id="username" placeholder="JOHN DOE" required="" name="username" inputmode="katakana"/>
-                <label className="form-label" for="#password">PASSWORD</label>
+                <label className="form-label" htmlFor="#username">USERNAME</label>
+                <input onChange={handleUsernameChange} className="form-control mb-1" type="text" id="username" placeholder="JOHN DOE" required="" name="username" inputMode="katakana"/>
+                <label className="form-label" htmlFor="#password">PASSWORD</label>
                 <input onChange={handlePasswordChange} className="form-control mb-2" type="password" id="password" placeholder="PASSWORD123"/>
                 <button className="btn btn-dark fw-bold w-100 mb-1" type="submit">LOGIN</button>
-                <button className="btn btn-primary fw-bold instagram-button w-100" type="button">Sign In
-                    <i className="fab fa-instagram icon-3"></i>
-                </button>
+                <a href={`https://api.instagram.com/oauth/authorize?client_id=${APP_ID}&redirect_uri=${APP_REDIRECT}&scope=user_profile&response_type=code`}
+                    className="btn btn-primary fw-bold pb-2 instagram-button w-100"
+                    type="button">Sign In
+                    <FaInstagram className='icon-3'/>
+                </a>
                 <hr className="my-4"/>
                 <span className="text-muted">Don't have an account?
                     <Link to="/create-account"><span id="create-account-button" className="ps-1 text-primary">CREATE ONE</span></Link>

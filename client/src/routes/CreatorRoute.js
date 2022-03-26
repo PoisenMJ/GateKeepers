@@ -26,7 +26,7 @@ const CreatorRoute = () => {
             <span className="visually-hidden">Loading...</span>
         </Spinner></div>
     return (
-        (isCreator) ? <Outlet/> : <Navigate to="/login"/>
+        (isCreator) ? <Outlet/> : <Navigate to="/creators/login"/>
     )
 }
 

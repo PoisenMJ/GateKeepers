@@ -4,7 +4,6 @@ import { getProduct, updateProduct } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext.js';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
-import Carousel from 'nuka-carousel';
 import DateTime from 'react-datetime';
 import { Desktop, Mobile } from '../../../components/Query';
 import Compressor from 'compressorjs';
@@ -95,6 +94,16 @@ const EditProduct = () => {
         setSizes([]);
         setSizes(_sizes);
     }
+    const addSize = event => {
+        var _sizes = sizes;
+        _sizes.push('empty');
+        setSizes([..._sizes]);
+    }
+    const deleteSize = index => {
+        var _sizes = sizes;
+        _sizes.splice(index, 1);
+        setSizes([..._sizes]);
+    }
 
     const sendUpdateForm = async event => {
         event.preventDefault();
@@ -115,6 +124,7 @@ const EditProduct = () => {
             
             data.append('productID', productID);
             data.append('price', document.getElementById("edit-money-input").value);
+            data.append('sizes', sizes);
             // send if images are changed or not
             if(product.images != images) data.append('imagesChanged', true);
             else data.append('imagesChanged', false);
@@ -216,10 +226,10 @@ const EditProduct = () => {
                                         type="text" value={size}
                                         onChange={(e) => updateSizes(e, index)}
                                         placeholder="ENTER SIZE"/>
-                                <button className="btn btn-dark ms-2" type="button">DELETE</button>
+                                <button className="btn btn-dark ms-2" onClick={() => deleteSize(index)} type="button">DELETE</button>
                             </div>
                         ))}
-                        <button className="btn btn-secondary w-100 mb-1" type="button">ADD SIZE</button>
+                        <button className="btn btn-secondary w-100 mb-1" onClick={addSize} type="button">ADD SIZE</button>
                         <div className="form-check">
                             <input className="form-check-input" type="checkbox" id="formCheck-1"/>
                             <label defaultValue={product?product.customSize:false} onChange={updateCustomSize} className="form-check-label" htmlFor="formCheck-1">Allow Custom Size</label>

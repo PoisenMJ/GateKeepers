@@ -20,6 +20,7 @@
 #admin-library-outfit-image-parent {
     display: grid;
     grid-template-areas: "adminLibraryOutfitImage";
+    cursor: pointer;
 }
 
 #admin-library-outfit-image-text {

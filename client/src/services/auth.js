@@ -41,6 +41,19 @@ async function checkCreatorToken() {
     })
 }
 
+// (username) (type: 'user': 'creator')
+async function instagramLogin(username, type) {
+    return fetch('/auth/instagram-login', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, type })
+    }).then(raw => raw.json()).then(json => {
+        if(json.success){
+            return { token: json.token, type: json.type };
+        } else return false;
+    })
+}
+
 function LogOut(){
     localStorage.removeItem("token");
     localStorage.removeItem("username");
@@ -50,4 +63,4 @@ function LogOut(){
     localStorage.removeItem("creator");
 }
 
-export { checkTokenExpiration, checkToken, checkCreatorToken, LogOut };
+export { checkTokenExpiration, checkToken, checkCreatorToken, LogOut, instagramLogin };

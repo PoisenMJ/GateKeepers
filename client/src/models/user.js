@@ -9,13 +9,11 @@ var userSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
     },
     firstName: String,
     lastName: String,
     email: {
         type: String,
-        required: true,
         unqiue: true
     },
     image: String,
@@ -30,7 +28,6 @@ var userSchema = mongoose.Schema({
     },
     activationCode: {
         type: String,
-        required: true
     },
     accountActivated: {
         type: Boolean,
@@ -39,6 +36,10 @@ var userSchema = mongoose.Schema({
     updateCode: {
         type: String,
         default: ''
+    },
+    instaLogin: {
+        type: Boolean,
+        default: false
     }
 });
 

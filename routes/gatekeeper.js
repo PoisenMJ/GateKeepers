@@ -11,14 +11,17 @@ const secureRandom = require('secure-random');
 var { gatekeeperCheck } = require('../middleware/auth');
 
 var multer = require('multer');
+const outfit = require('../client/src/models/outfit');
+
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
         if(file.fieldname == "creatorImage") cb(null, './client/public/images/');
+        else if(file.fieldname == "outfitImg") cb(null, './client/public/images/library/');
         else cb(null, './client/public/images/products/');
     },
     filename: (req, file, cb) => {
         const uniqueSuffix = '-' + Date.now() + '-' + Math.round(Math.random()*1E9)+'.';
-        console.log(file);
+        console.log(file.fieldname+uniqueSuffix+(file.mimetype.split('/')[1]));
         cb(null, file.fieldname+uniqueSuffix+(file.mimetype.split('/')[1]));
     }
 })
@@ -92,6 +95,33 @@ router.post('/orders', gatekeeperCheck, async (req, res, next) => {
     }
 })
 
+router.post('/outfit/delete', gatekeeperCheck, async (req, res, next) => {
+    var deleted = await outfit.findByIdAndDelete(req.body.outfitID);
+    //! DELETE IMAGE AFTER
+    return res.json({ success: true });
+})
+
+router.post('/outfit/create', upload.single('outfitImg'), gatekeeperCheck, async (req, res, next) => {
+    var items = JSON.parse(req.body.items);
+    var name = req.body.name;
+
+    var newOutfit = new outfit({
+        user: req.body.username,
+        name,
+        items,
+        image: req.file.filename
+    })
+    console.log(newOutfit);
+    newOutfit.save();
+    return res.json({ success: true });
+})
+
+router.get('/outfit/all/:gatekeeper', async (req, res, next) => {
+    var username = req.params.gatekeeper;
+    var outfits = await outfit.find({ user: username });
+    return res.json({ success: true, outfits });
+})
+
 router.post('/orders/mark-sent', gatekeeperCheck, async (req, res, next) => {
     try {
         var updated = await Order.updateOne({ _id: req.body.orderID }, {$set: { sent: true }});
@@ -109,7 +139,6 @@ router.post('/products/add', upload.array('images'), gatekeeperCheck, (req, res,
     for(var i = 0; i < req.files.length; i++){
         imageNameList.push(req.files[i].filename)
     }
-    var sizes = req.body.sizes.replace(`'`, '').split(',').filter((e) => e.trim());
     console.log(req.body);
     Creator.findOne({ tag: creatorUsername }).then((user, err) => {
         var newProduct = new CreatorProduct({
@@ -122,7 +151,7 @@ router.post('/products/add', upload.array('images'), gatekeeperCheck, (req, res,
             images: imageNameList,
             type: req.body.type,
             dateToPost: req.body.dateToPost,
-            sizes: sizes,
+            sizes: req.body.sizes,
             customSize: req.body.customSizeAccept,
             imageOrder: req.body.imageOrder.split(",")
         });

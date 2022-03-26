@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaBars, FaBook, FaBriefcase, FaCube, FaShoppingCart } from 'react-icons/fa';
 import "./Nav.css";
+import { CartContext } from '../../services/CartContext';
 
 const CreatorNav = () => {
     let navigate = useNavigate();
+    const { products } = useContext(CartContext);
+
     return (
         <nav className="navbar navbar-light d-flex align-items-stretch" id="creator-navbar">
             <div className="container-fluid">
@@ -27,7 +30,7 @@ const CreatorNav = () => {
                     </NavLink>
                 </ul>
                 <div className="desktop-shopping-cart" onClick={() => navigate("/shopping-basket")}>
-                    <span>2</span>
+                    <span>{products.length}</span>
                     <FaShoppingCart/>
                 </div>
             </div>

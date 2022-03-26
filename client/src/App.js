@@ -41,6 +41,7 @@ import CreatorLibrary from './pages/CreatorPortal/Library/CreatorLibrary';
 import CreatorLibraryEdit from './pages/CreatorPortal/LibraryEdit/CreatorLibraryEdit';
 import CreatorLoginPage from './pages/CreatorPortal/Login/CreatorLogin';
 import CreatorOffcanvas from './pages/CreatorPortal/CreatorOffcanvas/CreatorOffcanvas';
+import Instagram from './services/Instagram';
 
 function App() {
   return (
@@ -97,6 +98,8 @@ function App() {
             <Route path="library/add" element={<CreatorLibraryEdit type={"add"}/>}/>
             <Route path="library/edit/:name" element={<CreatorLibraryEdit type={"edit"}/>}/>
           </Route>
+
+          <Route path="insta_fe/redirect" element={<Instagram/>}/>
 
           // TODO:: WILDCARD ROUTE
         </Routes>

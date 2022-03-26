@@ -3,7 +3,6 @@ import './Product.css';
 import { useParams } from 'react-router-dom';
 import { getProduct } from '../../controllers/creators';
 import { Button, Form } from 'react-bootstrap';
-import Carousel from 'nuka-carousel';
 import { useNavigate } from 'react-router';
 import { CartContext } from '../../services/CartContext';
 import { Flash } from '../../components/FlashMessage/FlashMessage';
@@ -87,10 +86,10 @@ const ProductPage = () => {
                     <div id="product-info-parent">
                         <div class="d-flex flex-column mb-2">
                             <h1 class="m-auto mb-2" id="product-info-name">{product.name}</h1>
-                            <span className="fw-lighter fs-6 mb-1">{product.description}</span>
+                            <span className="fs-6 mb-1">{product.description}</span>
                             <span class="fs-4 fw-bolder"> £{product.price} : <span className="fs-5">{product.count > 0 ? product.count+" AVAILABLE": "OUT OF STOCK"}</span></span>
                         </div>
-                        <div class="d-flex flex-column align-self-end">
+                        <div class="d-flex flex-column align-self-end mx-auto" style={{width: '75%'}}>
                             <select class="custom-black-select my-1 w-100" required="">
                                 {product.sizes.map((size, index2) => (
                                     <option key={index2} value={size.trim()} selected="">{size}</option>

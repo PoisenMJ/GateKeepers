@@ -4,10 +4,12 @@ import { FaBars, FaSignOutAlt, FaShoppingCart } from 'react-icons/fa';
 import { AuthContext } from '../../services/AuthContext';
 import { getCreators } from '../../controllers/creators';
 import "./Nav.css";
+import { CartContext } from '../../services/CartContext';
 
 const NormalNav = ({ transparent, ...props }) => {
     let navigate = useNavigate();
     const { loggedIn } = useContext(AuthContext);
+    const { products } = useContext(CartContext);
     const [creators, setCreators] = useState(null);
 
     useEffect(() => {
@@ -49,7 +51,7 @@ const NormalNav = ({ transparent, ...props }) => {
                     }
                 </div>
                 <div className="desktop-shopping-cart" onClick={() => navigate("/shopping-basket")}>
-                    <span>2</span>
+                    <span>{products.length}</span>
                     <FaShoppingCart/>
                 </div>
             </div>

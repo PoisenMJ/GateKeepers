@@ -21,9 +21,10 @@ router.post('/login', async (req, res, next) => {
         return res.status(400).json(err);
     }
     if(!user) return res.json({ success: false, message: 'Username or password incorrect' })
-    else if(user.accountActivated === false && user.accountType !== "creator") return res.json({ success: false, message: "activate account" });
+    else if(user.accountActivated === false) return res.json({ success: false, message: "activate account" });
     else if(!(user.checkPassword(password))) return res.json({ success: false, message: 'Username or password incorrect' });
-    else if(user.accountType === "creator") return res.json({ success: false });
+    else if(user.accountType === "creator") return res.json({ success: false, message: 'Username or password incorrect' });
+    else if(user.instaLogin) return res.json({ success: false, message: "Instagram login" })
 
     var signingKey = secureRandom(256, {type: 'Buffer'});
     var claims = {
@@ -56,6 +57,86 @@ router.post('/login', async (req, res, next) => {
         })
     }
 });
+
+router.post('/instagram-login', async (req, res, next) => {
+    var username = req.body.username;
+    var type = req.body.type;
+    var user = await User.findOne({ username: username });
+    if(user){
+        if(user.accountType === "user" && user.instaLogin){
+            var signingKey = secureRandom(256, {type: 'Buffer'});
+            var claims = {
+                iss: process.env.HOST,
+                scope: type
+            };
+            var jwt = nJwt.create(claims, signingKey);
+            var token = jwt.compact();
+            var b64SigningKey = signingKey.toString('base64');
+            key.updateOne({ user: username }, { $set: { key: b64SigningKey } }, (err, updatedDoc) => {
+                if(err) return res.status(400).json(err);
+                else return res.json({ success: true, token, type: 'user' });
+            });
+        } else if(user.accountType === 'creator' && type === 'creator'){
+            var signingKey = secureRandom(256, {type: 'Buffer'});
+            var claims = {
+                iss: process.env.HOST,
+                scope: 'creator'
+            };
+            var jwt = nJwt.create(claims, signingKey);
+            var token = jwt.compact();
+            var b64SigningKey = signingKey.toString('base64');
+
+            var result;
+            try {
+                result = await key.exists({ user: username });
+            } catch(err) {
+                return res.status(400).json(err);
+            }
+            console.log(result);
+            if(result){
+                key.updateOne({ user: username }, { $set: { key: b64SigningKey } }, (err, updatedDoc) => {
+                    if(err) return res.status(400).json(err);
+                    else return res.json({ success: true, token, type: 'creator' });
+                });
+            } else {
+                var newKey = new key({
+                    user: username,
+                    key: b64SigningKey
+                });
+                newKey.save((err, key) => {
+                    if(err) return res.status(400).json(err);
+                    else return res.json({ success: true, token, type: 'creator' });
+                })
+            }
+
+        }
+        else return res.json({ success: false, message: 'username taken' });
+    } else {
+        // first time login
+        var newUser = new User({
+            username,
+            instaLogin: true,
+            password: secureRandom(20).toString()
+        });
+        await newUser.save();
+        var signingKey = secureRandom(256, {type: 'Buffer'});
+        var claims = {
+            iss: process.env.HOST,
+            scope: 'user'
+        };
+        var jwt = nJwt.create(claims, signingKey);
+        var token = jwt.compact();
+        var b64SigningKey = signingKey.toString('base64');
+        var newKey = new key({
+            user: user.username,
+            key: b64SigningKey
+        });
+        newKey.save((err, key) => {
+            if(err) return res.status(400).json(err);
+            else return res.json({ success: true, token, type: 'user' });
+        })
+    }
+})
 
 router.post('/create-account', async (req, res, next) => {
     var username = req.body.username;

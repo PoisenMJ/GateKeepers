@@ -11,12 +11,50 @@ async function login(username, password){
     return json;
 }
 
-async function addProduct(data, username, token, order, images, customSize){
+async function addOutfit(username, token, name, items, image){
+    var formData = new FormData();
+    formData.append('username', username);
+    formData.append('token', token);
+    formData.append('name', name);
+    formData.append('items', JSON.stringify(items));
+    formData.append('outfitImg', image);
+    console.log(...formData);
+
+    var res = await fetch('/gatekeeper/outfit/create', {
+        method: "POST",
+        body: formData,
+    });
+    var json = await res.json();
+    return json;
+}
+
+async function deleteOutfit(username, token, outfitID){
+    var res = await fetch('/gatekeeper/outfit/delete', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            token,
+            outfitID
+        })
+    })
+    var json = await res.json();
+    return json;
+}
+
+async function getOutfits(username){
+    var res = await fetch(`/gatekeeper/outfit/all/${username}`);
+    var json = await res.json();
+    return json;
+}
+
+async function addProduct(data, username, token, order, images, customSize, sizes){
     var data = new FormData(data);
     data.append('username', username);
     data.append('token', token);
     data.append('imageOrder', order);
     data.append('customSizeAccept', customSize);
+    data.append('sizes', sizes);
 
     for(var i = 0; i < images.length; i++){
         data.append("images", images[i]);
@@ -129,5 +167,8 @@ export {
     updateGatekeeper,
     getOrders,
     markOrderSent,
-    login
+    login,
+    addOutfit,
+    getOutfits,
+    deleteOutfit
 }
