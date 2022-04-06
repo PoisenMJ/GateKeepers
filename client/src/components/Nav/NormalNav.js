@@ -42,23 +42,23 @@ const NormalNav = ({ transparent, ...props }) => {
                     <span className="visually-hidden">Toggle navigation</span>
                     <FaBars id="custom-navbar-toggle-icon"/>
                 </button>
-                <div className="collapse navbar-collapse justify-content-center">
-                    <NavLink to="/" className="desktop-navbar-link">HOME</NavLink>
+                <div className="collapse navbar-collapse justify-content-center" id="normal-nav">
+                    <NavLink to="/" className="desktop-navbar-link fw-bold">HOME</NavLink>
                     <div className="dropdown">
-                        <a className="dropdown-toggle mx-3 desktop-gatekeeper-dropdown text-muted" id="gatekeepersDowndownLink" role="button" onClick={toggleDropdown}>GATEKEEPERS</a>
+                        <a className="dropdown-toggle mx-3 desktop-gatekeeper-dropdown text-muted fw-bold" id="gatekeepersDowndownLink" role="button" onClick={toggleDropdown}>GATEKEEPERS</a>
                         <div className="dropdown-menu" id="gatekeepersDropdown" aria-labelledby="gatekeepersDowndownLink">
                             {creators && creators.map((creator, index) => (
                                 <NavLink className="dropdown-item" key={index} to={creator.tag+"/made"}>{creator.tag.toUpperCase()}</NavLink>
                             ))}
                         </div>
                     </div>
-                    <NavLink to="/about" className="desktop-navbar-link">ABOUT</NavLink>
+                    <NavLink to="/about" className="desktop-navbar-link fw-bold">ABOUT</NavLink>
                     {loggedIn ?
                         <>
-                            <NavLink to="/profile" className="desktop-navbar-link">PROFILE</NavLink>
+                            <NavLink to="/profile" className="desktop-navbar-link fw-bold">PROFILE</NavLink>
                             <a className="desktop-navbar-link p-0 m-0" onClick={logOutButton}><FaSignOutAlt style={{marginBottom: '3px', cursor: 'pointer'}}/></a>
                         </>:
-                        <NavLink to="/login" className="desktop-navbar-link">LOGIN</NavLink>
+                        <NavLink to="/login" className="desktop-navbar-link fw-bold">LOGIN</NavLink>
                     }
                 </div>
                 <div className="desktop-shopping-cart" onClick={() => navigate("/shopping-basket")}>

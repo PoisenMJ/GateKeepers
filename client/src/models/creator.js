@@ -42,6 +42,13 @@ const creatorSchema = mongoose.Schema({
     accent: {
         type: String,
         default: '#000000'
+    },
+    paymentLink: {
+        type: String
+    },
+    customsOn: {
+        type: Boolean,
+        default: false
     }
 });
 

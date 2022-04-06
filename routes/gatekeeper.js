@@ -141,7 +141,6 @@ router.post('/products/add', upload.array('images'), gatekeeperCheck, (req, res,
     for(var i = 0; i < req.files.length; i++){
         imageNameList.push(req.files[i].filename)
     }
-    console.log(req.body);
     Creator.findOne({ tag: creatorUsername }).then((user, err) => {
         var newProduct = new CreatorProduct({
             creator: user._id,
@@ -297,7 +296,9 @@ router.post('/update/:creatorTag', upload.single('creatorImage'), gatekeeperChec
         shippingDetails: JSON.parse(_shippingDetails),
         accent: req.body.accent,
         name: req.body.name ? req.body.name : '',
-        email: req.body.email ? req.body.email : ''
+        email: req.body.email ? req.body.email : '',
+        customsOn: req.body.customsOn,
+        paymentLink: req.body.paymentLink
     }}).then((doc, err) => {
         User.findOneAndUpdate({ username: username }, {
             $set: { email: req.body.email ? req.body.email : '' }
@@ -305,9 +306,7 @@ router.post('/update/:creatorTag', upload.single('creatorImage'), gatekeeperChec
             if(err) return res.json({ success: false });
             if(req.body.password){
                 User.findOneAndUpdate({ username: username }, {
-                    $set: { 
-                        password: User.encryptPassword(req.body.password),
-                    }
+                    $set: { password: User.encryptPassword(req.body.password) }
                 }).then((doc, err) => {
                     if(err) return res.json({ success: false });
                     else return res.json({ success: true });
@@ -363,12 +362,26 @@ router.post('/custom/accept', gatekeeperCheck, async (req, res, next) => {
     }
 })
 
+router.post('/custom/decline', gatekeeperCheck, async (req, res, next) => {
+    try {
+        await Custom.findOneAndRemove({ from: req.body.user, to: req.body.username });
+        await CustomsMessage.remove({ $or: [
+            { from: req.body.user, to: req.body.username },
+            { from: req.body.username, to: req.body.user }
+        ]});
+        return res.json({ success: true });
+    } catch(err) {
+        return res.json({ success: false });
+    }
+})
+
 router.post('/custom/send-message', gatekeeperCheck, async (req, res, next) => {
     try {
         var newMsg = new CustomsMessage({
             from: req.body.username,
             to: req.body.to,
-            message: req.body.message
+            message: req.body.message,
+            type: req.body.type
         });
         await newMsg.save();
         return res.json({ success: true });

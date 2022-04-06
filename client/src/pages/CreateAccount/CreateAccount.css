@@ -1,17 +1,19 @@
-@media screen and (min-width: 1224px) {
-    #create-account{
-        width: 40%!important;
-        justify-self: center;
+@media(min-width: 992px) {
+    #create-account-parent {
+        width: 50vw !important;
+        margin: auto;
     }
 }
 
-#create-account{
-    height: 90vh;
-    padding: 3rem;
-    align-content: center;
-    display: grid;
+@media(min-width: 1200px) {
+    #create-account-parent {
+        width: 40vw !important;
+        margin: auto;
+    }
 }
-#create-account-header{
-    width: 100%;
-    text-align: center;
+
+#create-account-form {
+    padding: 15px;
+    background-color: rgb(230, 230, 230);
+    border-radius: 5px;
 }

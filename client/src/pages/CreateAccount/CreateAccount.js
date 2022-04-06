@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import './CreateAccount.css';
 import { Form, Button } from 'react-bootstrap';
 import { Flash } from '../../components/FlashMessage/FlashMessage';
 import { createAccount } from '../../controllers/auth';
 import { useNavigate } from 'react-router';
+import './CreateAccount.css';
 
 const CreateAccount = () => {
     let navigate = useNavigate();
@@ -11,10 +11,12 @@ const CreateAccount = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confPassword, setConfPassword] = useState('');
 
     const handleUsernameChange = event => setUsername(event.target.value);
     const handleEmailChange = event => setEmail(event.target.value);
     const handlePasswordChange = event => setPassword(event.target.value);
+    const handleConfPasswordChange = event => setConfPassword(event.target.value);
 
     const submitAccount = async event => {
         event.preventDefault();
@@ -30,31 +32,22 @@ const CreateAccount = () => {
     }
 
     return (
-        <div id="create-account">
-            <div className="simple-page-parent">
-                <div id="create-account-header">
-                    <span className="fs-2">▶ CREATE ACCOUNT ◀</span>
-                </div>
-                <hr className="mb-4"/>
-                <Form onSubmit={submitAccount}>
-                    <Form.Control onChange={handleUsernameChange} className="custom-input mb-2" type="text" placeholder="USERNAME" />
-                    <Form.Control onChange={handleEmailChange} className="custom-input mb-2" type="email" placeholder="EMAIL" />
-                    <Form.Control onChange={handlePasswordChange} className="custom-input mb-4" type="password" placeholder="PASSWORD" />
-                    {/* <Form.Group>
-                        <Form.Label className="mb-0">SELECT INFLUENCER</Form.Label>
-                        <Form.Select className="mb-4 custom-input" aria-label="Select Influencer">
-                            <option value="MAKSIE_AKI">MAKSIE_AKI</option>
-                            <option value="FLORMARYLANE">FLOMARYLANE</option>
-                            <option value="LIFEOFADEADGIRL">LIFEOFADEADGIRL</option>
-                            <option value="JASHUBOO">JASHUBOO</option>
-                            <option value="NONE">NONE</option>
-                        </Form.Select>
-                    </Form.Group> */}
-                    <Button variant="dark" type="submit" className="w-100">
-                        Create
-                    </Button>
-                </Form>
-            </div>
+        <div id="create-account-parent">
+            <form id="create-account-form" onSubmit={submitAccount}>
+                <label className="form-label">EMAIL</label>
+                <input className="form-control mb-1" type="email"
+                    onChange={handleEmailChange} placeholder="johndoe@email.com" />
+                <label className="form-label">USERNAME</label>
+                <input className="form-control mb-1" type="text"
+                    onChange={handleUsernameChange} placeholder="John Doe" />
+                <label className="form-label">PASSWORD</label>
+                <input className="form-control mb-1" type="password"
+                    onClick={handlePasswordChange} placeholder="password123" />
+                <label className="form-label">CONFIRM PASSWORD</label>
+                <input className="form-control mb-3" type="password"
+                    onChange={handleConfPasswordChange} placeholder="password123" />
+                <button className="btn btn-dark fw-bold w-100" type="submit">CREATE ACCOUNT</button>
+            </form>
         </div>
     )
 };

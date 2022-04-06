@@ -16,6 +16,10 @@ var customsMessageSchema = mongoose.Schema({
     read: {
         type: Boolean,
         default: false
+    },
+    type: {
+        type: String,
+        default: 'message'
     }
 })
 

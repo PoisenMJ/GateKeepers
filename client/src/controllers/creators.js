@@ -22,6 +22,12 @@ async function getCreators(){
     return json;
 }
 
+async function getCreator(creatorTag){
+    var res = await fetch(`/creator/${creatorTag}`);
+    var json = await res.json();
+    return json;
+}
+
 async function getProduct(productURI, type){
     var res = await fetch(`/creator/products/${productURI}/${type}`);
     var json = await res.json();
@@ -45,6 +51,7 @@ export {
     getOwnProducts,
     getMadeProducts,
     getCreators,
+    getCreator,
     getProduct,
     getCreatorShippingCountries,
     getCreatorAccentColor

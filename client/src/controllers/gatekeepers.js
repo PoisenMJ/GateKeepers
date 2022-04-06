@@ -186,7 +186,21 @@ async function acceptGatekeeperCustom(username, token, user){
     return json;
 }
 
-async function sendCustomsMessage(username, token, message, to){
+async function declineGatekeeperCustom(username, token, user){
+    var res = await fetch('/gatekeeper/custom/decline', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            token,
+            user
+        })
+    })
+    var json = await res.json();
+    return json;
+}
+
+async function sendCustomsMessage(username, token, message, to, type){
     var res = await fetch('/gatekeeper/custom/send-message', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
@@ -194,7 +208,8 @@ async function sendCustomsMessage(username, token, message, to){
             username,
             token,
             message,
-            to
+            to,
+            type
         })
     })
     var json = await res.json();
@@ -217,5 +232,6 @@ export {
     deleteOutfit,
     getGatekeeperCustomsMessages,
     acceptGatekeeperCustom,
+    declineGatekeeperCustom,
     sendCustomsMessage
 }

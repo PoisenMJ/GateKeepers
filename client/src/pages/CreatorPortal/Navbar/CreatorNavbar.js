@@ -34,9 +34,15 @@ const CreatorNavbar = () => {
                         </button>
                         <div className="collapse navbar-collapse justify-content-center">
                             <NavLink to="orders" className="desktop-navbar-link fw-bold">ORDERS</NavLink>
-                            <NavLink to="upload" className="desktop-navbar-link fw-bold">UPLOAD</NavLink>
-                            <NavLink to="products" className="desktop-navbar-link fw-bold">PRODUCTS</NavLink>
-                            <NavLink to="library" className="desktop-navbar-link fw-bold">LIBRARY</NavLink>
+                            <div className="dropdown">
+                                <a className="desktop-navbar-link fw-bold dropdown-toggle"
+                                    href="#" role="buton" data-bs-toggle="dropdown">SHOP</a>
+                                <ul className="dropdown-menu">
+                                    <li><NavLink to="products" className="dropdown-item pointer shop-dropdown-item">PRODUCTS</NavLink></li>
+                                    <li><NavLink to="upload" className="dropdown-item pointer shop-dropdown-item">UPLOAD</NavLink></li>
+                                </ul>
+                            </div>
+                            <NavLink to="library" className="desktop-navbar-link fw-bold">OUTFITS</NavLink>
                             <NavLink to="profile" className="desktop-navbar-link fw-bold">PROFILE</NavLink>
                             <NavLink to="customs" className="desktop-navbar-link fw-bold">CUSTOMS</NavLink>
                             <a className="desktop-navbar-link p-0 m-0" onClick={logOutButton}>

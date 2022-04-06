@@ -62,7 +62,7 @@ router.get('/all-creators', (req, res, next) => {
 router.get('/:creatorTag', (req, res, next) => {
     var username = req.params.creatorTag;
 
-    creator.findOne({ tag: username }).select('-_id name').then((user, err) => {
+    creator.findOne({ tag: username }).select('-_id name paymentLink').then((user, err) => {
         if(err) return res.json({ success: false });
         else return res.json({ success: true, user });
     })
