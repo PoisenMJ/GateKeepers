@@ -38,14 +38,15 @@ const ProductsPage = ({ type }) => {
 
     return (
         <>
-            <div className="row g-0 my-3">
-                <div className="col text-center">
+            <div className="d-flex ps-2 pt-3 pe-2" style={{ alignItems: 'center' }}>
+                <div style={{ position: 'relative', left: '50%', transform: 'translateX(-50%)', width: 'fit-content' }}>
                     {type === "made" ?
                         <p className="fw-bold text-muted text-center my-0">Clothes made by&nbsp;<span className="text-dark"><strong>@MAKSIE_AKI</strong></span>.</p>:
                         <p className="fw-bold text-muted text-center my-0">Clothes from&nbsp;<span className="text-dark"><strong>@MAKSIE_AKI'S</strong></span> own wardrobe.</p>
                     }
                     <div className="d-flex flex-row justify-content-center align-items-center my-1"><span className="fw-bold text-muted t-9">SHIPS TO:</span>
-                        <div className="dropdown mx-2"><button className="btn btn-dark btn-sm dropdown-toggle fw-bold black-dropdown" aria-expanded="false" data-bs-toggle="dropdown" type="button">UNITED KINGDOM&nbsp;</button>
+                        <div className="dropdown mx-2">
+                            <button className="btn btn-dark btn-sm dropdown-toggle fw-bold black-dropdown" aria-expanded="false" data-bs-toggle="dropdown" type="button">UNITED KINGDOM&nbsp;</button>
                             <div className="dropdown-menu">
                                 {shippingCountries && shippingCountries.map((country, index) => (
                                     <a className="dropdown-item pointer" key={index}>{country}</a>
@@ -53,9 +54,10 @@ const ProductsPage = ({ type }) => {
                             </div>
                         </div>
                     </div>
-                    <p className="custom-divider my-2">GK</p>
                 </div>
+                <span className="fs-3 outfit-link pe-3" style={{position: 'absolute', left: '100%', transform: 'translateX(-100%)'}}>OUTFITS</span>
             </div>
+            <p className="custom-divider my-2">GK</p>
             <div className="row g-0 products">
                 {products && products.map((product, index) => {
                     var date = new Date(product.dateToPost);

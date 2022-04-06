@@ -3,7 +3,7 @@ import { CartContext } from '../../services/CartContext';
 import { Button, CloseButton } from 'react-bootstrap';
 import { getProduct } from '../../controllers/creators';
 import './ShoppingBasket.css';
-import { FaArrowRight } from 'react-icons/fa';
+import { FaArrowRight, FaTimes } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 
 const ShoppingBasket = () => {
@@ -50,9 +50,11 @@ const ShoppingBasket = () => {
             <div>
                 {productsData ? productsData.map((product, index) => (
                     <div className="shopping-basket-product-parent"><img className="shopping-basket-product-image" src={`/images/products/${product.image}`}/>
-                        <div className="my-auto shopping-basket-product-details"><span className="shopping-basket-product-name">CHAIN MASK</span>
-                            <div><span className="text-muted">@maksie_aki</span><span className="shopping-basket-product-size">ONE SIZE</span></div>
-                        </div><span className="shopping-basket-product-price">£35</span><i className="fa fa-times shopping-basket-close-button"></i>
+                        <div className="my-auto ms-2 shopping-basket-product-details"><span className="shopping-basket-product-name">{product.name.toUpperCase()}</span>
+                            <div><span className="text-muted">@{product.creator}</span><span className="shopping-basket-product-size">{product.size.toUpperCase()}</span></div>
+                        </div>
+                        <span className="shopping-basket-product-price">£{product.price}</span>
+                        <FaTimes className="shopping-basket-close-button"/>
                     </div>
                 )) :
                     <div className="h-100 d-flex align-items-center">
@@ -64,7 +66,7 @@ const ShoppingBasket = () => {
             </div>
             {productsData &&
                 <div className="justify-content-evenly" id="shopping-basket-totals-parent">
-                    <div id="shopping-basket-totals-amount">
+                    <div id="shopping-basket-totals-amount" className="fs-2">
                         <span>TOTAL:&nbsp;</span>
                         <span>£{total}</span>
                     </div>
@@ -75,7 +77,6 @@ const ShoppingBasket = () => {
                 </div>
             }
         </div>
-
         
         
                     // productsData.map((product, index) => {

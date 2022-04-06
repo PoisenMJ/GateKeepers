@@ -16,7 +16,7 @@ const CreatorNavbar = () => {
         setUsername('');
         setToken('')
         LogOut();
-        navigate('/login');
+        navigate('/creators/login');
     }
 
     const toggleOffCanvas = () => {
@@ -33,13 +33,14 @@ const CreatorNavbar = () => {
                             <FaBars id="custom-navbar-toggle-icon"/>
                         </button>
                         <div className="collapse navbar-collapse justify-content-center">
-                            <NavLink to="orders" className="desktop-navbar-link">ORDERS</NavLink>
-                            <NavLink to="upload" className="desktop-navbar-link">UPLOAD</NavLink>
-                            <NavLink to="products" className="desktop-navbar-link">PRODUCTS</NavLink>
-                            <NavLink to="library" className="desktop-navbar-link">LIBRARY</NavLink>
-                            <NavLink to="profile" className="desktop-navbar-link">PROFILE</NavLink>
+                            <NavLink to="orders" className="desktop-navbar-link fw-bold">ORDERS</NavLink>
+                            <NavLink to="upload" className="desktop-navbar-link fw-bold">UPLOAD</NavLink>
+                            <NavLink to="products" className="desktop-navbar-link fw-bold">PRODUCTS</NavLink>
+                            <NavLink to="library" className="desktop-navbar-link fw-bold">LIBRARY</NavLink>
+                            <NavLink to="profile" className="desktop-navbar-link fw-bold">PROFILE</NavLink>
+                            <NavLink to="customs" className="desktop-navbar-link fw-bold">CUSTOMS</NavLink>
                             <a className="desktop-navbar-link p-0 m-0" onClick={logOutButton}>
-                                <FaSignOutAlt style={{marginBottom: '3px', cursor: 'pointer'}}/>
+                                <FaSignOutAlt style={{marginBottom: '6px', cursor: 'pointer'}}/>
                             </a>
                         </div>
                     </div>

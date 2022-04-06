@@ -33,13 +33,13 @@ const CreatorLibrary = () => {
 
     return (
         <div id="admin-library-parent">
-            <div class="modal" tabindex="-1" id="creator-library-delete-outfit-modal">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div className="modal" tabIndex="-1" id="creator-library-delete-outfit-modal">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body text-center">
+                        <div className="modal-body text-center">
                             <p>Are you sure you want to delete?</p>
                             <div className="btn-group" role="group">
                                 <button id="creator-library-modal-close" data-bs-dismiss="modal" type="button" className="btn btn-danger">NO</button>

@@ -1,15 +1,15 @@
 const ShippingPrices = {
-    'united-kingdom': 0.0,
-    'france': 15.2,
-    'italy': 18,
-    'netherlands': 13.6,
-    'united-states': 22.4,
-    'austria': 16.3,
-    'canada': 24.9,
-    'germany': 13.1,
-    'hong-kong': 13.4,
-    'singapore': 18.2,
-    'south-korea': 17.8,
+    'United Kingdom': 0.0,
+    'France': 15.2,
+    'Italy': 18,
+    'Netherlands': 13.6,
+    'United States': 22.4,
+    'Austria': 16.3,
+    'Canada': 24.9,
+    'Germany': 13.1,
+    'Hong Kong': 13.4,
+    'Singapore': 18.2,
+    'South Korea': 17.8,
 }
 
 const ShippingCountries = [

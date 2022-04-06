@@ -54,7 +54,7 @@ const Home = () => {
             </div>
             {creatorPosts && creatorPosts.map((post, index) => {
                 return (
-                    <div id={`slide_${index}`} className='home-slide' style={{top: `${(index+1)*100}vh`}}>
+                    <div key={index} id={`slide_${index}`} className='home-slide' style={{top: `${(index+1)*100}vh`}}>
                         <div className={`d-flex gatekeeper-slide-content ${(index+1)%2 == 0?'even-slide':'odd-slide'}`}>
                             <div className="d-flex flex-column justify-content-evenly align-items-center gatekeeper-socials">
                                 {post.links.instagram &&

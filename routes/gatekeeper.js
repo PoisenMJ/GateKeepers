@@ -3,6 +3,8 @@ const fs = require('fs');
 var router = express.Router();
 const Creator = require('../client/src/models/creator');
 const CreatorProduct = require('../client/src/models/creatorProduct');
+const CustomsMessage = require('../client/src/models/customsMessage');
+const Custom = require('../client/src/models/custom');
 const User = require('../client/src/models/user');
 const Order = require('../client/src/models/order');
 const key = require('../client/src/models/key');
@@ -317,6 +319,62 @@ router.post('/update/:creatorTag', upload.single('creatorImage'), gatekeeperChec
             return res.json({ success: true });
         })
     })
+})
+
+router.post('/custom/all-messages', gatekeeperCheck, async (req, res, next) => {
+    try {
+        var messages = await CustomsMessage.find({ $or: [
+            {from: req.body.username},
+            {to: req.body.username}
+        ]});
+        var customs = await Custom.find({ $or: [
+            {from: req.body.username},
+            {to: req.body.username}
+        ]});
+        var data = {};
+        for(var i = 0; i < messages.length; i++){
+            var key = messages[i].from !== req.body.username ?
+                        messages[i].from : messages[i].to;
+            if(!data[key]) data[key] = { messages: [], price: 0, accepted: 0, description: '' };
+            data[key].messages.push(messages[i]);
+
+            if(!data[key].price){
+                var c = customs.find(e => e.from === key);
+                data[key].price = c.initialPrice;
+                data[key].accepted = c.accepted;
+                data[key].description = c.initialDescription;
+            }
+        }
+        return res.json({ success: true, messages: data });
+    } catch(err) {
+        console.log(err);
+        return res.json({ success: false });
+    }
+})
+
+router.post('/custom/accept', gatekeeperCheck, async (req, res, next) => {
+    try {
+        var r = await Custom.findOneAndUpdate({ from: req.body.user, to: req.body.username }, {
+            accepted: true
+        });
+        return res.json({ success: true });
+    } catch(err) {
+        return res.json({ success: false });
+    }
+})
+
+router.post('/custom/send-message', gatekeeperCheck, async (req, res, next) => {
+    try {
+        var newMsg = new CustomsMessage({
+            from: req.body.username,
+            to: req.body.to,
+            message: req.body.message
+        });
+        await newMsg.save();
+        return res.json({ success: true });
+    } catch(err) {
+        return res.json({ success: false });
+    }
 })
 
 module.exports = router;

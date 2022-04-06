@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './CreatorLogin.css';
 import { login } from '../../../controllers/gatekeepers';
 import { useNavigate } from 'react-router';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
 import { AuthContext } from '../../../services/AuthContext';
-import { APP_ID, APP_REDIRECT } from '../../../services/Instagram';
+import { APP_ID, APP_REDIRECT } from '../../../config';
 import { FaInstagram } from 'react-icons/fa';
 
 const CreatorLoginPage = () => {
@@ -12,16 +12,20 @@ const CreatorLoginPage = () => {
     const [username, _setUsername] = useState('');
     const [password, _setPassword] = useState('');
 
-    const { setToken, setUsername, setLoggedIn } = useContext(AuthContext);
+    const { setToken, setUsername, setLoggedIn, loggedIn } = useContext(AuthContext);
+
+    useEffect(() => {
+        if(loggedIn && localStorage.getItem("creator") == "true") navigate("/creators/orders");
+    }, [])
 
     const sendLogin = async event => {
         event.preventDefault();
         var response = await login(username, password);
-        console.log(response);
         if(response.success){
             setToken(response.token);
             setUsername(username);
             setLoggedIn(true);
+            localStorage.setItem("creator", true);
             navigate("/creators/orders");
             Event.emit('loggedIn');
         } else Flash("Incorrect username or password", "dark");

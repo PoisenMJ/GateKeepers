@@ -148,11 +148,55 @@ async function getGatekeeper(username, token){
     return json;
 }
 
+
+// TODO:need token
 async function updateGatekeeper(data, username){
     var res = await fetch(`/gatekeeper/update/${username}`, {
         method: "POST",
         body: data
     });
+    var json = await res.json();
+    return json;
+}
+
+async function getGatekeeperCustomsMessages(username, token){
+    var res = await fetch('/gatekeeper/custom/all-messages', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            token
+        })
+    })
+    var json = await res.json();
+    return json;
+}
+
+async function acceptGatekeeperCustom(username, token, user){
+    var res = await fetch('/gatekeeper/custom/accept', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            token,
+            user
+        })
+    })
+    var json = await res.json();
+    return json;
+}
+
+async function sendCustomsMessage(username, token, message, to){
+    var res = await fetch('/gatekeeper/custom/send-message', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            token,
+            message,
+            to
+        })
+    })
     var json = await res.json();
     return json;
 }
@@ -170,5 +214,8 @@ export {
     login,
     addOutfit,
     getOutfits,
-    deleteOutfit
+    deleteOutfit,
+    getGatekeeperCustomsMessages,
+    acceptGatekeeperCustom,
+    sendCustomsMessage
 }

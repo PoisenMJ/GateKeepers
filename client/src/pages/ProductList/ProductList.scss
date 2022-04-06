@@ -58,3 +58,12 @@ $unv-bs: #3e3e3e;
 .products{
     padding: 15px 0 15px 15px;
 }
+
+.outfit-link{
+    transition: .15s;
+    cursor: pointer;
+    font-weight: bold;
+}
+.outfit-link:hover{
+    color: rgb(100,100,100)!important;
+}

@@ -32,7 +32,7 @@ const PaymentSuccess = () => {
                     
                     // set items into [ {uri, name} ]
                     var u = (username) ? username : "Guest";
-                    var items = products.map((item, index) => { return { uri: item.uri, name: item.name, size: item.size } });
+                    var items = products.map((item, index) => { return { uri: item.uri, name: item.name, size: item.size, image: item.image, price: item.price } });
                     var creators = [...new Set(products.map((item, index) => item.creator))];
                     await saveOrder(res.customerID, res.orderID, items, (total+shippingAddress.shippingPrice), total, u, shippingAddress, creators);
                     await sendConfirmationEmail(res.orderID, res.email, items, (total+shippingAddress.shippingPrice));

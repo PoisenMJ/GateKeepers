@@ -2,6 +2,8 @@ const express = require('express');
 var router = express.Router();
 var User = require('../client/src/models/user');
 var Order = require('../client/src/models/order');
+var Custom = require('../client/src/models/custom');
+var CustomsMessage = require('../client/src/models/customsMessage');
 const Key = require('../client/src/models/key');
 const nJwt = require('njwt');
 var { userCheck } = require('../middleware/auth');
@@ -196,6 +198,66 @@ router.post('/orders', userCheck, async (req, res, next) => {
         return res.json({ orders: ordersData })
     } catch(err) {
         return res.json({ orders: null });
+    }
+})
+
+router.post('/custom/create', userCheck, async (req, res, next) => {
+    var username = req.body.username;
+    try {
+        var alreadyCreated = await Custom.exists({ from: username, to: req.body.gatekeeper });
+        console.log(alreadyCreated)
+        if(alreadyCreated) return res.json({ success: false, message: "Already submitted custom request" });
+        else
+            var newCustom = new Custom({
+                from: username,
+                to: req.body.gatekeeper,
+                initialDescription: req.body.description,
+                initialPrice: req.body.price,
+                dateCreated: new Date().toString()
+            });
+            await newCustom.save();
+            return res.json({ success: true });
+    } catch(err) {
+        return res.json({ success: false, message: "Error" });
+    }
+})
+
+router.post('/custom/send-message', userCheck, async (req, res, next) => {
+    try {
+        var newCustomsMessage = new CustomsMessage({
+            from: req.body.username,
+            to: req.body.gatekeeper,
+            message: req.body.message
+        });
+        await newCustomsMessage.save();
+        return res.json({ success: true });
+    } catch(err) {
+        return res.json({ success: false });
+    }
+})
+
+router.post('/custom/all-messages', userCheck, async (req, res, next) => {
+    try {
+        var messages = await CustomsMessage.find({ $or: [
+            { from: req.body.gatekeeper, to: req.body.username },
+            { from: req.body.username, to: req.body.gatekeeper }
+        ]});
+        return res.json({ success: true, messages });
+    } catch(err) {
+        return res.json({ success: false });
+    }
+})
+
+router.post('/custom/:gatekeeper', userCheck, async (req, res, next) => {
+    try {
+        var custom = await Custom.findOne({ from: req.body.username, to: req.params.gatekeeper });
+        if(custom){
+            if(custom.accepted) return res.json({ success: true, hasCustom: true, accepted: true });
+            else return res.json({ success: true, hasCustom: true, accepted: false });
+        }
+        else return res.json({ success: true, hasCustom: false });
+    } catch(err) {
+        return res.json({ success: false });
     }
 })
 

@@ -10,7 +10,7 @@ import Event from '../../utils/events';
 import ActivateAccount from '../../components/ActivateAccount/ActivateAccount';
 import PasswordRecoveryBox from '../../components/PasswordRecoveryBox/PasswordRecoveryBox';
 import { CartContext } from '../../services/CartContext';
-import { APP_ID, APP_REDIRECT } from '../../services/Instagram';
+import { APP_ID, APP_REDIRECT } from '../../config';
 import { FaInstagram } from 'react-icons/fa';
 
 const Login = () => {

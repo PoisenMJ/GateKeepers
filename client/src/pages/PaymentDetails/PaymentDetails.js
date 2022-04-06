@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
 import { CartContext } from '../../services/CartContext';
-import { GetShippingPrice } from '../../services/Shipping';
 import { getProduct, getCreatorShippingCountries } from '../../controllers/creators';
 import { checkProduct, getCheckoutUrl } from '../../controllers/payment';
 import { FaArrowRight } from 'react-icons/fa';
 import { Flash } from '../../components/FlashMessage/FlashMessage';
-import "./PaymentDetails.css";
 import { AuthContext } from '../../services/AuthContext';
 import { useNavigate } from 'react-router';
+import "./PaymentDetails.css";
+import usePlacesAutocomplete, {
+    getGeocode
+} from "use-places-autocomplete";
 
 const PaymentDetails = () => {
     let navigate = useNavigate();
@@ -18,7 +19,6 @@ const PaymentDetails = () => {
     const [state, setState] = useState(null);
     const [zipcode, setZipcode] = useState(null);
     const [email, setEmail] = useState('');
-    const [streetAddress, setStreetAddress] = useState(null);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [availableShippingCountries, setAvailableShippingCountries] = useState({});
@@ -26,6 +26,61 @@ const PaymentDetails = () => {
     const [productsData, setProductsData] = useState(null);
     const { products, total, setShippingAddress } = useContext(CartContext);
     const { username, loggedIn } = useContext(AuthContext);
+
+    const {
+        ready,
+        value,
+        suggestions: { status, data },
+        setValue,
+        clearSuggestions,
+    } = usePlacesAutocomplete({
+        requestOptions: {
+          /* Define search scope here */
+        },
+        debounce: 300,
+    });
+
+    const handleSelect = ({description}) => () => {
+        // When user selects a place, we can replace the keyword without request data from API
+        // by setting the second parameter to "false"
+        clearSuggestions();
+
+        // Get latitude and longitude via utility functions
+        getGeocode({address: description}).then((results) => {
+            var country = results[0].address_components.filter((e, i) => e.types.includes('country'))[0].long_name;
+            var cityOrState = results[0].address_components.filter((e, i) => e.types.includes('postal_town') || e.types.includes('administrative_area_level_1'))[0].long_name;
+            var address = results[0].address_components[0].long_name + " " + results[0].address_components[1].long_name;
+            var zipcode = results[0].address_components.filter((e, i) => e.types.includes('postal_code'))[0].long_name;
+
+            if(Object.keys(availableShippingCountries).includes(country)){
+                setValue(address, false);
+                setZipcode(zipcode);
+                setCountry(country);
+                setState(cityOrState);
+            } else Flash("Creator doesn't ship to that country", "dark");
+        })
+    };
+
+
+    const renderSuggestions = () => data.map((suggestion) => {
+        const {
+            place_id,
+            structured_formatting: {
+                main_text,
+                secondary_text
+            }
+        } = suggestion;
+        return (
+            <li key={place_id} className="list-group-item auto-fill-item"
+                onClick={handleSelect(suggestion)}>
+                <span>{main_text} <span className="text-muted">({secondary_text})</span></span>
+            </li>
+        );
+    });
+
+    const handleAddressChange = (e) => {
+        setValue(e.target.value);
+    }
 
     const handleInputChange = event => {
         switch(event.target.name){
@@ -35,9 +90,9 @@ const PaymentDetails = () => {
             case "zipcode":
                 setZipcode(event.target.value);
                 break;
-            case "streetAddress":
-                setStreetAddress(event.target.value);
-                break;
+            // case "streetAddress":
+            //     setStreetAddress(event.target.value);
+            //     break;
             case "email":
                 setEmail(event.target.value);
                 break;
@@ -51,7 +106,6 @@ const PaymentDetails = () => {
     }
 
     useEffect(() => {
-        getCreatorShippingCountries()
         if(products.length > 0){
             var productsArray = []
             const getData = async () => {
@@ -82,14 +136,14 @@ const PaymentDetails = () => {
     }, []);
 
     const goToStripeCheckout = async event => {
-        if(country && state && zipcode && streetAddress && firstName && lastName){
+        if(country && state && zipcode && value && firstName && lastName){
             if(loggedIn && !email || !loggedIn && email){
                 setShippingAddress({
                     email: email,
                     country: country,
                     state: state,
                     zipcode: zipcode,
-                    streetAddress: streetAddress,
+                    streetAddress: value,
                     firstName: firstName,
                     lastName: lastName,
                     shippingPrice: shippingPrice
@@ -126,91 +180,49 @@ const PaymentDetails = () => {
     return (
         <div id="payment-details-parent">
             <form id="payment-details-form">
-                <div class="my-auto" id="payment-details-info">
-                    <label class="form-label">EMAIL</label>
-                    <input class="form-control" type="email" placeholder="johndoe@mail.com"/>
-                    <div class="d-flex mb-2 w-100">
-                        <div class="w-50">
-                            <label class="form-label">FIRST NAME</label>
-                            <input class="form-control" type="text" placeholder="John"/>
+                <div className="my-auto" id="payment-details-info">
+                    <label className="form-label">EMAIL</label>
+                    <input className="form-control mb-1" name="email" required onChange={handleInputChange} type="email" placeholder="johndoe@mail.com"/>
+                    <div className="d-flex mb-2 w-100">
+                        <div className="w-50">
+                            <label className="form-label">FIRST NAME</label>
+                            <input className="form-control" name="firstname" required onChange={handleInputChange} type="text" placeholder="John"/>
                         </div>
-                        <div class="ps-1 w-50">
-                            <label class="form-label">LAST NAME</label>
-                            <input class="form-control" type="text" placeholder="Doe"/>
+                        <div className="ps-1 w-50">
+                            <label className="form-label">LAST NAME</label>
+                            <input className="form-control" name="lastname" required onChange={handleInputChange} type="text" placeholder="Doe"/>
                         </div>
                     </div>
-                    <label class="form-label">COUNTRY</label>
-                    <select class="form-select mb-3">
-                        <option value="12" selected="">Country</option>
-                        <option value="13">This is item 2</option>
-                        <option value="14">This is item 3</option>
+                    <label className="form-label">COUNTRY</label>
+                    <select className="form-select mb-3" onChange={onCountryChange}>
+                        {availableShippingCountries && Object.keys(availableShippingCountries).map((country, index) => {
+                                return <option value={country} key={index}>{country}</option>
+                            })
+                        }
                     </select>
-                    <label class="form-label">ADDRESS</label>
-                    <input class="form-control mb-1" type="text" placeholder="STATE"/>
-                    <input class="form-control mb-1" type="text" placeholder="ZIPCODE"/>
-                    <input class="form-control" type="text" placeholder="STREET NAME/APARTMENT"/>
+                    <label className="form-label">ADDRESS</label>
+                    <input className="form-control mb-1" value={value} type="text" name="streetAddress" required onChange={handleAddressChange} placeholder="Street Name / Apt No."/>
+                    {status === "OK" && <ul className="list-group mb-2">{renderSuggestions()}</ul>}
+                    <input className="form-control mb-1" value={state} type="text" name="state" required onChange={handleInputChange} placeholder="City / State"/>
+                    <input className="form-control mb-1" value={zipcode} type="text" name="zipcode" required onChange={handleInputChange} placeholder="Zipcode"/>
                 </div>
-                <div class="d-flex flex-row justify-content-evenly mt-auto" id="payment-details-totals-parent">
-                    <div class="d-flex flex-column me-auto">
-                        <span class="fs-2 fw-bold">TOTAL:&nbsp;
-                            <span>£46.4</span>
+                <div className="d-flex flex-row justify-content-evenly mt-auto" id="payment-details-totals-parent">
+                    <div className="d-flex flex-column me-auto">
+                        <span className="fs-2 fw-bold">TOTAL:&nbsp;
+                            <span>£{total+shippingPrice}</span>
                         </span>
-                        <span class="text-muted">Products:&nbsp;
-                            <span>£40</span>
+                        <span className="text-muted">Products:&nbsp;
+                            <span>£{total}</span>
                         </span>
-                        <span class="text-muted">Shipping:&nbsp;
-                            <span>£6.4</span>
+                        <span className="text-muted">Shipping:&nbsp;
+                            <span>{shippingPrice > 0 ? "£"+shippingPrice : "Free"}</span>
                         </span>
                     </div>
-                    <button class="btn btn-dark fw-bold w-50" type="button">BUY
+                    <button onClick={goToStripeCheckout} className="btn btn-dark fw-bold w-50" type="button">BUY
                         <FaArrowRight className="icon-3"/></button>
                 </div>
             </form>
         </div>
-        // <div id="payment-details">
-        //     <div id="payment-details-info" className='text-center'>
-        //         <span className="fs-1">✦ DETAILS ✦</span>
-        //         <Form className="mt-2">
-        //             {!loggedIn &&
-        //                 <Form.Group className='text-start'>
-        //                     <Form.Text>Email</Form.Text>
-        //                     <Form.Control onChange={handleInputChange} required name="email" className="mb-2 custom-input" type="email" placeholder="user@provider.com"/>
-        //                 </Form.Group>
-        //             }
-        //             <Form.Group className='mb-2'>
-        //                 <Row className='g-2'>
-        //                     <Col><Form.Control onChange={handleInputChange} name="firstname" type="text" placeholder="first name" className="custom-input"/></Col>
-        //                     <Col><Form.Control onChange={handleInputChange} name="lastname" type="text" placeholder="last name" className="custom-input"/></Col>
-        //                 </Row>
-        //             </Form.Group>
-        //             <Form.Group className='text-start'>
-        //                 <Form.Text>Country</Form.Text>
-        //                 <Form.Select required className="custom-input mb-2" onChange={onCountryChange}>
-        //                     {availableShippingCountries && Object.keys(availableShippingCountries).map((country, index) => {
-        //                         return <option value={country} key={index}>{country}</option>
-        //                     })
-        //                     }
-        //                 </Form.Select>
-        //             </Form.Group>
-        //             <Form.Group className='text-start'>
-        //                 <Form.Text>Address</Form.Text>
-        //                 <Form.Control required onChange={handleInputChange} name="state" type="text" name="state" placeholder="STATE" className="mb-2 custom-input"/>
-        //             </Form.Group>
-        //             <Form.Control required onChange={handleInputChange} name="zipcode" type="text" name="zipcode" placeholder="Zipcode or NA" className="mb-2 custom-input"/>
-        //             <Form.Control required onChange={handleInputChange} name="streetAddress" type="text" placeholder="Street name and apartment number" className="custom-input mb-2"/>
-        //         </Form>
-        //     </div>
-        //     <div id="payment-details-total">
-        //         <div>
-        //             <span className="fs-1">TOTAL : £{total+shippingPrice}</span>
-        //             <br/>
-        //             <span className="text-muted" id="payment-details-subtotals">Products : £{total}</span>
-        //             <br/>
-        //             <span className="text-muted" id="payment-details-subtotals">Shipping : {shippingPrice > 0 ? "£"+shippingPrice : "Free"}</span>
-        //         </div>
-        //         <Button onClick={goToStripeCheckout} variant="dark">BUY<FaArrowRight style={{marginBottom: '3px', marginLeft: '5px'}}/></Button>
-        //     </div>
-        // </div>
     )
 }
 

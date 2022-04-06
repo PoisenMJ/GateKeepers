@@ -3,14 +3,16 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { FaBars, FaSignOutAlt, FaShoppingCart } from 'react-icons/fa';
 import { AuthContext } from '../../services/AuthContext';
 import { getCreators } from '../../controllers/creators';
-import "./Nav.css";
+import { LogOut } from '../../services/auth';
 import { CartContext } from '../../services/CartContext';
+import "./Nav.css";
 
 const NormalNav = ({ transparent, ...props }) => {
     let navigate = useNavigate();
-    const { loggedIn } = useContext(AuthContext);
-    const { products } = useContext(CartContext);
     const [creators, setCreators] = useState(null);
+    
+    const { loggedIn, setLoggedIn, setUsername, setToken } = useContext(AuthContext);
+    const { clearCart, products } = useContext(CartContext);
 
     useEffect(() => {
         const fetchCreators = async () => {
@@ -22,6 +24,15 @@ const NormalNav = ({ transparent, ...props }) => {
 
     const toggleDropdown = () => {
         document.getElementById("gatekeepersDropdown").classList.toggle("show-gatekeepers");
+    }
+
+    const logOutButton = () => {
+        setLoggedIn(false);
+        setUsername('');
+        setToken('');
+        clearCart();
+        LogOut();
+        navigate('/login');
     }
 
     return (
@@ -45,7 +56,7 @@ const NormalNav = ({ transparent, ...props }) => {
                     {loggedIn ?
                         <>
                             <NavLink to="/profile" className="desktop-navbar-link">PROFILE</NavLink>
-                            <a className="desktop-navbar-link p-0 m-0"><FaSignOutAlt style={{marginBottom: '3px', cursor: 'pointer'}}/></a>
+                            <a className="desktop-navbar-link p-0 m-0" onClick={logOutButton}><FaSignOutAlt style={{marginBottom: '3px', cursor: 'pointer'}}/></a>
                         </>:
                         <NavLink to="/login" className="desktop-navbar-link">LOGIN</NavLink>
                     }

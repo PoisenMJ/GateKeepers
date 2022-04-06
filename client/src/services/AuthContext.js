@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { LogOut } from './auth';
+import { DEVELOPMENT } from '../config';
 
 const AuthContext = React.createContext({
     token: null,
@@ -78,11 +79,12 @@ const AuthVerify = (props) => {
                 setLoggedIn(false);
                 LogOut();
             } else {
-                if(localStorage.getItem("creator") === "true"){
-                    var nonCreatorLocation = location.pathname ?
-                        location.pathname.split('/')[0] === "creators" : false;
-                    if(nonCreatorLocation) navigate("/creators/profile");
+                var creator = localStorage.getItem("creator") === true;
 
+                if(!DEVELOPMENT){
+                    var subdoamins = location.hostname.split(".");
+                    if(subdoamins[0] !== "creators" && creator) navigate("/creators/login");
+                    else if(subdoamins[0] === "creators" && !creator) navigate("/");
                 }
                 // console.log('VALID');
             }

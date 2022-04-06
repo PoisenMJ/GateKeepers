@@ -23,3 +23,11 @@
     height: 100%;
     flex-direction: column;
 }
+
+.auto-fill-item{
+    transition: .15s;
+    cursor: pointer;
+}
+.auto-fill-item:hover{
+    background-color: rgb(230,230,230);
+}

@@ -109,4 +109,71 @@ async function getOrders(username, token){
     return json;
 }
 
-export { getProfile, getActivationToken, submitActivationToken, recoverPassword, sendRecoveryEmail, sendPasswordChangeEmail, changePassword };
+async function sendCustomRequest(username, token, description, price, gatekeeper){
+    var res = await fetch('/user/custom/create', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            token,
+            description,
+            price,
+            gatekeeper
+        })
+    });
+    var json = await res.json();
+    return json;
+}
+
+async function getUserCustom(username, token, gatekeeper){
+    var res = await fetch(`/user/custom/${gatekeeper}`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, token })
+    });
+    var json = await res.json();
+    return json;
+}
+
+async function sendCustomsMessage(username, token, message, gatekeeper){
+    var res = await fetch('/user/custom/send-message', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            token,
+            message,
+            gatekeeper
+        })
+    });
+    var json = await res.json();
+    return json;
+}
+
+async function fetchAllCustomsMessages(username, token, gatekeeper){
+    var res = await fetch('/user/custom/all-messages', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            token,
+            gatekeeper
+        })
+    });
+    var json = await res.json();
+    return json;
+}
+
+export {
+    getProfile,
+    getActivationToken,
+    submitActivationToken,
+    recoverPassword,
+    sendRecoveryEmail,
+    sendPasswordChangeEmail,
+    changePassword,
+    sendCustomRequest,
+    getUserCustom,
+    sendCustomsMessage,
+    fetchAllCustomsMessages
+};

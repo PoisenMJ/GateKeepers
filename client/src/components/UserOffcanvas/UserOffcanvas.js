@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { getCreators } from '../../controllers/creators';
 import { NavLink } from 'react-router-dom';
-import { FaInstagram, FaSignOutAlt, FaChevronDown, FaTwitter } from 'react-icons/fa';
+import { FaInstagram, FaSignOutAlt, FaChevronDown, FaTwitter, FaChevronUp } from 'react-icons/fa';
 
 const UserOffcanvas = () => {
     const [creators, setCreators] = useState(null);
+    const [dropdownToggled, setDropdownToggled] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,6 +21,7 @@ const UserOffcanvas = () => {
     const toggleDropdown = () => {
         document.getElementById("mobile-navigation-gatekeepers-dropdown").classList.toggle("active");
         document.getElementById("mobile-navigation-gatekeepers").classList.toggle("show-gatekeepers-mobile");
+        setDropdownToggled(!dropdownToggled);
     }
 
     return (
@@ -31,7 +33,10 @@ const UserOffcanvas = () => {
                 <div id="mobile-navigation-links">
                     <NavLink to="/" onClick={toggleOffCanvas} className="mobile-navigation-link">HOME</NavLink>
                     <a onClick={toggleDropdown} id="mobile-navigation-gatekeepers-dropdown" className="mobile-navigation-link">GATEKEEPERS
-                        <FaChevronDown style={{marginLeft: '3px', marginBottom: '3px'}}/>
+                        {dropdownToggled ?
+                            <FaChevronUp style={{marginLeft: '5px', marginBottom: '5px'}}/>:
+                            <FaChevronDown style={{marginLeft: '5px', marginBottom: '5px'}}/>
+                        }
                     </a>
                     <div id="mobile-navigation-gatekeepers">
                         {creators && creators.map((creator, index) => (

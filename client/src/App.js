@@ -42,6 +42,9 @@ import CreatorLibraryEdit from './pages/CreatorPortal/LibraryEdit/CreatorLibrary
 import CreatorLoginPage from './pages/CreatorPortal/Login/CreatorLogin';
 import CreatorOffcanvas from './pages/CreatorPortal/CreatorOffcanvas/CreatorOffcanvas';
 import Instagram from './services/Instagram';
+import CustomsHome from './pages/Customs/CustomsHome/CustomsHome';
+import CustomsChat from './pages/Customs/CustomsChat/CustomsChat';
+import CreatorCustoms from './pages/CreatorPortal/Customs/CreatorCustoms';
 
 function App() {
   return (
@@ -72,8 +75,12 @@ function App() {
               <Route path="made" element={<ProductsPage type="made"/>}/>
               <Route path="library" element={<LibraryPage/>}/>
               <Route path="library/:name" element={<LibraryOutfitPage/>}/>
-              {/* <Route path="customs" element={<CustomsPage/>}/> */}
               <Route path=":productURI/:type" element={<ProductPage/>}/>
+              <Route path="customs" element={<CustomsHome/>}/>
+            </Route>
+
+            <Route path=":creator" element={ <PageLayout nav={<CreatorNav/>} offcanvas={<UserOffcanvas/>} body={<ProtectedRoute/>} />}>
+              <Route path="customs/chat" element={<CustomsChat/>}/>
             </Route>
     
             <Route element={<PageLayout nav={<NormalNav/>} offcanvas={<UserOffcanvas/>} body={<ProtectedRoute/>} cartEnabled={false}/>}>
@@ -88,7 +95,7 @@ function App() {
 
           <Route path="creators/login" element={<PageLayout body={<CreatorLoginPage/>}/>}/>
           <Route path="creators" element={<PageLayout nav={<CreatorNavbar/>} offcanvas={<CreatorOffcanvas/>} body={<CreatorRoute/>}/>}>
-            <Route index element={<Upload/>}/>
+            <Route index element={<CreatorsOrders/>}/>
             <Route path="upload" element={<Upload/>}/>
             <Route path="products" element={<CreatorProducts/>}/>
             <Route path="products/edit/:productID" element={<EditProduct/>}/>
@@ -97,6 +104,7 @@ function App() {
             <Route path="library" element={<CreatorLibrary/>}/>
             <Route path="library/add" element={<CreatorLibraryEdit type={"add"}/>}/>
             <Route path="library/edit/:name" element={<CreatorLibraryEdit type={"edit"}/>}/>
+            <Route path="customs" element={<CreatorCustoms/>} />
           </Route>
 
           <Route path="insta_fe/redirect" element={<Instagram/>}/>

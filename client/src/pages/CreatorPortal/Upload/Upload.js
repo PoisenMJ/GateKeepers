@@ -154,7 +154,7 @@ const Upload = () => {
                 <div className="carousel-inner" id="admin-upload-images-slides">
                     {images.length > 0 ? images.map((image, index) => {
                         return (
-                            <div className={index===0?"carousel-item h-100 active":"carousel-item h-100"}>
+                            <div className={index===0?"carousel-item h-100 active":"carousel-item h-100"} key={index}>
                                 <img className={"w-100 d-block admin-upload-slide-image"}
                                         src={URL.createObjectURL(image)} alt="Slide Image"/>
                             </div>
