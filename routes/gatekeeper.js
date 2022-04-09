@@ -14,6 +14,7 @@ var { gatekeeperCheck } = require('../middleware/auth');
 
 var multer = require('multer');
 const outfit = require('../client/src/models/outfit');
+const { sendMessage } = require('../instagram');
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -352,10 +353,9 @@ router.post('/custom/all-messages', gatekeeperCheck, async (req, res, next) => {
 })
 
 router.post('/custom/accept', gatekeeperCheck, async (req, res, next) => {
+    // if email send email
     try {
-        var r = await Custom.findOneAndUpdate({ from: req.body.user, to: req.body.username }, {
-            accepted: true
-        });
+        await Custom.findOneAndUpdate({ from: req.body.user, to: req.body.username }, { accepted: true });
         return res.json({ success: true });
     } catch(err) {
         return res.json({ success: false });

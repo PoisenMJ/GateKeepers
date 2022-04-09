@@ -77,9 +77,9 @@ const Login = () => {
 
             <form id="login-form" onSubmit={sendLogin}>
                 <label className="form-label" htmlFor="#username">USERNAME</label>
-                <input onChange={handleUsernameChange} className="form-control mb-1" type="text" id="username" placeholder="JOHN DOE" required="" name="username" inputMode="katakana"/>
+                <input onChange={handleUsernameChange} className="form-control mb-1 fw-bold" type="text" id="username" placeholder="JOHN DOE" required="" name="username" inputMode="katakana"/>
                 <label className="form-label" htmlFor="#password">PASSWORD</label>
-                <input onChange={handlePasswordChange} className="form-control mb-2" type="password" id="password" placeholder="PASSWORD123"/>
+                <input onChange={handlePasswordChange} className="form-control mb-2 fw-bold" type="password" id="password" placeholder="PASSWORD123"/>
                 <button className="btn btn-dark fw-bold w-100 mb-1" type="submit">LOGIN</button>
                 <a href={`https://api.instagram.com/oauth/authorize?client_id=${APP_ID}&redirect_uri=${APP_REDIRECT}&scope=user_profile&response_type=code`}
                     className="btn btn-primary fw-bold pb-2 instagram-button w-100"

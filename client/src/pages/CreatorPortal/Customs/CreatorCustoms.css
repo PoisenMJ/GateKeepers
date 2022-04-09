@@ -1,0 +1,83 @@
+#creator-customs{
+    display: grid;
+    grid-template-columns: 25vw 75vw;
+    height: 100%;
+    max-height: 100%;
+    width: 100vw;
+}
+
+#creator-customs-inbox-parent{
+    background-color: rgb(220,220,220);
+    width: 100%;
+}
+#creator-customs-chatbox-parent{
+    display: flex;
+    flex-direction: column;
+}
+#creator-customs-chatbox-input{
+    margin-top: auto;
+    padding: 5px;
+}
+#creator-customs-chatbox-parent{
+    background-color: rgb(30,30,30);
+}
+#accept-custom{
+    background-color: rgb(30,30,30);
+
+}
+#creator-customs-chatbox{
+    padding: 4px 8px 4px 8px;
+    display: flex;
+    flex-direction: column;
+}
+.creator-customs-message{
+    color: black;
+    font-size: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    min-width: 20%;
+    max-width: 55%;
+    align-self: start;
+}
+.creator-customs-message.right{ align-self: end; }
+.creator-customs-message.right > .creator-customs-message-text{
+    background-color: black;
+    color: white;
+}
+.creator-customs-message-text{
+    background-color: rgb(250,250,250);
+    border-radius: .25rem;
+    padding: 5px 8px;
+}
+.creator-customs-inbox-item{
+    display: grid;
+    grid-template-columns: 25% 75%;
+    grid-template-areas: "price cc";
+    padding: 10px 0;
+    cursor: pointer;
+}
+.creator-customs-inbox-item:hover{
+    background-color: rgb(210,210,210)!important;
+}
+.creator-customs-inbox-item:active{
+    background-color: rgb(205,205,205)!important;
+}
+.creator-customs-inbox-item.active{
+    background-color: rgb(190,190,190)!important;
+}
+.creator-customs-inbox-item > .price{
+    grid-area: price;
+    padding: 6px;
+    font-size: 1.1rem;
+    place-self: center;
+}
+.creator-customs-inbox-item > .customs-content{
+    grid-area: cc;
+    place-self: center;
+    padding-right: 3px;
+}
+.creator-customs-inbox-item > .customs-content > span{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

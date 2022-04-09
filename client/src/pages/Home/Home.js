@@ -18,18 +18,6 @@ const Home = () => {
         fetchPosts();
     }, []);
 
-    const nextSlide = (id) => {
-        document.getElementById(id).scrollIntoView();
-    }
-    const prevSlide = (id) => {
-        if(id === 'top'){
-            document.body.scrollTop = 0; // For Safari
-            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-        } else {
-            document.getElementById(id).scrollIntoView();
-        }
-    }
-
     const exploreButton = () => {
         navigate('/maksie_aki/made');
     }
@@ -39,8 +27,8 @@ const Home = () => {
             <div id="initial-home-slide-parent">
                 <div id="home-page-header">
                     <div className="d-flex d-print-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex" id="home-page-header-text">
-                        <h1>Gate</h1>
-                        <h1 id="home-page-header-second">Keepers</h1>
+                        <h1>GATE</h1>
+                        <h1 id="home-page-header-second">K33PERS</h1>
                     </div>
                     <h2 id="home-page-small-text">Fashion Collection</h2>
                 </div><img id="home-slide" src={'/images/backgrounddark.jpg'}/>

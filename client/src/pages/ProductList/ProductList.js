@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ProductList.scss';
 import { getOwnProducts, getMadeProducts, getCreatorShippingCountries, getCreatorAccentColor } from '../../controllers/creators';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaChevronDown } from 'react-icons/fa';
+import { FaAngleDoubleRight, FaChevronDown } from 'react-icons/fa';
 
 const ProductsPage = ({ type }) => {
     const [products, setProducts] = useState(null);
@@ -38,7 +38,7 @@ const ProductsPage = ({ type }) => {
 
     return (
         <>
-            <div className="d-flex ps-2 pt-3 pe-2" style={{ alignItems: 'center' }}>
+            <div className="d-flex ps-2 pt-3 pe-2" style={{ alignItems: 'center', position: 'relative', zIndex: '10' }}>
                 <div style={{ position: 'relative', left: '50%', transform: 'translateX(-50%)', width: 'fit-content' }}>
                     {type === "made" ?
                         <p className="fw-bold text-muted text-center my-0">Clothes made by&nbsp;<span className="text-dark"><strong>@MAKSIE_AKI</strong></span>.</p>:
@@ -55,7 +55,10 @@ const ProductsPage = ({ type }) => {
                         </div>
                     </div>
                 </div>
-                <span className="fs-3 outfit-link pe-3" style={{position: 'absolute', left: '100%', transform: 'translateX(-100%)'}}>OUTFITS</span>
+                <span onClick={() => navigate(`/${creator}/library`)}
+                    className="fs-3 outfit-link pe-3 d-flex flex-row"
+                    style={{position: 'absolute', left: '100%', transform: 'translateX(-100%)'}}>
+                        OUTFITS<FaAngleDoubleRight style={{marginTop: '7px'}}/></span>
             </div>
             <p className="custom-divider my-2">GK</p>
             <div className="row g-0 products">

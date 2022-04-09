@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router';
 import { CartContext } from '../../services/CartContext';
 import { Flash } from '../../components/FlashMessage/FlashMessage';
 import { Mobile, Desktop } from '../../components/Query';
+import { FaTimes } from 'react-icons/fa';
 
 const ProductPage = () => {
     let navigate = useNavigate();
@@ -106,7 +107,7 @@ const ProductPage = () => {
                                 </div>
                             }
                             <button
-                                className="btn btn-primary fw-bold w-100"
+                                className="btn btn-secondary fw-bold w-100"
                                 type="button"
                                 disabled={addToCartDisabled}
                                 onClick={() => AddToCart(product.uri, size, product.price, product.name, product.creator.tag, product.count, product.type, product.images[product.imageOrder[0]])}>
