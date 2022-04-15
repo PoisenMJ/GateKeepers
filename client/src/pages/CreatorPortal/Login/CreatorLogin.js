@@ -34,11 +34,11 @@ const CreatorLoginPage = () => {
     return (
         <div id="admin-login-parent" className="p-4">
             <form id="admin-login-form" onSubmit={sendLogin}>
-                <span className="fs-3 fw-bold">ADMIN ~ LOGIN</span>
+                <span className="fs-3 fw-bold">LOGIN</span>
                 <input onChange={event => _setUsername(event.target.value)}
-                        className="form-control mb-1 mt-4" type="text" placeholder="USERNAME"/>
+                        className="form-control mb-1 mt-4 fw-bold" type="text" placeholder="USERNAME"/>
                 <input onChange={event => _setPassword(event.target.value)}
-                        className="form-control mb-2" type="password" placeholder="PASSWORD"/>
+                        className="form-control mb-2 fw-bold" type="password" placeholder="PASSWORD"/>
                 <button className="btn btn-dark fw-bold w-100 mb-1" type="submit">LOGIN</button>
                 <a href={`https://api.instagram.com/oauth/authorize?client_id=${APP_ID}&redirect_uri=${APP_REDIRECT}&scope=user_profile&response_type=code&state=creator`}
                     className="btn btn-primary fw-bold pb-2 instagram-button w-100"

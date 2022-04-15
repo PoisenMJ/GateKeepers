@@ -39,7 +39,6 @@ const UserOffcanvas = () => {
         navigate('/login');
     }
 
-
     return (
         <div className="offcanvas offcanvas-start" id="mobile-navigation">
             <div className="offcanvas-header">

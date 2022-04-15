@@ -216,6 +216,26 @@ async function sendCustomsMessage(username, token, message, to, type){
     return json;
 }
 
+async function markReadCustomsChat(username, token, to){
+    var res = await fetch('/gatekeeper/custom/read', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            token,
+            to
+        })
+    });
+    var json = await res.json();
+    return json;
+}
+
+async function hasCustomsOn(username){
+    var res = await fetch('/gatekeeper/custom/check');
+    var json = await res.json();
+    return json;
+}
+
 export {
     addProduct,
     removeProduct,
@@ -233,5 +253,7 @@ export {
     getGatekeeperCustomsMessages,
     acceptGatekeeperCustom,
     declineGatekeeperCustom,
-    sendCustomsMessage
+    sendCustomsMessage,
+    markReadCustomsChat,
+    hasCustomsOn
 }

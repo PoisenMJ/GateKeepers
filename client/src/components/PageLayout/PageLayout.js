@@ -3,14 +3,12 @@ import './PageLayout.css';
 import { Outlet } from 'react-router';
 import FlashMessage from '../FlashMessage/FlashMessage';
 import { AuthVerify } from '../../services/AuthContext';
-import Cart from '../Cart/Cart';
 import { CartDesktopBreakpoint, Desktop } from '../Query';
-import Navbar from '../Navbar/Navbar';
 
-const PageLayout = ({ nav, offcanvas, body, footer, cartEnabled}) => {
+const PageLayout = ({ header, body, footer, cartEnabled}) => {
     return (
         <>
-            <Navbar nav={nav} offcanvas={offcanvas}/>
+            {header}
             <FlashMessage/>
             <main id="main-normal">
                 {!body ?

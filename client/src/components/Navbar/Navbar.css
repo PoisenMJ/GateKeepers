@@ -137,7 +137,7 @@
     background-color: rgba(255, 255, 255, 0.4);
     display: flex;
     padding: 4px 16px;
-    border-radius: 2rem;
+    border-radius: 1rem;
 }
 
 #desktop-home-cart > i {
@@ -147,4 +147,16 @@
 
 .shop-dropdown-item.active{
     background-color: black!important;
+}
+
+#creator-offcanvas-shop-dropdown{
+    display: none;
+}
+#creator-offcanvas-shop-dropdown.show{
+    display: flex!important;
+    flex-direction: column;
+    align-items: center;
+}
+.mobile-navigation-link.sm{
+    font-size: 1rem!important;
 }

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import "./Home.css";
 import { Mobile, Desktop } from '../../components/Query';
 import { getCreatorPosts } from '../../controllers/creators';
-import { Button } from 'react-bootstrap';
 import { FaAngleDown, FaAngleUp, FaInstagram, FaShoppingBag, FaTiktok, FaTwitch, FaTwitter } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 

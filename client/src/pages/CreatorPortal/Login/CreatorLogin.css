@@ -2,6 +2,9 @@
     width: 40vw;
     margin: auto;
     text-align: center;
+    background-color: rgb(220,220,220);
+    padding: 25px;
+    border-radius: .25rem;
 }
 
 #admin-login-parent {

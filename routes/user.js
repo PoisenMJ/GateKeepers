@@ -205,7 +205,6 @@ router.post('/custom/create', userCheck, async (req, res, next) => {
     var username = req.body.username;
     try {
         var alreadyCreated = await Custom.exists({ from: username, to: req.body.gatekeeper });
-        console.log(alreadyCreated)
         if(alreadyCreated) return res.json({ success: false, message: "Already submitted custom request" });
         else
             var newCustom = new Custom({
@@ -215,9 +214,16 @@ router.post('/custom/create', userCheck, async (req, res, next) => {
                 initialPrice: req.body.price,
                 dateCreated: new Date().toString()
             });
+            var msg = new CustomsMessage({
+                from: username,
+                to: req.body.gatekeeper,
+                message: req.body.description
+            });
+            await msg.save();
             await newCustom.save();
             return res.json({ success: true });
     } catch(err) {
+        console.log(err);
         return res.json({ success: false, message: "Error" });
     }
 })

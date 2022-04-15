@@ -1,0 +1,10 @@
+$header-height: 9vh;
+$main-height: 91vh;
+#main-normal{
+    height: $main-height;
+}
+#header-normal{
+    height: $header-height;
+    position: relative;
+    z-index: 100;
+}

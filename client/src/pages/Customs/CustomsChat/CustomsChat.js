@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FaPaperclip, FaPaperPlane } from 'react-icons/fa';
-import { useParams } from 'react-router';
-import { fetchAllCustomsMessages, sendCustomsMessage } from '../../../controllers/users';
+import { useNavigate, useParams } from 'react-router';
+import { fetchAllCustomsMessages, getUserCustom, sendCustomsMessage } from '../../../controllers/users';
 import { AuthContext } from '../../../services/AuthContext';
 import "./CustomsChat.css";
 
 const CustomsChat = () => {
+    let navigate = useNavigate();
     const { creator } = useParams();
     const { username, token } = useContext(AuthContext);
     const [message, setMessage] = useState('');
@@ -13,6 +14,10 @@ const CustomsChat = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            var allowedRes = await getUserCustom(username, token, creator);
+            if(allowedRes.success){
+                if(!allowedRes.accepted) navigate("../customs")
+            }
             var res = await fetchAllCustomsMessages(username, token, creator);
             if(res.success) setMessages(res.messages);
         }

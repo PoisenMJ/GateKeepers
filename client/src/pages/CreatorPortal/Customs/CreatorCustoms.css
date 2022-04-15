@@ -1,19 +1,60 @@
 #creator-customs{
     display: grid;
     grid-template-columns: 25vw 75vw;
+    grid-template-areas: "inbox chat";
     height: 100%;
     max-height: 100%;
     width: 100vw;
 }
+@media screen and (max-width: 700px){
+    #creator-customs-mobile-chat-popout-button{
+        display: block!important;
+    }
+    #creator-customs{
+        grid-template-columns: 100vw;
+        grid-template-areas: "chat";
+    }
+    #creator-customs-inbox-parent{
+        position: absolute;
+        display: none;
+        width: 92vw!important;
+        height: 91vh;
+        z-index: 10;
+    }
+    #creator-customs-mobile-chat-popout-button.toggled{
+        position: relative;
+        left: 92vw!important;
+    }
+    #creator-customs-chatbox.blur{
+        filter: opacity(0.8) brightness(0.5);
+    }
+    #creator-customs-inbox-parent.show{
+        display: block!important;
+    }
+}
+
+#creator-customs-mobile-chat-popout-button{
+    display: none;
+    position: relative;
+    left: 0;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    filter: brightness(2)!important;
+}
 
 #creator-customs-inbox-parent{
     background-color: rgb(220,220,220);
+    grid-area: inbox;
     width: 100%;
 }
+
 #creator-customs-chatbox-parent{
     display: flex;
     flex-direction: column;
+    grid-area: chat;
 }
+
 #creator-customs-chatbox-input{
     margin-top: auto;
     padding: 5px;
@@ -53,7 +94,7 @@
     display: grid;
     grid-template-columns: 25% 75%;
     grid-template-areas: "price cc";
-    padding: 10px 0;
+    padding: 10px 5px 10px 0px;
     cursor: pointer;
 }
 .creator-customs-inbox-item:hover{
@@ -75,8 +116,10 @@
     grid-area: cc;
     place-self: center;
     padding-right: 3px;
+    display: grid;
+    grid-template-columns: 85% 15%;
 }
-.creator-customs-inbox-item > .customs-content > span{
+.customs-content-msg{
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;

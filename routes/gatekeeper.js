@@ -80,19 +80,8 @@ router.post('/orders', gatekeeperCheck, async (req, res, next) => {
     var creatorUsername = req.body.username;
     try {
         var orders = await Order.find({ creators: { $in: creatorUsername }});
-        if(orders) {
-            return res.json({ success: true, orders: orders.map((order, index) => {
-                return {
-                    id: order._id,
-                    sent: order.sent,
-                    address: order.address,
-                    user: order.user,
-                    total: order.total,
-                    date: order.date,
-                    items: order.items
-                }
-            })})
-        } else { return res.json({ success: true, orders: null })}
+        if(orders) return res.json({ success: true, orders })
+        else return res.json({ success: true, orders: null })
     } catch(err) {
         return res.json({ success: false });
     }
@@ -332,18 +321,15 @@ router.post('/custom/all-messages', gatekeeperCheck, async (req, res, next) => {
             {to: req.body.username}
         ]});
         var data = {};
-        for(var i = 0; i < messages.length; i++){
-            var key = messages[i].from !== req.body.username ?
-                        messages[i].from : messages[i].to;
+        for(var i = 0; i < customs.length; i++){
+            var key = customs[i].from;
             if(!data[key]) data[key] = { messages: [], price: 0, accepted: 0, description: '' };
-            data[key].messages.push(messages[i]);
-
-            if(!data[key].price){
-                var c = customs.find(e => e.from === key);
-                data[key].price = c.initialPrice;
-                data[key].accepted = c.accepted;
-                data[key].description = c.initialDescription;
-            }
+            data[key].price = customs[i].initialPrice;
+            data[key].accepted = customs[i].accepted;
+            var m = messages.filter(e => (e.from === req.body.username && e.to === key)
+                    || (e.to === req.body.username && e.from === key));
+            data[key].messages = m;
+            data[key].description = customs[i].initialDescription;
         }
         return res.json({ success: true, messages: data });
     } catch(err) {
@@ -387,6 +373,25 @@ router.post('/custom/send-message', gatekeeperCheck, async (req, res, next) => {
         return res.json({ success: true });
     } catch(err) {
         return res.json({ success: false });
+    }
+})
+
+router.post('/custom/read', gatekeeperCheck, async (req, res, next) => {
+    try {
+        await CustomsMessage.updateMany({ from: req.body.to, to: req.body.username }, { $set: { read: true }});
+        return res.json({ success: true });
+    } catch(err) {
+        return res.json({ success: false });
+    }
+})
+
+router.get('/custom/check', async (req, res, next) => {
+    try{
+        var r = await Creator.findOne({ tag: req.body.username });
+        if(r) return res.json({ success: true, customsOn: r.customsOn });
+        else return res.json({ success: false })
+    } catch(err) {
+        return res.json({ success: false })
     }
 })
 

@@ -9,7 +9,6 @@ import Login from './pages/Login/Login';
 import Profile from './pages/Profile/Profile';
 import UserOffcanvas from './components/UserOffcanvas/UserOffcanvas';
 
-import Header from './components/Header/Header';
 import PageLayout from './components/PageLayout/PageLayout';
 
 import ProtectedRoute from './routes/ProtectedRoute';
@@ -45,6 +44,8 @@ import Instagram from './services/Instagram';
 import CustomsHome from './pages/Customs/CustomsHome/CustomsHome';
 import CustomsChat from './pages/Customs/CustomsChat/CustomsChat';
 import CreatorCustoms from './pages/CreatorPortal/Customs/CreatorCustoms';
+import CreatorHeader from './components/Creator/CreatorHeader/CreatorHeader';
+import UserHeader from './components/User/UserHeader/UserHeader';
 
 function App() {
   return (
@@ -53,14 +54,14 @@ function App() {
         <Routes>
           <Route path="/">
             // index route (home) (transparent nav)
-            <Route index element={<PageLayout nav={<NormalNav transparent/>} offcanvas={<UserOffcanvas/>} body={<Home/>}/>}/>
+            <Route index element={<PageLayout header={<UserHeader transparent/>} body={<Home/>}/>}/>
             // basic routes (non-transparent nav)
-            <Route element={<PageLayout nav={<NormalNav/>} offcanvas={<UserOffcanvas/>} cartEnabled={true}/>}>
+            <Route element={<PageLayout header={<UserHeader/>} cartEnabled={true}/>}>
               <Route path="about" element={<About/>}/>
               <Route path="shopping-basket" element={<ShoppingBasket/>}/>
             </Route>
 
-            <Route element={<PageLayout nav={<NormalNav/>} body={<NonCreatorRoute/>} offcanvas={<UserOffcanvas/>} cartEnabled={false}/>}>
+            <Route element={<PageLayout header={<UserHeader/>} body={<NonCreatorRoute/>} cartEnabled={false}/>}>
               <Route path="payment-details" element={<PaymentDetails/>}/>
               <Route path="payment-success" element={<PaymentSuccess/>}/>
               <Route path="payment-failure" element={<PaymentFailure/>}/>
@@ -69,7 +70,7 @@ function App() {
             </Route>
             
             // products routes
-            <Route path=":creator" element={ <PageLayout nav={<CreatorNav/>} offcanvas={<UserOffcanvas/>} />}>
+            <Route path=":creator" element={ <PageLayout header={<UserHeader productNav/>} />}>
               <Route index element={<ProductsPage type="made"/>}/>
               <Route path="own" element={<ProductsPage type="own"/>}/>
               <Route path="made" element={<ProductsPage type="made"/>}/>
@@ -79,22 +80,22 @@ function App() {
               <Route path="customs" element={<CustomsHome/>}/>
             </Route>
 
-            <Route path=":creator" element={ <PageLayout nav={<CreatorNav/>} offcanvas={<UserOffcanvas/>} body={<ProtectedRoute/>} />}>
+            <Route path=":creator" element={ <PageLayout header={<UserHeader productNav/>} body={<ProtectedRoute/>} />}>
               <Route path="customs/chat" element={<CustomsChat/>}/>
             </Route>
     
-            <Route element={<PageLayout nav={<NormalNav/>} offcanvas={<UserOffcanvas/>} body={<ProtectedRoute/>} cartEnabled={false}/>}>
+            <Route element={<PageLayout header={<UserHeader/>} body={<ProtectedRoute/>} cartEnabled={false}/>}>
               <Route path="profile" element={<Profile/>}/>
             </Route>
 
-            <Route element={ <PageLayout nav={<NormalNav/>} offcanvas={<UserOffcanvas/>} /> }>
+            <Route element={ <PageLayout header={<UserHeader/>} /> }>
               <Route path="create-account" element={<CreateAccount/>}/>
               <Route path="login" element={<Login/>}/>
             </Route>
           </Route>
 
           <Route path="creators/login" element={<PageLayout body={<CreatorLoginPage/>}/>}/>
-          <Route path="creators" element={<PageLayout nav={<CreatorNavbar/>} offcanvas={<CreatorOffcanvas/>} body={<CreatorRoute/>}/>}>
+          <Route path="creators" element={<PageLayout header={<CreatorHeader/>} body={<CreatorRoute/>}/>}>
             <Route index element={<CreatorsOrders/>}/>
             <Route path="upload" element={<Upload/>}/>
             <Route path="products" element={<CreatorProducts/>}/>

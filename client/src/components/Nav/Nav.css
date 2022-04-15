@@ -166,17 +166,25 @@
         padding: 0 30px!important;
     }
 }
+.normal-desktop-right{
+    position: absolute;
+    right: 15px;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+}
+.desktop-notifications-normal > span{
+    padding-bottom: .39rem;
+}
 .desktop-shopping-cart {
     background-color: white;
-    border-radius: 2rem;
+    border-radius: .25rem;
     color: black;
-    padding: 4px 12px;
+    padding: 4px 6px;
     display: flex;
     font-size: 1.5rem;
     transition: .15s;
     cursor: pointer;
-    position: absolute;
-    right: 15px;
 }
 .desktop-shopping-cart:hover{
     background-color: rgb(230,230,230)!important;

@@ -34,7 +34,7 @@ const CustomsHome = () => {
         if(!(loggedIn || username || token)) Flash("Need to Login", "dark");
         else
             var res = await sendCustomRequest(username, token, description, price, creator);
-            if(res.success) navigate("chat");
+            if(res.success) Flash("Custom request sent", "success");
             else Flash(res.message, "dark");
     }
 

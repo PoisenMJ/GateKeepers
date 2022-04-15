@@ -1,27 +1,18 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaBars, FaShoppingCart, FaSignOutAlt } from 'react-icons/fa';
-import { LogOut } from '../../../services/auth';
-import { useNavigate } from 'react-router';
+import { FaBars, FaSignOutAlt } from 'react-icons/fa';
 import { AuthContext } from '../../../services/AuthContext';
+import { hasCustomsOn } from '../../../controllers/gatekeepers';
 
-const CreatorNavbar = () => {
-    const { loggedIn, setLoggedIn, username, setUsername, setToken } = useContext(AuthContext);
+const CreatorNavbar = ({ logOut }) => {
+    const { username } = useContext(AuthContext);
 
-    let navigate = useNavigate();
-    const toggleNavbar = () => document.getElementById("menu").classList.toggle("active");
-
-    const logOutButton = () => {
-        setLoggedIn(false);
-        setUsername('');
-        setToken('')
-        LogOut();
-        navigate('/creators/login');
-    }
-
-    const toggleOffCanvas = () => {
-        document.getElementById("mobile-navigation-close").click();
-    }
+    useEffect(() => {
+        const fetchData = async () => {
+            var r = await hasCustomsOn(username);
+            
+        }
+    }, [])
 
     return (
         <>
@@ -45,7 +36,7 @@ const CreatorNavbar = () => {
                             <NavLink to="library" className="desktop-navbar-link fw-bold">OUTFITS</NavLink>
                             <NavLink to="profile" className="desktop-navbar-link fw-bold">PROFILE</NavLink>
                             <NavLink to="customs" className="desktop-navbar-link fw-bold">CUSTOMS</NavLink>
-                            <a className="desktop-navbar-link p-0 m-0" onClick={logOutButton}>
+                            <a className="desktop-navbar-link p-0 m-0" onClick={logOut}>
                                 <FaSignOutAlt style={{marginBottom: '6px', cursor: 'pointer'}}/>
                             </a>
                         </div>
