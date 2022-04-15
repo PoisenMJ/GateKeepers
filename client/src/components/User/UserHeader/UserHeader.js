@@ -11,7 +11,6 @@ import { getCreators } from '../../../controllers/creators';
 const UserHeader = ({ productNav, transparent }) => {
     let navigate = useNavigate();
     const [creators, setCreators] = useState([]);
-    
     const { setLoggedIn, setUsername, setToken } = useContext(AuthContext);
     const { clearCart } = useContext(CartContext);
 

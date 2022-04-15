@@ -231,7 +231,7 @@ async function markReadCustomsChat(username, token, to){
 }
 
 async function hasCustomsOn(username){
-    var res = await fetch('/gatekeeper/custom/check');
+    var res = await fetch(`/gatekeeper/custom/check?username=${username}`);
     var json = await res.json();
     return json;
 }

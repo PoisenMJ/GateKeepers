@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.scss';
-import { getOwnProducts, getMadeProducts, getCreatorShippingCountries, getCreatorAccentColor } from '../../controllers/creators';
+import { getOwnProducts, getMadeProducts, getCreatorShippingCountries } from '../../controllers/creators';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaAngleDoubleRight, FaChevronDown } from 'react-icons/fa';
+import { FaAngleDoubleRight } from 'react-icons/fa';
+import { hasCustomsOn } from '../../controllers/gatekeepers';
 
 const ProductsPage = ({ type }) => {
     const [products, setProducts] = useState(null);
     const [shippingCountries, setShippingCountries] = useState([]);
-    const [accentColor, setAccentColor] = useState('#000000');
+    const [showOutfitsButton, setShowOutfitsButton] = useState(false);
     const {creator} = useParams();
     let navigate = useNavigate();
 
@@ -26,8 +27,8 @@ const ProductsPage = ({ type }) => {
 
             var res = await getCreatorShippingCountries(creator);
             if(res.success) setShippingCountries(Object.keys(res.shippingDetails));
-            var res = await getCreatorAccentColor(creator);
-            if(res.success) setAccentColor(res.accentColor);
+            res = await hasCustomsOn(creator);
+            if(res.success) setShowOutfitsButton(res.customsOn);
         }
         fetchData();
     }, [type, creator])
@@ -41,8 +42,8 @@ const ProductsPage = ({ type }) => {
             <div className="d-flex ps-2 pt-3 pe-2" style={{ alignItems: 'center', position: 'relative', zIndex: '10' }}>
                 <div style={{ position: 'relative', left: '50%', transform: 'translateX(-50%)', width: 'fit-content' }}>
                     {type === "made" ?
-                        <p className="fw-bold text-muted text-center my-0">Clothes made by&nbsp;<span className="text-dark"><strong>@MAKSIE_AKI</strong></span>.</p>:
-                        <p className="fw-bold text-muted text-center my-0">Clothes from&nbsp;<span className="text-dark"><strong>@MAKSIE_AKI'S</strong></span> own wardrobe.</p>
+                        <p className="fw-bold text-muted text-center my-0">Clothes made by&nbsp;<span className="text-dark"><strong>@{creator.toUpperCase()}</strong></span>.</p>:
+                        <p className="fw-bold text-muted text-center my-0">Clothes from&nbsp;<span className="text-dark"><strong>@{creator.toUpperCase()}'S</strong></span> own wardrobe.</p>
                     }
                     <div className="d-flex flex-row justify-content-center align-items-center my-1"><span className="fw-bold text-muted t-9">SHIPS TO:</span>
                         <div className="dropdown mx-2">
@@ -55,10 +56,12 @@ const ProductsPage = ({ type }) => {
                         </div>
                     </div>
                 </div>
-                <span onClick={() => navigate(`/${creator}/library`)}
-                    className="fs-3 outfit-link pe-3 d-flex flex-row"
-                    style={{position: 'absolute', left: '100%', transform: 'translateX(-100%)'}}>
-                        OUTFITS<FaAngleDoubleRight style={{marginTop: '7px'}}/></span>
+                {showOutfitsButton &&
+                    <span onClick={() => navigate(`/${creator}/library`)}
+                        className="fs-3 outfit-link pe-3 d-flex flex-row"
+                        style={{position: 'absolute', left: '100%', transform: 'translateX(-100%)'}}>
+                            OUTFITS<FaAngleDoubleRight style={{marginTop: '7px'}}/></span>
+                }
             </div>
             <p className="custom-divider my-2">GK</p>
             <div className="row g-0 products">

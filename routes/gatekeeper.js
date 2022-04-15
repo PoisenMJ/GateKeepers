@@ -387,7 +387,7 @@ router.post('/custom/read', gatekeeperCheck, async (req, res, next) => {
 
 router.get('/custom/check', async (req, res, next) => {
     try{
-        var r = await Creator.findOne({ tag: req.body.username });
+        var r = await Creator.findOne({ tag: req.query.username });
         if(r) return res.json({ success: true, customsOn: r.customsOn });
         else return res.json({ success: false })
     } catch(err) {

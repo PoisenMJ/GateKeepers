@@ -44,22 +44,6 @@ const CreatorNavbar = ({ logOut }) => {
                 </nav>
             </header>
         </>
-        // <div>
-        //     <div className="toggle" onClick={toggleNavbar}>
-        //         <FaBars style={{cursor: 'pointer', padding: '5px', color: 'white'}} size={40}/>
-        //     </div>
-
-        //     <div id="menu">
-        //         <ul>
-        //             <li><NavLink to="upload" className={"mb-2"} onClick={toggleNavbar}>Upload</NavLink></li>
-        //             <li><NavLink to="products" className={"mb-2"} onClick={toggleNavbar}>Products</NavLink></li>
-        //             <li><NavLink to="orders" className={"mb-2"} onClick={toggleNavbar}>Orders</NavLink></li>
-        //             <li><NavLink to="profile" className={"mb-2"} onClick={toggleNavbar}>Profile</NavLink></li>
-        //         </ul>
-        //         <span onClick={() => {toggleNavbar(); logOutButton();}} style={{textDecoration: 'none'}} className="sign-out">Sign Out<FaSignOutAlt style={{marginLeft: '8px',marginBottom: '4px'}}/></span>
-        //         <span style={{position: 'absolute', bottom: 'calc(.5rem + 10px)', left: 'calc(.5rem + 10px)'}}>{username}</span>
-        //     </div>
-        // </div>
     )
 }
 
