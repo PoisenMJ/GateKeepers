@@ -14,7 +14,6 @@ var { gatekeeperCheck } = require('../middleware/auth');
 
 var multer = require('multer');
 const outfit = require('../client/src/models/outfit');
-const { sendMessage } = require('../instagram');
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {

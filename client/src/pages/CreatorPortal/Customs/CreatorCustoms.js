@@ -3,7 +3,10 @@ import { FaCaretSquareRight, FaPaperPlane } from 'react-icons/fa';
 import { getCreator } from '../../../controllers/creators';
 import { acceptGatekeeperCustom, declineGatekeeperCustom, getGatekeeperCustomsMessages, markReadCustomsChat, sendCustomsMessage } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext';
+import { createSocket, joinRoom, onMessageRecieved } from '../../../services/ClientSocket';
 import "./CreatorCustoms.css";
+
+var socket = createSocket();
 
 const CreatorCustoms = () => {
     const { username, token } = useContext(AuthContext);
@@ -18,14 +21,33 @@ const CreatorCustoms = () => {
             if(res.success){
                 setCustoms(res.messages)
                 setSelectedChat(Object.keys(res.messages)[0]);
-                console.log(res.messages)
+                // socket join room
+                joinRoom(socket, Object.keys(res.messages)[0], username);
             }
             var res1 = await getCreator(username);
-            console.log(res1);
             if(res1.success) setPaymentLink(res1.user.paymentLink);
+
         }
         fetchData();
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        onMessageRecieved(socket, ({ _user_1, _user_2, _message }) => {
+            // _user_1 always user
+            // _user_2 always creator
+            console.log(_user_1);
+            console.log(_user_2);
+            console.log(Object.keys(customs));
+            var _customs = customs;
+            _customs[_user_1].messages.push({
+                from: _user_1,
+                to: _user_2,
+                message: _message,
+                read: false
+            });
+            setCustoms({..._customs});
+        });
+    }, [socket, customs])
 
     const fetchSendMessage = async () => {
         var res = await sendCustomsMessage(username, token, message, selectedChat, "message");

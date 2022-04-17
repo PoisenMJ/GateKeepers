@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { FaBars, FaBook, FaBriefcase, FaCube, FaShoppingCart } from 'react-icons/fa';
 import { CartContext } from '../../services/CartContext';
-import "./Nav.css";
 import { hasCustomsOn } from '../../controllers/gatekeepers';
+import "./Nav.css";
 
 const CreatorNav = () => {
     let navigate = useNavigate();

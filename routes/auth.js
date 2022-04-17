@@ -5,10 +5,10 @@ var User = require('../client/src/models/user');
 var key = require('../client/src/models/key');
 var crypto = require('crypto');
 
-var { sendActivationEmail } = require('../nodemailer.config');
 
 var nJwt = require('njwt');
 var secureRandom = require('secure-random');
+const { sendActivationEmail } = require('../services/nodemailer.config');
 
 router.post('/login', async (req, res, next) => {
     var username = req.body.username;

@@ -7,7 +7,7 @@ var CustomsMessage = require('../client/src/models/customsMessage');
 const Key = require('../client/src/models/key');
 const nJwt = require('njwt');
 var { userCheck } = require('../middleware/auth');
-var { sendPasswordResetEmail, sendPasswordChangeEmail, sendActivationEmail } = require('../nodemailer.config');
+var { sendPasswordResetEmail, sendPasswordChangeEmail, sendActivationEmail } = require('../services/nodemailer.config');
 
 router.post('/profile', userCheck, (req, res, next) => {
     var username = req.body.username;

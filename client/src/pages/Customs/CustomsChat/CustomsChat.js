@@ -3,10 +3,13 @@ import { FaPaperclip, FaPaperPlane } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router';
 import { fetchAllCustomsMessages, getUserCustom, sendCustomsMessage } from '../../../controllers/users';
 import { AuthContext } from '../../../services/AuthContext';
+import { createSocket, joinRoom, sendMessage } from '../../../services/ClientSocket';
 import "./CustomsChat.css";
+var socket = createSocket();
 
 const CustomsChat = () => {
     let navigate = useNavigate();
+
     const { creator } = useParams();
     const { username, token } = useContext(AuthContext);
     const [message, setMessage] = useState('');
@@ -20,8 +23,16 @@ const CustomsChat = () => {
             }
             var res = await fetchAllCustomsMessages(username, token, creator);
             if(res.success) setMessages(res.messages);
+            // socket join room
+            joinRoom(socket, username, creator);
         }
         fetchData();
+
+        return () => socket.disconnect();
+    }, []);
+
+    useEffect(() => {
+
     }, [])
 
     const fetchSendCustomsMessage = async () => {
@@ -33,6 +44,7 @@ const CustomsChat = () => {
                 from: username,
                 to: creator
             });
+            sendMessage(socket, username, creator, message);
             setMessages([...newMessages]);
             setMessage('');
         }

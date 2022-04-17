@@ -1,10 +1,10 @@
 const express = require('express');
 var router = express.Router();
-var Stripe = require('../stripe');
+var Stripe = require('../services/stripe');
 const CreatorProduct = require('../client/src/models/creatorProduct');
 const Order = require('../client/src/models/order');
 const User = require('../client/src/models/user');
-var { sendOrderConfirmationEmail, sendOrderToCreatorEmail } = require('../nodemailer.config');
+var { sendOrderConfirmationEmail, sendOrderToCreatorEmail } = require('../services/nodemailer.config');
 
 router.post('/checkout', async (req, res, next) => {
     var products = req.body.products;

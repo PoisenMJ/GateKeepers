@@ -2,11 +2,9 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import ProductsPage from './pages/ProductList/ProductList';
 import ProductPage from './pages/Product/Product';
-import CustomsPage from './pages/Customs/Customs';
 import CreateAccount from './pages/CreateAccount/CreateAccount';
 import Login from './pages/Login/Login';
 import Profile from './pages/Profile/Profile';
-import UserOffcanvas from './components/UserOffcanvas/UserOffcanvas';
 
 import PageLayout from './components/PageLayout/PageLayout';
 
@@ -30,15 +28,11 @@ import CreatorsOrders from './pages/CreatorPortal/Orders/Orders';
 
 import PasswordRecovery from './pages/PasswordRecovery/PasswordRecovery';
 import PasswordChange from './pages/PasswordChange/PasswordChange';
-import NormalNav from './components/Nav/NormalNav';
-import CreatorNav from './components/Nav/CreatorNav';
 import LibraryPage from './pages/Library/Library';
 import LibraryOutfitPage from './pages/LibraryOutfit/LibraryOutfit';
-import CreatorNavbar from './pages/CreatorPortal/Navbar/CreatorNavbar';
 import CreatorLibrary from './pages/CreatorPortal/Library/CreatorLibrary';
 import CreatorLibraryEdit from './pages/CreatorPortal/LibraryEdit/CreatorLibraryEdit';
 import CreatorLoginPage from './pages/CreatorPortal/Login/CreatorLogin';
-import CreatorOffcanvas from './pages/CreatorPortal/CreatorOffcanvas/CreatorOffcanvas';
 import Instagram from './services/Instagram';
 import CustomsHome from './pages/Customs/CustomsHome/CustomsHome';
 import CustomsChat from './pages/Customs/CustomsChat/CustomsChat';
