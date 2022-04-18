@@ -74,7 +74,7 @@ function App() {
             </Route>
 
             <Route path=":creator" element={ <PageLayout header={<UserHeader productNav/>} body={<ProtectedRoute/>} />}>
-              <Route path="customs/chat" element={<CustomsChat/>}/>
+                <Route path="customs/chat" element={<CustomsChat/>}/>
             </Route>
     
             <Route element={<PageLayout header={<UserHeader/>} body={<ProtectedRoute/>} cartEnabled={false}/>}>

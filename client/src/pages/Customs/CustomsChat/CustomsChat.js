@@ -3,11 +3,11 @@ import { FaPaperclip, FaPaperPlane } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router';
 import { fetchAllCustomsMessages, getUserCustom, sendCustomsMessage } from '../../../controllers/users';
 import { AuthContext } from '../../../services/AuthContext';
-import { createSocket, joinRoom, sendMessage } from '../../../services/ClientSocket';
+import { createSocket, joinRoom, onMessageRecieved, sendMessage } from '../../../services/ClientSocket';
 import "./CustomsChat.css";
-var socket = createSocket();
 
 const CustomsChat = () => {
+    const [socket, setSocket] = useState(null);
     let navigate = useNavigate();
 
     const { creator } = useParams();
@@ -24,16 +24,15 @@ const CustomsChat = () => {
             var res = await fetchAllCustomsMessages(username, token, creator);
             if(res.success) setMessages(res.messages);
             // socket join room
-            joinRoom(socket, username, creator);
+            var _socket = createSocket();
+            joinRoom(_socket, username, creator);
+            setSocket(_socket);
+            scrollBottomMessages();
         }
         fetchData();
 
         return () => socket.disconnect();
     }, []);
-
-    useEffect(() => {
-
-    }, [])
 
     const fetchSendCustomsMessage = async () => {
         var res = await sendCustomsMessage(username, token, message, creator);
@@ -47,8 +46,29 @@ const CustomsChat = () => {
             sendMessage(socket, username, creator, message);
             setMessages([...newMessages]);
             setMessage('');
+            scrollBottomMessages();
         }
     }
+
+    const scrollBottomMessages = () => {
+        var c = document.getElementById("customs-chat-chatbox-parent");
+        c.scrollTop = c.scrollHeight;
+    }
+
+    const eventMessageRecieved = (_user_1, _user_2, _message) => {
+        var _messages = messages;
+        _messages.push({
+            message: _message,
+            from: _user_2,
+            to: _user_1
+        });
+        setMessages([..._messages]);
+        scrollBottomMessages();
+    }
+
+    useEffect(() => {
+        if(socket) onMessageRecieved(socket, eventMessageRecieved);
+    })
 
     return (
         <div id="customs-chat">

@@ -3,12 +3,12 @@ import { FaCaretSquareRight, FaPaperPlane } from 'react-icons/fa';
 import { getCreator } from '../../../controllers/creators';
 import { acceptGatekeeperCustom, declineGatekeeperCustom, getGatekeeperCustomsMessages, markReadCustomsChat, sendCustomsMessage } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext';
-import { createSocket, joinRoom, onMessageRecieved } from '../../../services/ClientSocket';
+import { createSocket, joinRoom, onMessageRecieved, sendMessage } from '../../../services/ClientSocket';
 import "./CreatorCustoms.css";
 
-var socket = createSocket();
 
 const CreatorCustoms = () => {
+    const [socket, setSocket] = useState(null);
     const { username, token } = useContext(AuthContext);
     const [customs, setCustoms] = useState({});
     const [selectedChat, setSelectedChat] = useState('');
@@ -22,32 +22,43 @@ const CreatorCustoms = () => {
                 setCustoms(res.messages)
                 setSelectedChat(Object.keys(res.messages)[0]);
                 // socket join room
-                joinRoom(socket, Object.keys(res.messages)[0], username);
+                var _socket = createSocket();
+                joinRoom(_socket, Object.keys(res.messages)[0], username);
+                setSocket(_socket);
+                scrollBottomMessages();
             }
             var res1 = await getCreator(username);
             if(res1.success) setPaymentLink(res1.user.paymentLink);
-
         }
         fetchData();
     }, []);
+    
+    
+    useEffect(() => {
+        if(socket) joinRoom(socket, selectedChat, username);
+    }, [socket, selectedChat])
+
+    const eventMessageRecieved = (_user_1, _user_2, _message) => {
+        console.log(customs);
+        var _customs = customs;
+        _customs[_user_1].messages.push({
+            from: _user_1,
+            to: _user_2,
+            message: _message,
+            read: false
+        });
+        setCustoms({..._customs});
+        scrollBottomMessages();
+    }
 
     useEffect(() => {
-        onMessageRecieved(socket, ({ _user_1, _user_2, _message }) => {
-            // _user_1 always user
-            // _user_2 always creator
-            console.log(_user_1);
-            console.log(_user_2);
-            console.log(Object.keys(customs));
-            var _customs = customs;
-            _customs[_user_1].messages.push({
-                from: _user_1,
-                to: _user_2,
-                message: _message,
-                read: false
-            });
-            setCustoms({..._customs});
-        });
-    }, [socket, customs])
+        if(socket) onMessageRecieved(socket, eventMessageRecieved);
+    }, [socket]);
+
+    const scrollBottomMessages = () => {
+        var c = document.getElementById("creator-customs-chatbox");
+        if(c) c.scrollTop = c.scrollHeight;
+    }
 
     const fetchSendMessage = async () => {
         var res = await sendCustomsMessage(username, token, message, selectedChat, "message");
@@ -60,6 +71,9 @@ const CreatorCustoms = () => {
                 read: false
             });
             setCustoms({..._messages});
+            setMessage('');
+            sendMessage(socket, selectedChat, username, message);
+            scrollBottomMessages();
         }
     }
 
