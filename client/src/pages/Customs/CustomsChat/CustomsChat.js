@@ -80,7 +80,10 @@ const CustomsChat = () => {
                             {index > 0 && _message.from !== messages[index-1].from &&
                                 <span className="fs-6">@{_message.from}</span>
                             }{ index === 0 && <span className="fs-6">@{_message.from}</span>}
-                            <span className="ccmp-message">{_message.message}</span>
+                            {_message.type === "link" ?
+                                <a href={_message.message} target="_blank" className="ccmp-message link">{_message.message}</a>:
+                                <span className="ccmp-message">{_message.message}</span>
+                            }
                         </div>
                     )
                 })}

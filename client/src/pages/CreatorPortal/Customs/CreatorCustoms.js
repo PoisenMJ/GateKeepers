@@ -3,7 +3,7 @@ import { FaCaretSquareRight, FaPaperPlane } from 'react-icons/fa';
 import { getCreator } from '../../../controllers/creators';
 import { acceptGatekeeperCustom, declineGatekeeperCustom, getGatekeeperCustomsMessages, markReadCustomsChat, sendCustomsMessage } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext';
-import { createSocket, joinRoom, onMessageRecieved, sendMessage } from '../../../services/ClientSocket';
+import { createSocket, joinRoom, onCustomsRequestRecieved, onMessageRecieved, sendMessage } from '../../../services/ClientSocket';
 import "./CreatorCustoms.css";
 
 
@@ -38,23 +38,47 @@ const CreatorCustoms = () => {
         if(socket) joinRoom(socket, selectedChat, username);
     }, [socket, selectedChat])
 
-    const eventMessageRecieved = (_user_1, _user_2, _message) => {
+    const eventMessageRecieved = (_user_1, _user_2, _message, _type) => {
         console.log(customs);
         var _customs = customs;
         _customs[_user_1].messages.push({
             from: _user_1,
             to: _user_2,
             message: _message,
+            type: _type,
             read: false
         });
         setCustoms({..._customs});
         scrollBottomMessages();
     }
 
+    const eventCustomsRequestRecieved = (_user, _creator, _description, _price) => {
+        var _customs = customs;
+        _customs[_user] = {
+            messages: [
+                {
+                    from: _user,
+                    to: _creator,
+                    message: _description,
+                    read: false
+                }
+            ],
+            description: _description,
+            accepted: false,
+            price: _price
+        }
+        setCustoms({..._customs});
+    }
+
     useEffect(() => {
-        if(socket) onMessageRecieved(socket, eventMessageRecieved);
+        if(socket){
+            // initialize event subscribers
+            onMessageRecieved(socket, eventMessageRecieved);
+            onCustomsRequestRecieved(socket, eventCustomsRequestRecieved);
+        }
     }, [socket]);
 
+    // scroll to bottom of chatbox element
     const scrollBottomMessages = () => {
         var c = document.getElementById("creator-customs-chatbox");
         if(c) c.scrollTop = c.scrollHeight;
@@ -89,6 +113,8 @@ const CreatorCustoms = () => {
                 type: 'link'
             });
             setCustoms({..._messages});
+            sendMessage(socket, selectedChat, username, message, 'link');
+            scrollBottomMessages();
         }
     }
 

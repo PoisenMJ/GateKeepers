@@ -13,9 +13,9 @@ module.exports.initialiseSockets = function initialize(app){
             socket.join(`${_user_1}-${_user_2}`);
         })
 
-        socket.on("customs_message", (_user_1, _user_2, _message) => {
+        socket.on("customs_message", (_user_1, _user_2, _message, _type) => {
             console.log(`Message to room: ${_user_1}-${_user_2}`);
-            socket.to(`${_user_1}-${_user_2}`).emit("customs_message", _user_1, _user_2, _message);
+            socket.to(`${_user_1}-${_user_2}`).emit("customs_message", _user_1, _user_2, _message, _type);
         })
 
         socket.on("disconnect", () => {

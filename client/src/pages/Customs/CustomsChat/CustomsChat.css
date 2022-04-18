@@ -20,6 +20,10 @@
     padding: 8px 10px;
     border-radius: .35rem;
 }
+.customs-chat-message-parent > .ccmp-message.link{
+    color: rgb(45, 91, 218);
+    cursor: pointer;
+}
 .customs-chat-message-parent.right{
     margin-left: auto;
 }

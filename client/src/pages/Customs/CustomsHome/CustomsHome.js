@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
 import { sendCustomRequest, getUserCustom } from '../../../controllers/users';
 import { AuthContext } from '../../../services/AuthContext';
+import { createSocket, joinRoom } from '../../../services/ClientSocket';
 import "./CustomsHome.css";
 
 const CustomsHome = () => {
@@ -32,10 +33,14 @@ const CustomsHome = () => {
 
     const fetchSendCustomRequest = async () => {
         if(!(loggedIn || username || token)) Flash("Need to Login", "dark");
-        else
+        else{
+            var socket = createSocket();
+            joinRoom(socket, username, creator);
+            
             var res = await sendCustomRequest(username, token, description, price, creator);
             if(res.success) Flash("Custom request sent", "success");
             else Flash(res.message, "dark");
+        }
     }
 
     if(!waitingForAccept)

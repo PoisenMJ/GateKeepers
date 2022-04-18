@@ -6,10 +6,20 @@ const joinRoom = (_socket, _user_1, _user_2) => {
     console.log(`Client joining: ${_user_1}-${_user_2}`)
     _socket.emit("join_room", _user_1, _user_2);
 }
-const sendMessage = (_socket, _user_1, _user_2, _message) => { _socket.emit("customs_message", _user_1, _user_2, _message); }
+const sendMessage = (_socket, _user_1, _user_2, _message, _type="message") => {
+    _socket.emit("customs_message", _user_1, _user_2, _message, _type);
+}
 const onMessageRecieved = (_socket, _callback) => {
-    _socket.on("customs_message", (_user_1, _user_2, _message) => {
-        _callback(_user_1, _user_2, _message);
+    _socket.on("customs_message", (_user_1, _user_2, _message, _type) => {
+        _callback(_user_1, _user_2, _message, _type);
+    })
+}
+const sendCustomsRequest = (_socket, _user, _creator, _description, _price) => {
+    _socket.emit("customs_request", _user, _creator, _description, _price);
+}
+const onCustomsRequestRecieved = (_socket, _callback) => {
+    _socket.on("customs_request", (_user, _creator, _description, _price) => {
+        _callback(_user, _creator, _description, _price);
     })
 }
 
@@ -17,5 +27,7 @@ export {
     createSocket,
     joinRoom,
     sendMessage,
-    onMessageRecieved
+    onMessageRecieved,
+    sendCustomsRequest,
+    onCustomsRequestRecieved
 }
