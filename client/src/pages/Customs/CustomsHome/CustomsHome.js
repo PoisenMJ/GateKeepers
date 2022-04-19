@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
 import { sendCustomRequest, getUserCustom } from '../../../controllers/users';
 import { AuthContext } from '../../../services/AuthContext';
-import { createSocket, joinRoom } from '../../../services/ClientSocket';
+import { createSocket, joinRoom, sendCustomsRequest } from '../../../services/ClientSocket';
 import "./CustomsHome.css";
 
 const CustomsHome = () => {
@@ -36,9 +36,12 @@ const CustomsHome = () => {
         else{
             var socket = createSocket();
             joinRoom(socket, username, creator);
-            
+
             var res = await sendCustomRequest(username, token, description, price, creator);
-            if(res.success) Flash("Custom request sent", "success");
+            if(res.success) {
+                sendCustomsRequest(socket, username, creator, description, price);
+                Flash("Custom request sent", "success");
+            }
             else Flash(res.message, "dark");
         }
     }

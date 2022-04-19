@@ -5,7 +5,6 @@ var User = require('../client/src/models/user');
 var key = require('../client/src/models/key');
 var crypto = require('crypto');
 
-
 var nJwt = require('njwt');
 var secureRandom = require('secure-random');
 const { sendActivationEmail } = require('../services/nodemailer.config');
@@ -21,10 +20,10 @@ router.post('/login', async (req, res, next) => {
         return res.status(400).json(err);
     }
     if(!user) return res.json({ success: false, message: 'Username or password incorrect' })
-    else if(user.accountActivated === false) return res.json({ success: false, message: "activate account" });
-    else if(!(user.checkPassword(password))) return res.json({ success: false, message: 'Username or password incorrect' });
-    else if(user.accountType === "creator") return res.json({ success: false, message: 'Username or password incorrect' });
     else if(user.instaLogin) return res.json({ success: false, message: "Instagram login" })
+    else if(!(user.checkPassword(password))) return res.json({ success: false, message: 'Username or password incorrect' });
+    else if(user.accountActivated === false) return res.json({ success: false, message: "activate account" });
+    else if(user.accountType === "creator") return res.json({ success: false, message: 'Username or password incorrect' });
 
     var signingKey = secureRandom(256, {type: 'Buffer'});
     var claims = {

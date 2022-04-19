@@ -157,17 +157,17 @@ router.post('/get-activation-token', async (req, res, next) => {
 router.post('/check-activation-token', async (req, res, next) => {
     var username = req.body.username;
     var code = req.body.activationToken;
-    User.findOne({ username: username }).then((user, err) => {
-        if(err) return res.json({ success: false, message: "" });
-        if(!user) return res.json({ success: false, message: "" });
+    try{
+        var user = await User.findOne({ username: username });
+        if(!user) return res.json({ success: false, message: "No User Exists" });
         if(user.activationCode == code && user.accountType !== "creator"){
-            User.updateOne({ username: username }, { $set: { accountActivated: true }}).then((updated, err) => {
-                if(err) return res.json({ success: false, message: "" });
-                else return res.json({ success: true, message: "" })
-            });
+            await User.updateOne({ username: username }, { $set: { accountActivated: true }})
+            return res.json({ success: true, message: "" })
         }
         else return res.json({ success: false, message: "Code Incorrect" });
-    });
+    } catch(err) {
+        return res.json({ success: false, message: "Internal Error" });
+    }
 })
 
 router.post('/update-password', userCheck, async (req, res, next) => {

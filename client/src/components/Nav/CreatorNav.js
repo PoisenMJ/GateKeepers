@@ -26,7 +26,7 @@ const CreatorNav = () => {
                     <span className="visually-hidden">Toggle navigation</span>
                     <FaBars id="custom-navbar-toggle-icon"/>
                 </button>
-                <ul className="navbar-nav fs-5 flex-row flex-grow-1 justify-content-around justify-content-sm-around justify-content-md-center creator-nav h-100">
+                <ul className="navbar-nav fs-5 flex-row flex-grow-1 justify-content-around justify-content-sm-center justify-content-md-center creator-nav h-100">
                     <NavLink to={`/${creator}/made`} className="nav-item d-flex align-items-center creator-nav-link h-100 no-text-decoration fw-bold">
                         PRODUCTS
                         <FaBriefcase className="d-none d-print-block d-sm-none d-md-none d-lg-block d-xl-block d-xxl-block icon-3"/>

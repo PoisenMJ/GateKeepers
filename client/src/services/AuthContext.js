@@ -49,21 +49,6 @@ const parseJwt = (token) => {
     }
 }
 
-
-// const usePrevious = (value) => {
-//     const ref = React.useRef();
-//     useEffect(() => { ref.current = value });
-//     return ref.current;
-// }
-
-// const useLocationChange = (action) => {
-//     const location = useLocation();
-//     const prevLocation = usePrevious(location);
-//     useEffect(() => {
-//         action(location, prevLocation);
-//     }, [location])
-// }
-
 const AuthVerify = (props) => {
     let navigate = useNavigate();
     const {username, token, loggedIn,

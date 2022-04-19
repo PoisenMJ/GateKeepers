@@ -1,6 +1,6 @@
 .mobile-navigation-link {
     text-decoration: none;
-    justify-self: center;
+    place-self: center;
     color: black;
     font-size: 2rem;
     font-weight: 500;
@@ -147,7 +147,7 @@
     color: rgb(230,230,230);
     background-color: rgb(50,50,50);
 }
-@media(min-width: 768px){
+@media(min-width: 480px){
     .creator-nav-link{
         padding: 0 24px!important;
     }

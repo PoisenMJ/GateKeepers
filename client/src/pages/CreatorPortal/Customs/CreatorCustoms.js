@@ -3,7 +3,7 @@ import { FaCaretSquareRight, FaPaperPlane } from 'react-icons/fa';
 import { getCreator } from '../../../controllers/creators';
 import { acceptGatekeeperCustom, declineGatekeeperCustom, getGatekeeperCustomsMessages, markReadCustomsChat, sendCustomsMessage } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext';
-import { createSocket, joinRoom, onCustomsRequestRecieved, onMessageRecieved, sendMessage } from '../../../services/ClientSocket';
+import { createSocket, joinGeneralRoom, joinRoom, onCustomsRequestRecieved, onMessageRecieved, sendMessage } from '../../../services/ClientSocket';
 import "./CreatorCustoms.css";
 
 
@@ -24,6 +24,7 @@ const CreatorCustoms = () => {
                 // socket join room
                 var _socket = createSocket();
                 joinRoom(_socket, Object.keys(res.messages)[0], username);
+                joinGeneralRoom(_socket, username);
                 setSocket(_socket);
                 scrollBottomMessages();
             }

@@ -48,6 +48,8 @@ userSchema.methods.encryptPassword = function(password){
 }
 
 userSchema.methods.checkPassword = function(password){
+    console.log(`User pw: ${this.password}`)
+    console.log(`Input pw: ${this.encryptPassword(password)}`)
     return this.encryptPassword(password) == this.password;
 }
 

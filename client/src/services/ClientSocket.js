@@ -6,6 +6,10 @@ const joinRoom = (_socket, _user_1, _user_2) => {
     console.log(`Client joining: ${_user_1}-${_user_2}`)
     _socket.emit("join_room", _user_1, _user_2);
 }
+const joinGeneralRoom = (_socket, _user) => {
+    console.log(`Joining general room: ${_user}`);
+    _socket.emit("join_creator_room", _user);
+}
 const sendMessage = (_socket, _user_1, _user_2, _message, _type="message") => {
     _socket.emit("customs_message", _user_1, _user_2, _message, _type);
 }
@@ -26,6 +30,7 @@ const onCustomsRequestRecieved = (_socket, _callback) => {
 export {
     createSocket,
     joinRoom,
+    joinGeneralRoom,
     sendMessage,
     onMessageRecieved,
     sendCustomsRequest,
