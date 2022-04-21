@@ -27,7 +27,7 @@ const CreatorLoginPage = () => {
             setLoggedIn(true);
             localStorage.setItem("creator", true);
             navigate("/creators/orders");
-            Event.emit('loggedIn');
+            // Event.emit('loggedIn');
         } else Flash("Incorrect username or password", "dark");
     }
 

@@ -19,8 +19,9 @@ module.exports.initialiseSockets = function initialize(app){
         })
 
         socket.on("customs_message", (_user_1, _user_2, _message, _type) => {
+            // send to user room and general room if creator not in user room
             console.log(`Message to room: ${_user_1}-${_user_2}`);
-            socket.to(`${_user_1}-${_user_2}`).emit("customs_message", _user_1, _user_2, _message, _type);
+            socket.to(`${_user_1}-${_user_2}`).to(_user_2).emit("customs_message", _user_1, _user_2, _message, _type);
         })
 
         socket.on("customs_request", (_user, _creator, _description, _price) => {

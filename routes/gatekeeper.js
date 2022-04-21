@@ -319,18 +319,26 @@ router.post('/custom/all-messages', gatekeeperCheck, async (req, res, next) => {
             {from: req.body.username},
             {to: req.body.username}
         ]});
-        var data = {};
+        var _customs = {};
+        var _messages = {};
         for(var i = 0; i < customs.length; i++){
             var key = customs[i].from;
-            if(!data[key]) data[key] = { messages: [], price: 0, accepted: 0, description: '' };
-            data[key].price = customs[i].initialPrice;
-            data[key].accepted = customs[i].accepted;
+            if(!( key in _customs )) _customs[key] = { price: 0, description: '', accepted: false };
+            if(!( key in _messages )) _messages[key] = [];
+            _customs[key] = {
+                price: customs[i].initialPrice,
+                description: customs[i].initialDescription,
+                accepted: customs[i].accepted
+            }
+            // all messages to and from input user and creator
             var m = messages.filter(e => (e.from === req.body.username && e.to === key)
                     || (e.to === req.body.username && e.from === key));
-            data[key].messages = m;
-            data[key].description = customs[i].initialDescription;
+            _messages[key] = m;
+            // output format:
+            // customs: { customs object }
+            // messages: [ { message object }... ]
         }
-        return res.json({ success: true, messages: data });
+        return res.json({ success: true, messages: _messages, customs: _customs });
     } catch(err) {
         console.log(err);
         return res.json({ success: false });
