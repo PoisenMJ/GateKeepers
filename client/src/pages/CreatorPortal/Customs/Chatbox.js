@@ -13,6 +13,7 @@ const Chatbox = ({ creatorUsername, loading, messages, selectedChat, fetchSend, 
         if(_index > 0)
             if(messages[selectedChat][_index-1].from !== _message.from)
                 return (<span className="text-light creator-customs-message-user">@{_message.from}</span>)
+            else return ""
         else return (<span className="text-light creator-customs-message-user">@{_message.from}</span>)
     }
 
@@ -23,8 +24,8 @@ const Chatbox = ({ creatorUsername, loading, messages, selectedChat, fetchSend, 
     }
 
     if(!loading)
-        return (
-            Object.keys(messages).length > 0 ?
+        if(Object.keys(messages).length > 0)
+            return (
                 <div id="creator-customs-chatbox-parent">
                     <div id="creator-customs-mobile-chat-popout-button" onClick={toggleInbox}>
                         <FaCaretSquareRight className="fs-1 pointer" style={{color: 'white'}}/>
@@ -51,7 +52,8 @@ const Chatbox = ({ creatorUsername, loading, messages, selectedChat, fetchSend, 
                         </div>
                     </div>
                 </div>
-            :
+            )
+        else return (
             <div className="w-100 h-100 d-grid">
                 <span className="fs-2 fw-bold" style={{placeSelf: 'center'}}>NO CUSTOM PROJECTS</span>
             </div>

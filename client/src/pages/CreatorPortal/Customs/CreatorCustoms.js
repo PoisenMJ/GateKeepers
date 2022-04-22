@@ -188,13 +188,11 @@ const CreatorCustoms = () => {
     const selectInboxUser = (_user) => {
         setSelectedChat(_user);
         resetInboxLayout();
-        fetchChatRead(_user);
+        // if showing messages send read chat
+        if(customs[_user].accetped) fetchChatRead(_user);
     }
 
     const getUnreadMessageCount = (_user) => {
-        console.log(customs);
-        console.log(messages);
-        console.log(_user);
         return customs[_user].accepted ?
             messages[_user].filter(x => (x.read === false && x.from !== username)).length
             : 0;
@@ -209,15 +207,20 @@ const CreatorCustoms = () => {
                     getUnreadMessageCount={getUnreadMessageCount}
                     selectInboxUser={selectInboxUser}
                     getActiveUser={getActiveUser}/>
-            <Chatbox creatorUsername={username}
-                        loading={loading}
-                        messages={messages}
-                        selectedChat={selectedChat}
-                        fetchSend={fetchSendMessage}
-                        toggleInbox={toggleInbox}>
-                {/* <CustomsRequest description={customs[selectedChat]?.description}
-                                price={customs[selectedChat]?.price}/> */}
-            </Chatbox>
+            {!loading ? customs[selectedChat].accepted ?
+                <Chatbox creatorUsername={username}
+                            loading={loading}
+                            messages={messages}
+                            selectedChat={selectedChat}
+                            fetchSend={fetchSendMessage}
+                            toggleInbox={toggleInbox}/>:
+                <CustomsRequest description={customs[selectedChat]?.description}
+                                price={customs[selectedChat]?.price}/>
+                :
+                <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            }
         </div>
     )
 }
