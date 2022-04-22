@@ -16,7 +16,6 @@ var authRouter = require('./routes/auth');
 var userRouter = require('./routes/user');
 var gatekeeperRouter = require('./routes/gatekeeper');
 var paymentRouter = require('./routes/payment');
-var instagramRouter = require('./routes/instagram');
 
 require('./client/src/models/index');
 
@@ -35,7 +34,6 @@ app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/gatekeeper', gatekeeperRouter);
 app.use('/payment', paymentRouter);
-app.use('/insta', instagramRouter);
 
 app.use(express.static(path.join(__dirname, './client/build')))
 app.use(express.static(path.join(__dirname, './client/public/')))

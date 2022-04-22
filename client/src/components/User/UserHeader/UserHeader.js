@@ -8,7 +8,7 @@ import { CartContext } from '../../../services/CartContext';
 import { LogOut } from '../../../services/auth';
 import { getCreators } from '../../../controllers/creators';
 
-const UserHeader = ({ productNav, transparent }) => {
+const UserHeader = ({ productNav, transparent, showCart }) => {
     let navigate = useNavigate();
     const [creators, setCreators] = useState([]);
     const { setLoggedIn, setUsername, setToken } = useContext(AuthContext);
@@ -37,7 +37,11 @@ const UserHeader = ({ productNav, transparent }) => {
             <header id="header-normal">
                 {productNav ?
                     <CreatorNav logOut={logOutEvent}/>:
-                    <NormalNav logOut={logOutEvent} creators={creators} transparent={transparent?true:false}/>}
+                    <NormalNav logOut={logOutEvent}
+                                creators={creators}
+                                transparent={transparent?true:false}
+                                showCart={showCart}/>
+                }
             </header>
         </>
     )

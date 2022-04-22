@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { FaPaperPlane, FaCaretSquareRight } from 'react-icons/fa';
 
 const Chatbox = ({ creatorUsername, loading, messages, selectedChat, fetchSend, toggleInbox, children }) => {
@@ -62,4 +62,4 @@ const Chatbox = ({ creatorUsername, loading, messages, selectedChat, fetchSend, 
         return <span>LOADING</span>
 }
 
-export default Chatbox;
+export default memo(Chatbox);

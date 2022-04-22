@@ -5,11 +5,29 @@ import { AuthContext } from '../../services/AuthContext';
 import { CartContext } from '../../services/CartContext';
 import "./Nav.css";
 
-const NormalNav = ({ logOut, creators, transparent }) => {
+const NormalNav = ({ creators, logOut, showCart, transparent }) => {
     let navigate = useNavigate();
     const { loggedIn } = useContext(AuthContext);
     const { products } = useContext(CartContext);
     const toggleDropdown = () => { document.getElementById("gatekeepersDropdown").classList.toggle("show-gatekeepers"); }
+
+    const cart = () => {
+        {/* <button className="btn btn-light position-relative desktop-notifications-normal me-4">
+            <FaBell className="fs-4"/>
+            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                1
+                <span className="visually-hidden">unread messages</span>
+            </span>
+        </button> */}
+        if(showCart) return (
+            <div className="normal-desktop-right">
+                <div className="desktop-shopping-cart" onClick={() => navigate("/shopping-basket")}>
+                    <span className="fw-bold">{products.length}</span>
+                    <FaShoppingCart/>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <nav className='navbar navbar-expand-md d-flex align-items-stretch h-100' id={transparent?'':'creator-navbar'}>
@@ -37,19 +55,7 @@ const NormalNav = ({ logOut, creators, transparent }) => {
                         <NavLink to="/login" className="desktop-navbar-link fw-bold">LOGIN</NavLink>
                     }
                 </div>
-                <div className="normal-desktop-right">
-                    <button className="btn btn-light position-relative desktop-notifications-normal me-4">
-                        <FaBell className="fs-4"/>
-                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            1
-                            <span className="visually-hidden">unread messages</span>
-                        </span>
-                    </button>
-                    <div className="desktop-shopping-cart" onClick={() => navigate("/shopping-basket")}>
-                        <span className="fw-bold">{products.length}</span>
-                        <FaShoppingCart/>
-                    </div>
-                </div>
+                {cart()}
             </div>
         </nav>
     )
