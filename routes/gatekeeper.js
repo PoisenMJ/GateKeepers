@@ -323,20 +323,25 @@ router.post('/custom/all-messages', gatekeeperCheck, async (req, res, next) => {
         var _messages = {};
         for(var i = 0; i < customs.length; i++){
             var key = customs[i].from;
-            if(!( key in _customs )) _customs[key] = { price: 0, description: '', accepted: false };
-            if(!( key in _messages )) _messages[key] = [];
-            _customs[key] = {
+            var messages_for_current_user = messages.filter(e => (e.from === req.body.username && e.to === key)
+                                            || (e.to === req.body.username && e.from === key));
+            var customs_for_current_user = {
                 price: customs[i].initialPrice,
                 description: customs[i].initialDescription,
                 accepted: customs[i].accepted
-            }
-            // all messages to and from input user and creator
-            var m = messages.filter(e => (e.from === req.body.username && e.to === key)
-                    || (e.to === req.body.username && e.from === key));
-            _messages[key] = m;
+            };
+
+            if(!(key in _customs)){ _customs[key] = customs_for_current_user };
+            if(!(key in _messages)){ _messages[key] = messages_for_current_user };
             // output format:
             // customs: { customs object }
             // messages: [ { message object }... ]
+
+            // sort messages/customs by last message send by creator
+            // if only message is new custom put it at the top
+
+            // const sorted = Object.entries(m)
+            //             .sort(([,a], [,b]) => a.date > b.date);
         }
         return res.json({ success: true, messages: _messages, customs: _customs });
     } catch(err) {
@@ -364,21 +369,33 @@ router.post('/custom/decline', gatekeeperCheck, async (req, res, next) => {
         ]});
         return res.json({ success: true });
     } catch(err) {
+        console.log(err);
         return res.json({ success: false });
     }
 })
 
 router.post('/custom/send-message', gatekeeperCheck, async (req, res, next) => {
     try {
-        var newMsg = new CustomsMessage({
+        var custom = await Custom.findOne({ $or: [
+            { from: req.body.username, to: req.body.to },
+            { from: req.body.to, to: req.body.username }
+        ]});
+        await custom.saveMessage({
             from: req.body.username,
             to: req.body.to,
             message: req.body.message,
             type: req.body.type
         });
-        await newMsg.save();
+        // var newMsg = new CustomsMessage({
+        //     from: req.body.username,
+        //     to: req.body.to,
+        //     message: req.body.message,
+        //     type: req.body.type
+        // });
+        // await newMsg.save();
         return res.json({ success: true });
     } catch(err) {
+        console.log(err);
         return res.json({ success: false });
     }
 })

@@ -230,12 +230,18 @@ router.post('/custom/create', userCheck, async (req, res, next) => {
 
 router.post('/custom/send-message', userCheck, async (req, res, next) => {
     try {
-        var newCustomsMessage = new CustomsMessage({
+        var custom = await Custom.findOne({ from: req.body.username, to: req.body.gatekeeper });
+        custom.saveMessage({
             from: req.body.username,
             to: req.body.gatekeeper,
             message: req.body.message
         });
-        await newCustomsMessage.save();
+        // var newCustomsMessage = new CustomsMessage({
+        //     from: req.body.username,
+        //     to: req.body.gatekeeper,
+        //     message: req.body.message
+        // });
+        // await newCustomsMessage.save();
         return res.json({ success: true });
     } catch(err) {
         return res.json({ success: false });
@@ -244,6 +250,8 @@ router.post('/custom/send-message', userCheck, async (req, res, next) => {
 
 router.post('/custom/all-messages', userCheck, async (req, res, next) => {
     try {
+        var custom = await Custom.findOne({ from: req.body.username, to: req.body.gatekeeper }).populate('messages');
+        console.log(custom);
         var messages = await CustomsMessage.find({ $or: [
             { from: req.body.gatekeeper, to: req.body.username },
             { from: req.body.username, to: req.body.gatekeeper }

@@ -56,6 +56,7 @@ const CustomsChat = () => {
     }
 
     const eventMessageRecieved = (_user_1, _user_2, _message) => {
+        console.log(_message);
         var _messages = messages;
         _messages.push({
             message: _message,

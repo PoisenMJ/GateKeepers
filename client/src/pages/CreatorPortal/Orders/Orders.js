@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { getOrders, markOrderSent } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext';
-import { Accordion, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { Desktop, Mobile } from '../../../components/Query';
 import "./Orders.css";
-import { FaCheck, FaCheckCircle, FaTimes, FaTimesCircle } from 'react-icons/fa';
+import { FaCheck, FaTimes } from 'react-icons/fa';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
@@ -33,8 +33,7 @@ const CreatorsOrders = () => {
             var a = orders;
             a[index].sent = true;
             // need to clear before reset otherwise doesnt recognise update as object is shallow copy
-            setOrders([]);
-            setOrders(a);
+            setOrders([...a]);
         } else {
             // console.log('failed');
         }
@@ -44,13 +43,12 @@ const CreatorsOrders = () => {
         <div id="admin-orders-parent">
             <input className="form-control-lg w-100 mb-2" type="text" placeholder="Search orders"/>
             <div className="accordion" role="tablist" id="accordion-1">
-                {orders && orders.length > 0 ? orders.map((order, index) => {
+                {orders.length > 0 ? orders.map((order, index) => {
                     var items = order.items.map((item, i) => item.name)
                     var date = new Date(order.date);
                     var formattedDate = MONTHS[date.getMonth()] +' '+ date.getDate();
                     var year = date.getFullYear();
                     var dots = (items.length > 1) ? '...' : '';
-                    var sent = (order.sent) ? "SENT" : "NOT SENT";
                     return (
                         <div className="accordion-item custom-black-accordion" key={index}>
                             <h2 className="accordion-header" role="tab">
@@ -89,7 +87,7 @@ const CreatorsOrders = () => {
                                             <span>USER: <span className="text-muted">{order.user ? order.user : "GUEST"}</span></span>
                                         </div>
                                         <Button onClick={() => sendMarkOrderSent(order.id, index)}
-                                            className="order-mark-sent mt-1"
+                                            className="order-mark-sent mt-1 w-100"
                                             size='sm'
                                             variant="light">Mark Sent</Button>
                                     </div>

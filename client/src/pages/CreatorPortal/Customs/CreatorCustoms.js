@@ -25,6 +25,7 @@ const CreatorCustoms = () => {
     const { username, token } = useContext(AuthContext);
     const [customs, setCustoms] = useState({});
     const [messages, setMessages] = useState({});
+    const [empty, setEmpty] = useState(false);
     const [loading, setLoading] = useState(true);
 
     const [selectedChat, setSelectedChat] = useState('');
@@ -35,6 +36,7 @@ const CreatorCustoms = () => {
         const fetchData = async () => {
             var res = await getGatekeeperCustomsMessages(username, token);
             if(res.success){
+                if(Object.keys(res.messages).length === 0 || Object.keys(res.customs).length === 0) setEmpty(true);
                 setMessages(res.messages);
                 setCustoms(res.customs);
                 setSelectedChat(Object.keys(res.messages)[0]);
@@ -56,24 +58,23 @@ const CreatorCustoms = () => {
     useEffect(() => {
         if(Object.keys(customs).length > 0 && Object.keys(messages).length > 0){
             setLoading(false);
-        }
-    }, [customs, messages]);
+        } else if(empty) setLoading(false);
+    }, [customs, messages, empty]);
     
     useEffect(() => {
         if(socket) joinRoom(socket, selectedChat, username);
     }, [socket, selectedChat])
 
     const eventMessageRecieved = (_user_1, _user_2, _message, _type) => {
-        console.log(customs);
-        var _customs = customs;
-        _customs[_user_1].messages.push({
+        var _messages = messages;
+        _messages[_user_1].push({
             from: _user_1,
             to: _user_2,
             message: _message,
             type: _type,
             read: false
         });
-        setCustoms({..._customs});
+        setMessages({..._messages});
         scrollBottomMessages();
     }
 
@@ -109,19 +110,19 @@ const CreatorCustoms = () => {
         if(c) c.scrollTop = c.scrollHeight;
     }
 
-    const fetchSendMessage = async () => {
-        var res = await sendCustomsMessage(username, token, message, selectedChat, "message");
+    const fetchSendMessage = async (_message) => {
+        var res = await sendCustomsMessage(username, token, _message, selectedChat, "message");
         if(res.success){
-            var _messages = customs;
-            _messages[selectedChat].messages.push({
+            var _messages = messages;
+            _messages[selectedChat].push({
                 from: username,
                 to: selectedChat,
-                message: message,
+                message: _message,
                 read: false
             });
-            setCustoms({..._messages});
+            setMessages({..._messages});
             setMessage('');
-            sendMessage(socket, selectedChat, username, message);
+            sendMessage(socket, selectedChat, username, _message);
             scrollBottomMessages();
         }
     }
@@ -146,18 +147,18 @@ const CreatorCustoms = () => {
     const fetchAcceptCustom = async () => {
         var res = await acceptGatekeeperCustom(username, token, selectedChat);
         if(res.success){
-            var _messages = customs;
-            _messages[selectedChat].accepted = true;
-            setCustoms({..._messages});
+            var _customs = customs;
+            _customs[selectedChat].accepted = true;
+            setCustoms({..._customs});
         }
     }
 
     const fetchDeclineCustom = async () => {
         var res = await declineGatekeeperCustom(username, token, selectedChat);
         if(res.success){
-            var _messages = customs;
-            delete _messages[selectedChat];
-            setCustoms({..._messages});
+            var _customs = customs;
+            delete _customs[selectedChat];
+            setCustoms({..._customs});
         }
     }
 
@@ -177,11 +178,11 @@ const CreatorCustoms = () => {
     const fetchChatRead = async (user) => {
         var res = await markReadCustomsChat(username, token, user);
         if(res.success){
-            var _messages = customs;
+            var _messages = messages;
             for(var i = 0; i < _messages[user].messages.length; i++){
-                if(_messages[user].messages[i].from !== username) _messages[user].messages[i].read = true;
+                if(_messages[user][i].from !== username) _messages[user][i].read = true;
             }
-            setCustoms({..._messages});
+            setMessages({..._messages});
         }
     }
 
@@ -199,6 +200,7 @@ const CreatorCustoms = () => {
     }
 
     const getActiveUser = (_user) => { return _user === selectedChat }
+    var _empty = Object.keys(customs).length === 0;
 
     return (
         <div id="creator-customs">
@@ -207,18 +209,24 @@ const CreatorCustoms = () => {
                     getUnreadMessageCount={getUnreadMessageCount}
                     selectInboxUser={selectInboxUser}
                     getActiveUser={getActiveUser}/>
-            {!loading ? customs[selectedChat].accepted ?
-                <Chatbox creatorUsername={username}
-                            loading={loading}
-                            messages={messages}
-                            selectedChat={selectedChat}
-                            fetchSend={fetchSendMessage}
-                            toggleInbox={toggleInbox}/>:
-                <CustomsRequest description={customs[selectedChat]?.description}
-                                price={customs[selectedChat]?.price}
-                                fetchAccept={fetchAcceptCustom}
-                                fetchDecline={fetchDeclineCustom}
-                                toggleInbox={toggleInbox}/>
+            {!loading ?
+                !_empty ?
+                    customs[selectedChat].accepted ?
+                        <Chatbox creatorUsername={username}
+                                    loading={loading}
+                                    messages={messages}
+                                    selectedChat={selectedChat}
+                                    fetchSend={fetchSendMessage}
+                                    toggleInbox={toggleInbox}/>:
+                        <CustomsRequest description={customs[selectedChat]?.description}
+                                        price={customs[selectedChat]?.price}
+                                        fetchAccept={fetchAcceptCustom}
+                                        fetchDecline={fetchDeclineCustom}
+                                        toggleInbox={toggleInbox}/>
+                    :
+                    <div className='w-100 text-center h-100 d-grid'>
+                        <span className="fs-4 fw-bold" style={{placeSelf: 'center'}}>No Messages</span>
+                    </div>
                 :
                 <div className="spinner-border" role="status">
                     <span className="visually-hidden">Loading...</span>

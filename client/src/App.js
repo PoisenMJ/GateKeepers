@@ -49,12 +49,12 @@ function App() {
             // index route (home) (transparent nav)
             <Route index element={<PageLayout header={<UserHeader transparent/>} body={<Home/>}/>}/>
             // basic routes (non-transparent nav)
-            <Route element={<PageLayout header={<UserHeader/>} cartEnabled={true}/>}>
+            <Route element={<PageLayout header={<UserHeader/>}/>}>
               <Route path="about" element={<About/>}/>
               <Route path="shopping-basket" element={<ShoppingBasket/>}/>
             </Route>
 
-            <Route element={<PageLayout header={<UserHeader/>} body={<NonCreatorRoute/>} cartEnabled={false}/>}>
+            <Route element={<PageLayout header={<UserHeader showCart={false}/>} body={<NonCreatorRoute/>}/>}>
               <Route path="payment-details" element={<PaymentDetails/>}/>
               <Route path="payment-success" element={<PaymentSuccess/>}/>
               <Route path="payment-failure" element={<PaymentFailure/>}/>
@@ -77,7 +77,7 @@ function App() {
                 <Route path="customs/chat" element={<CustomsChat/>}/>
             </Route>
     
-            <Route element={<PageLayout header={<UserHeader/>} body={<ProtectedRoute/>} cartEnabled={false}/>}>
+            <Route element={<PageLayout header={<UserHeader/>} body={<ProtectedRoute/>}/>}>
               <Route path="profile" element={<Profile/>}/>
             </Route>
 

@@ -26,34 +26,43 @@ const Inbox = ({ inboxRecipients, loading, getUnreadMessageCount, selectInboxUse
         else return "creator-customs-inbox-item"
     }
 
+    const _emptyInbox = () => {
+        return (
+            <div className="p-2">
+                <span className="placeholder col-5"></span>
+                <span className="placeholder col-8 me-2"></span>
+                <span className="placeholder col-3"></span>
+                <span className="placeholder col-4 me-2"></span>
+                <span className="placeholder col-7"></span>
+                <span className="placeholder col-4"></span><br/>
+                <span className="placeholder col-4 me-2"></span>
+                <span className="placeholder col-2 me-2"></span>
+                <span className="placeholder col-3 me-2"></span>
+            </div>
+        )
+    }
+
     return (
         <div id="creator-customs-inbox-parent">
-            {!loading ? Object.keys(inboxRecipients).map((user, index) => {
-                return (
-                    <div className={getActiveClassName(user)}
-                        onClick={() => selectInboxUser(user)} key={index}>
-                        <span className="price fw-bold">£{inboxRecipients[user].price}</span>
-                        <div className="customs-content w-100 pe-2">
-                            <div className="d-flex flex-column">
-                                <span>@{user}</span>
-                                <span className={getTextClassName(user)}>{inboxRecipients[user].description}</span>
+            {!loading ?
+                Object.keys(inboxRecipients).length > 0 ?
+                    Object.keys(inboxRecipients).map((user, index) => {
+                        return (
+                            <div className={getActiveClassName(user)}
+                                onClick={() => selectInboxUser(user)} key={index}>
+                                <span className="price fw-bold">£{inboxRecipients[user].price}</span>
+                                <div className="customs-content w-100 pe-2">
+                                    <div className="d-flex flex-column">
+                                        <span>@{user}</span>
+                                        <span className={getTextClassName(user)}>{inboxRecipients[user].description}</span>
+                                    </div>
+                                    {getBadge(inboxRecipients[user].accepted, user)}
+                                </div>
                             </div>
-                            {getBadge(inboxRecipients[user].accepted, user)}
-                        </div>
-                    </div>
-                )
-            }):
-                <div className="p-2">
-                    <span className="placeholder col-5"></span>
-                    <span className="placeholder col-8 me-2"></span>
-                    <span className="placeholder col-3"></span>
-                    <span className="placeholder col-4 me-2"></span>
-                    <span className="placeholder col-7"></span>
-                    <span className="placeholder col-4"></span><br/>
-                    <span className="placeholder col-4 me-2"></span>
-                    <span className="placeholder col-2 me-2"></span>
-                    <span className="placeholder col-3 me-2"></span>
-                </div>
+                        )
+                    }):
+                        _emptyInbox():
+                _emptyInbox()
             }
         </div>
     )

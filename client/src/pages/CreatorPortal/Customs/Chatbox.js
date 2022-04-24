@@ -48,7 +48,7 @@ const Chatbox = ({ creatorUsername, loading, messages, selectedChat, fetchSend, 
                                 <li><a className="dropdown-item" href="#">Send Payment Link</a></li>
                             </ul>
                             <input value={message} type="text" className="form-control no-box-shadow" onChange={e => setMessage(e.target.value)}/>
-                            <button onClick={fetchSend} className="input-group-text btn-btn-secondary no-box-shadow"><FaPaperPlane/></button>
+                            <button onClick={() => fetchSend(message)} className="input-group-text btn-btn-secondary no-box-shadow"><FaPaperPlane/></button>
                         </div>
                     </div>
                 </div>
