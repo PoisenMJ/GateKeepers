@@ -45,18 +45,18 @@ const Inbox = ({ inboxRecipients, loading, getUnreadMessageCount, selectInboxUse
     return (
         <div id="creator-customs-inbox-parent">
             {!loading ?
-                Object.keys(inboxRecipients).length > 0 ?
-                    Object.keys(inboxRecipients).map((user, index) => {
+                inboxRecipients.size > 0 ?
+                    Array.from(inboxRecipients.keys()).map((user, index) => {
                         return (
                             <div className={getActiveClassName(user)}
                                 onClick={() => selectInboxUser(user)} key={index}>
-                                <span className="price fw-bold">£{inboxRecipients[user].price}</span>
+                                <span className="price fw-bold">£{inboxRecipients.get(user).price}</span>
                                 <div className="customs-content w-100 pe-2">
                                     <div className="d-flex flex-column">
                                         <span>@{user}</span>
-                                        <span className={getTextClassName(user)}>{inboxRecipients[user].description}</span>
+                                        <span className={getTextClassName(user)}>{inboxRecipients.get(user).description}</span>
                                     </div>
-                                    {getBadge(inboxRecipients[user].accepted, user)}
+                                    {getBadge(inboxRecipients.get(user).accepted, user)}
                                 </div>
                             </div>
                         )

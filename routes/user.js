@@ -214,13 +214,12 @@ router.post('/custom/create', userCheck, async (req, res, next) => {
                 initialPrice: req.body.price,
                 dateCreated: new Date().toString()
             });
-            var msg = new CustomsMessage({
+            await newCustom.save();
+            await newCustom.saveMessage({
                 from: username,
                 to: req.body.gatekeeper,
                 message: req.body.description
             });
-            await msg.save();
-            await newCustom.save();
             return res.json({ success: true });
     } catch(err) {
         console.log(err);

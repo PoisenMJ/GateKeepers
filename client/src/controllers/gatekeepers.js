@@ -160,7 +160,7 @@ async function updateGatekeeper(data, username){
 }
 
 async function getGatekeeperCustomsMessages(username, token){
-    var res = await fetch('/gatekeeper/custom/all-messages', {
+    var res = await fetch('/gatekeeper/custom/all', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

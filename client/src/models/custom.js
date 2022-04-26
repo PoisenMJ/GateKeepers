@@ -51,6 +51,16 @@ customSchema.methods.saveMessage = function({ from, to, message, type }){
     }
 }
 
+customSchema.methods.getLatestMessageFromUser = function(_user){
+    if(this.messages){
+        var _message_from_user = [];
+        for(var i = 0; i < this.messages.length; i++){
+            if(this.messages[i].from === _user) _message_from_user.push(this.messages[i]);
+        }
+        return _message_from_user[_message_from_user.length-1].date;
+    } else return false;
+}
+
 var Custom = mongoose.model('custom', customSchema);
 
 module.exports = Custom;

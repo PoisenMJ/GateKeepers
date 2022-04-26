@@ -309,41 +309,28 @@ router.post('/update/:creatorTag', upload.single('creatorImage'), gatekeeperChec
     })
 })
 
-router.post('/custom/all-messages', gatekeeperCheck, async (req, res, next) => {
+router.post('/custom/all', gatekeeperCheck, async (req, res, next) => {
     try {
-        var messages = await CustomsMessage.find({ $or: [
-            {from: req.body.username},
-            {to: req.body.username}
-        ]});
-        var customs = await Custom.find({ $or: [
-            {from: req.body.username},
-            {to: req.body.username}
-        ]});
-        var _customs = {};
-        var _messages = {};
+        var customs = await Custom.find({to: req.body.username}).populate('messages');
+        var _customs = new Map();
+
         for(var i = 0; i < customs.length; i++){
             var key = customs[i].from;
-            var messages_for_current_user = messages.filter(e => (e.from === req.body.username && e.to === key)
-                                            || (e.to === req.body.username && e.from === key));
-            var customs_for_current_user = {
+            _customs.set(key, {
                 price: customs[i].initialPrice,
                 description: customs[i].initialDescription,
-                accepted: customs[i].accepted
-            };
-
-            if(!(key in _customs)){ _customs[key] = customs_for_current_user };
-            if(!(key in _messages)){ _messages[key] = messages_for_current_user };
-            // output format:
-            // customs: { customs object }
-            // messages: [ { message object }... ]
-
-            // sort messages/customs by last message send by creator
-            // if only message is new custom put it at the top
-
-            // const sorted = Object.entries(m)
-            //             .sort(([,a], [,b]) => a.date > b.date);
+                accepted: customs[i].accepted,
+                messages: customs[i].messages
+            });
         }
-        return res.json({ success: true, messages: _messages, customs: _customs });
+        // output format:
+        // customs: MAP: { key: { customs properties..., messages: [] }}
+        // messages will be sorted on front end as when new messages sent it can sort properly
+
+        // convert map to json before sending
+
+        if(_customs) return res.json({ success: true, customs: Object.fromEntries(_customs) });
+        else return res.json({ success: true, message: "empty" });
     } catch(err) {
         console.log(err);
         return res.json({ success: false });

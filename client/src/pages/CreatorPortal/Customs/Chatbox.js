@@ -1,7 +1,7 @@
 import React, { useState, memo } from 'react';
 import { FaPaperPlane, FaCaretSquareRight } from 'react-icons/fa';
 
-const Chatbox = ({ creatorUsername, loading, messages, selectedChat, fetchSend, toggleInbox, children }) => {
+const Chatbox = ({ creatorUsername, loading, customs, selectedChat, fetchSend, toggleInbox }) => {
     const [message, setMessage] = useState('');
 
     const getMessageClass = (_from) => {
@@ -11,7 +11,7 @@ const Chatbox = ({ creatorUsername, loading, messages, selectedChat, fetchSend, 
 
     const showUsernameAbove = (_message, _index) => {
         if(_index > 0)
-            if(messages[selectedChat][_index-1].from !== _message.from)
+            if(customs[selectedChat].messages[_index-1].from !== _message.from)
                 return (<span className="text-light creator-customs-message-user">@{_message.from}</span>)
             else return ""
         else return (<span className="text-light creator-customs-message-user">@{_message.from}</span>)
@@ -24,14 +24,14 @@ const Chatbox = ({ creatorUsername, loading, messages, selectedChat, fetchSend, 
     }
 
     if(!loading)
-        if(Object.keys(messages).length > 0)
+        if(customs.size > 0)
             return (
                 <div id="creator-customs-chatbox-parent">
                     <div id="creator-customs-mobile-chat-popout-button" onClick={toggleInbox}>
                         <FaCaretSquareRight className="fs-1 pointer" style={{color: 'white'}}/>
                     </div>
                     <div id="creator-customs-chatbox">
-                        {messages[selectedChat].map((_message, _index) => (
+                        {customs[selectedChat].messages.map((_message, _index) => (
                             <div className={getMessageClass(_message.from)} key={_index}>
                                 {showUsernameAbove(_message, _index)}
                                 {showMessage(_message)}
