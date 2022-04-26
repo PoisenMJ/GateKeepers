@@ -11,7 +11,7 @@ const Chatbox = ({ creatorUsername, loading, customs, selectedChat, fetchSend, t
 
     const showUsernameAbove = (_message, _index) => {
         if(_index > 0)
-            if(customs[selectedChat].messages[_index-1].from !== _message.from)
+            if(customs.get(selectedChat).messages[_index-1].from !== _message.from)
                 return (<span className="text-light creator-customs-message-user">@{_message.from}</span>)
             else return ""
         else return (<span className="text-light creator-customs-message-user">@{_message.from}</span>)
@@ -31,7 +31,7 @@ const Chatbox = ({ creatorUsername, loading, customs, selectedChat, fetchSend, t
                         <FaCaretSquareRight className="fs-1 pointer" style={{color: 'white'}}/>
                     </div>
                     <div id="creator-customs-chatbox">
-                        {customs[selectedChat].messages.map((_message, _index) => (
+                        {customs.get(selectedChat).messages.map((_message, _index) => (
                             <div className={getMessageClass(_message.from)} key={_index}>
                                 {showUsernameAbove(_message, _index)}
                                 {showMessage(_message)}
