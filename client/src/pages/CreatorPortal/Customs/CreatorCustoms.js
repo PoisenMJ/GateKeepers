@@ -74,7 +74,7 @@ const CreatorCustoms = () => {
             type: _type,
             read: false
         });
-        setCustoms(new Map(..._customs));
+        setCustoms(new Map([..._customs]));
         scrollBottomMessages();
     }
 
@@ -93,7 +93,7 @@ const CreatorCustoms = () => {
             accepted: false,
             price: _price
         });
-        setCustoms(new Map(..._customs));
+        setCustoms(new Map([..._customs]));
     }
 
     useEffect(() => {
@@ -120,7 +120,7 @@ const CreatorCustoms = () => {
                 message: _message,
                 read: false
             });
-            setCustoms(new Map(..._customs));
+            setCustoms(new Map([..._customs]));
             setMessage('');
             sendMessage(socket, selectedChat, username, _message);
             scrollBottomMessages();
@@ -139,7 +139,7 @@ const CreatorCustoms = () => {
                 read: false,
                 type: 'link'
             });
-            setCustoms(new Map(..._customs));
+            setCustoms(new Map([..._customs]));
             sendMessage(socket, selectedChat, username, message, 'link');
             scrollBottomMessages();
         }
@@ -150,7 +150,7 @@ const CreatorCustoms = () => {
         if(res.success){
             var _customs = customs;
             _customs.get(selectedChat).accepted = true;
-            setCustoms(new Map(..._customs));
+            setCustoms(new Map([..._customs]));
         }
     }
 
@@ -159,7 +159,7 @@ const CreatorCustoms = () => {
         if(res.success){
             var _customs = customs;
             _customs.delete(selectedChat);
-            setCustoms(new Map(..._customs));
+            setCustoms(new Map([..._customs]));
         }
     }
 
@@ -183,7 +183,7 @@ const CreatorCustoms = () => {
             for(var i = 0; i < _customs.get(user).messages.length; i++){
                 if(_customs.get(user).messages[i].from !== username) _customs.get(user).messages[i].read = true;
             }
-            setCustoms(new Map(..._customs));
+            setCustoms(new Map([..._customs]));
         }
     }
 
