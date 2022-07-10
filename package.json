@@ -4,7 +4,11 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon bin/www"
+    "dev": "nodemon bin/www",
+    "lint": "eslint --ext .js .",
+    "lint:fix": "eslint --fix --ext .js .",
+    "lint:quiet": "eslint --quiet --ext .js .",
+    "lint:client": "cd client && npm run lint"
   },
   "dependencies": {
     "bcrypt": "~5.0.1",
@@ -29,5 +33,10 @@
     "socket.io": "~4.4.1",
     "stripe": "~8.197.0",
     "stripe-cli": "~0.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.19.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0"
   }
 }

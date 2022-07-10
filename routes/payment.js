@@ -1,110 +1,146 @@
 const express = require('express');
-var router = express.Router();
-var Stripe = require('../services/stripe');
-const CreatorProduct = require('../client/src/models/creatorProduct');
-const Order = require('../client/src/models/order');
-const User = require('../client/src/models/user');
-var { sendOrderConfirmationEmail, sendOrderToCreatorEmail } = require('../services/nodemailer.config');
 
-router.post('/checkout', async (req, res, next) => {
-    var products = req.body.products;
-    var url = await Stripe.createSession(products, req.body.shippingPrice, req.body.username, req.body.email);
-    if(url) return res.json({ url });
-    else return res.json({ url: '' });
-})
+const router = express.Router();
+const Stripe = require('../services/stripe');
+const CreatorProduct = require('../models/creatorProduct');
+const Order = require('../models/order');
+const User = require('../models/user');
+const {
+  sendOrderConfirmationEmail,
+  sendOrderToCreatorEmail,
+} = require('../services/nodemailer.config');
 
-router.post('/session-data', async(req, res, next) => {
-    var sessionID = req.body.sessionID;
-    var response = await Stripe.getSession(sessionID, req.body.username);
-    if(response.success) return res.json({ 
-        name: response.name,
-        email: response.email,
-        orderID: response.orderID,
-        customerID: response.customerID,
-        success: true
+router.post('/checkout', async (req, res) => {
+  const { products } = req.body;
+  const url = await Stripe.createSession(
+    products,
+    req.body.shippingPrice,
+    req.body.username,
+    req.body.email,
+  );
+  if (url) return res.json({ url });
+  return res.json({ url: '' });
+});
+
+router.post('/session-data', async (req, res) => {
+  const { sessionID } = req.body;
+  const response = await Stripe.getSession(sessionID, req.body.username);
+  if (response.success) {
+    return res.json({
+      name: response.name,
+      email: response.email,
+      orderID: response.orderID,
+      customerID: response.customerID,
+      success: true,
     });
-    else return res.json({ success: false });
-})
+  }
+  return res.json({ success: false });
+});
 
-router.post('/check-products', async (req, res, next) => {
-    var urisAndNames = req.body.data;
-    var itemOutOfStock = false;
-    var outOfStockItem = '';
-    var index = 0;
-    for(var i = 0; i < urisAndNames.length; i++){
-        try{
-            var product = await CreatorProduct.findOne({ uri: urisAndNames[i].uri, count: { $gte: 1} });
-            if(!product){
-                outOfStockItem = urisAndNames[i].name;
-                index = i;
-                itemOutOfStock = true;
-            }
-            if(itemOutOfStock) break;
-        } catch(err) {
-            return itemOutOfStock = true;
-        }
+router.post('/check-products', async (req, res) => {
+  const urisAndNames = req.body.data;
+  let itemOutOfStock = false;
+  let outOfStockItem = '';
 
+  try {
+    const promises = [];
+    for (let i = 0; i < urisAndNames.length; i += 1) {
+      promises.push(CreatorProduct.findOne({
+        uri: urisAndNames[i].uri,
+        count: { $gte: 1 },
+      }));
+    }
+
+    const results = await Promise.all(promises);
+    for (let i = 0; i < results.length; i += 1) {
+      const product = results[i];
+      if (!product) {
+        outOfStockItem = urisAndNames[i].name;
+        itemOutOfStock = true;
+        break;
+      }
     }
     return res.json({ outOfStock: itemOutOfStock, name: outOfStockItem });
-})
+  } catch (err) {
+    return res.json({ success: false });
+  }
+});
 
-router.post('/save-order', async (req, res, next) => {
-    try {
-        var validSession = await Stripe.checkSession(req.body.orderID);
-        if(validSession){
-            var orderID = req.body.orderID,
-                customerID = req.body.customerID,
-                username = req.body.username;
-            var order = new Order({
-                orderID,
-                items: req.body.items,
-                date: req.body.date,
-                total: req.body.total,
-                subTotal: req.body.subTotal,
-                customerID,
-                user: username,
-                address: req.body.shippingAddress,
-                creators: req.body.creators
-            });
-            try {
-                await order.save();
-                if(username !== "Guest"){
-                    var user = await User.findOne({ username: username });
-                    if(!user.customerID) await User.updateOne({ username: username }, {$set: { customerID: customerID }});
-                }
-        
-                // update product count
-                await CreatorProduct.updateMany({ uri: { $in: req.body.items.map((i, index) => i.uri) }}, { $inc: { count: -1} });
-                for(var i = 0; i < req.body.creators.length; i++){
-                    var curUser = await User.findOne({ username: req.body.creators[i] });
-                    sendOrderToCreatorEmail(curUser.email);
-                }
-                return res.json({ success: true });
-            } catch(err){
-                console.log(err);
-                return res.json({ success: false });
-            }
-        } else return res.json({ success: false })
-    } catch(err){
+router.post('/save-order', async (req, res) => {
+  try {
+    const validSession = await Stripe.checkSession(req.body.orderID);
+    if (validSession) {
+      const { orderID } = req.body;
+      const { customerID } = req.body;
+      const { username } = req.body;
+      const order = new Order({
+        orderID,
+        items: req.body.items,
+        date: req.body.date,
+        total: req.body.total,
+        subTotal: req.body.subTotal,
+        customerID,
+        user: username,
+        address: req.body.shippingAddress,
+        creators: req.body.creators,
+      });
+      try {
+        await order.save();
+        if (username !== 'Guest') {
+          const user = await User.findOne({ username });
+          if (!user.customerID) { await User.updateOne({ username }, { $set: { customerID } }); }
+        }
+
+        // update product count
+        await CreatorProduct.updateMany(
+          { uri: { $in: req.body.items.map((i) => i.uri) } },
+          { $inc: { count: -1 } },
+        );
+
+        const promises = [];
+        for (let i = 0; i < req.body.creators.length; i += 1) {
+          promises.push(User.findOne({
+            username: req.body.creators[i],
+          }));
+        }
+
+        const results = await Promise.all(promises);
+        for (let i = 0; i < results.length; i += 1) {
+          const curUser = results[i];
+          sendOrderToCreatorEmail(curUser.email).catch(
+            () => res.json({ success: false }),
+          );
+        }
+        return res.json({ success: true });
+      } catch (err) {
         console.log(err);
         return res.json({ success: false });
-    }
-})
+      }
+    } else return res.json({ success: false });
+  } catch (err) {
+    console.log(err);
+    return res.json({ success: false });
+  }
+});
 
-router.post('/send-confirmation-email', async (req, res, next) => {
-    // pass in stripe session id and if sesison fails
-    var id = req.body.sessionID;
-    try{
-        var validSession = await Stripe.checkSession(id);
-        if(validSession){
-            sendOrderConfirmationEmail(req.body.email, req.body.items, req.body.total);
-            return res.status(200).json({ success: true });
-        } else return res.json({ success: false });
-    } catch(err){
-        console.log(err);
-        return res.json({ success: false });
+router.post('/send-confirmation-email', async (req, res) => {
+  // pass in stripe session id and if sesison fails
+  const id = req.body.sessionID;
+  try {
+    const validSession = await Stripe.checkSession(id);
+    if (validSession) {
+      sendOrderConfirmationEmail(
+        req.body.email,
+        req.body.items,
+        req.body.total,
+      );
+      return res.status(200).json({ success: true });
     }
-
-})
+    return res.json({ success: false });
+  } catch (err) {
+    console.log(err);
+    return res.json({ success: false });
+  }
+});
 
 module.exports = router;

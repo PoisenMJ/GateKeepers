@@ -1,58 +1,58 @@
-async function getCreatorPosts(){
-    var res = await fetch('/creator/all-posts')
-    var json = await res.json();
-    return json;
+async function getCreatorPosts() {
+  const res = await fetch('/creator/all-posts');
+  const json = await res.json();
+  return json;
 }
 
-async function getOwnProducts(creatorTag){
-    var res = await fetch(`/creator/products/own/${creatorTag}`);
-    var json = await res.json();
-    return json;
+async function getOwnProducts(creatorTag) {
+  const res = await fetch(`/creator/products/own/${creatorTag}`);
+  const json = await res.json();
+  return json;
 }
 
-async function getMadeProducts(creatorTag){
-    var res = await fetch(`/creator/products/made/${creatorTag}`);
-    var json = await res.json();
-    return json;
+async function getMadeProducts(creatorTag) {
+  const res = await fetch(`/creator/products/made/${creatorTag}`);
+  const json = await res.json();
+  return json;
 }
 
-async function getCreators(){
-    var res = await fetch('/creator/all-creators');
-    var json = await res.json();
-    return json;
+async function getCreators() {
+  const res = await fetch('/creator/all-creators');
+  const json = await res.json();
+  return json;
 }
 
-async function getCreator(creatorTag){
-    var res = await fetch(`/creator/${creatorTag}`);
-    var json = await res.json();
-    return json;
+async function getCreator(creatorTag) {
+  const res = await fetch(`/creator/${creatorTag}`);
+  const json = await res.json();
+  return json;
 }
 
-async function getProduct(productURI, type){
-    var res = await fetch(`/creator/products/${productURI}/${type}`);
-    var json = await res.json();
-    return json;
+async function getProduct(productURI, type) {
+  const res = await fetch(`/creator/products/${productURI}/${type}`);
+  const json = await res.json();
+  return json;
 }
 
-async function getCreatorShippingCountries(creatorTag){
-    var res = await fetch(`/creator/shipping/${creatorTag}`);
-    var json = await res.json();
-    return json;
+async function getCreatorShippingCountries(creatorTag) {
+  const res = await fetch(`/creator/shipping/${creatorTag}`);
+  const json = await res.json();
+  return json;
 }
 
-async function getCreatorAccentColor(creatorTag){
-    var res = await fetch(`/creator/accent/${creatorTag}`);
-    var json = await res.json();
-    return json;
+async function getCreatorAccentColor(creatorTag) {
+  const res = await fetch(`/creator/accent/${creatorTag}`);
+  const json = await res.json();
+  return json;
 }
 
 export {
-    getCreatorPosts,
-    getOwnProducts,
-    getMadeProducts,
-    getCreators,
-    getCreator,
-    getProduct,
-    getCreatorShippingCountries,
-    getCreatorAccentColor
+  getCreatorPosts,
+  getOwnProducts,
+  getMadeProducts,
+  getCreators,
+  getCreator,
+  getProduct,
+  getCreatorShippingCountries,
+  getCreatorAccentColor,
 };

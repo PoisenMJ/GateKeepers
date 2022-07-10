@@ -3,11 +3,10 @@ import { Button, Form, InputGroup } from 'react-bootstrap';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
 import { addProduct } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext';
-import DateTime from 'react-datetime';
+import DateTime from 'react-datetime-picker';
 import { useNavigate } from 'react-router';
 import Compressor from 'compressorjs';
 import heic2any from 'heic2any';
-import 'react-datetime/css/react-datetime.css';
 import './Upload.css';
 
 const Upload = () => {

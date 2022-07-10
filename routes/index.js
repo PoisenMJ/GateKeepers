@@ -1,9 +1,10 @@
-var express = require('express');
-var path = require('path');
-var router = express.Router();
+const express = require('express');
+const path = require('path');
+
+const router = express.Router();
 
 // server react build files
-router.get('*', function(req, res, next) {
+router.get('*', (req, res) => {
   console.log(path.join(__dirname, '../client/build/index.html'));
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
