@@ -17,9 +17,12 @@
     },
     "ignorePatterns": [
         "./node_modules/",
-        "./node_modules/big.js"
+        "./node_modules/big.js",
+        "*.spec.js",
+        "*.spec.jsx"
     ],
     "plugins": [
         "react"
-    ]
+    ],
+    "root": true
 }

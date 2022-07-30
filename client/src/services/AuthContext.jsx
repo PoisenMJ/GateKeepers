@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { LogOut } from './auth';
 import { DEVELOPMENT } from '../config';
@@ -31,14 +31,14 @@ function AuthProvider({ children }) {
   }, [token, username, loggedIn]);
 
   return (
-    <AuthContext.Provider value={{
+    <AuthContext.Provider value={useMemo(() => ({
       loggedIn,
       token,
       username,
       setLoggedIn,
       setToken,
       setUsername,
-    }}
+    }), [])}
     >
       {children}
     </AuthContext.Provider>

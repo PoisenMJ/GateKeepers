@@ -51,3 +51,7 @@
         margin: auto;
     }
 }
+
+.custom-date-picker {
+    border-radius: .2rem;
+}

@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import DateTime from 'react-datetime-picker';
 import Compressor from 'compressorjs';
 import heic2any from 'heic2any';
+// eslint-disable-next-line import/no-relative-packages
+import DateTime from "../../../components/react-datetime-picker";
 import { getProduct, updateProduct } from '../../../controllers/gatekeepers';
 import { AuthContext } from '../../../services/AuthContext';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';

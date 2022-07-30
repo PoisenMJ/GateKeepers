@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 /* eslint-disable no-unused-vars */
 const CartContext = React.createContext({
@@ -65,7 +65,7 @@ function CartProvider({ children }) {
   };
 
   return (
-    <CartContext.Provider value={{
+    <CartContext.Provider value={useMemo(() => ({
       products,
       total,
       shippingAddress,
@@ -74,7 +74,7 @@ function CartProvider({ children }) {
       addToCart: add,
       removeFromCart: remove,
       clearCart: clear,
-    }}
+    }), [])}
     >
       {children}
     </CartContext.Provider>

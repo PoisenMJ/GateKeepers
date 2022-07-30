@@ -1,3 +1,4 @@
+/* Oswald */
 @font-face {
   font-family  :  'oswald';
   src          :  url('../../public/fonts/Oswald/Oswald-ExtraLight.ttf') format('truetype');
@@ -24,6 +25,45 @@
   font-weight  :   700;
 }
 
+/* Rubik */
+@font-face {
+  font-family   :   'rubik';
+  src           :   url('../../public/fonts/Rubik_Mono_One/RubikMonoOne-Regular.ttf') format('truetype');
+  font-weight   :   400
+}
+
+/* Pridi */
+@font-face {
+  font-family   :   'pridi';
+  src           :   url('../../public/fonts/Pridi/Pridi-ExtraLight.ttf') format('truetype');
+  font-weight   :   200;
+}
+@font-face {
+  font-family   :   'pridi';
+  src           :   url('../../public/fonts/Pridi/Pridi-Light.ttf') format('truetype');
+  font-weight   :   300;
+}
+@font-face {
+  font-family   :   'pridi';
+  src           :   url('../../public/fonts/Pridi/Pridi-Regular.ttf') format('truetype');
+  font-weight   :   400;
+}
+@font-face {
+  font-family   :   'pridi';
+  src           :   url('../../public/fonts/Pridi/Pridi-Medium.ttf') format('truetype');
+  font-weight   :   500;
+}
+@font-face {
+  font-family   :   'pridi';
+  src           :   url('../../public/fonts/Pridi/Pridi-SemiBold.ttf') format('truetype');
+  font-weight   :   600;
+}
+@font-face {
+  font-family   :   'pridi';
+  src           :   url('../../public/fonts/Pridi/Pridi-Bold.ttf') format('truetype');
+  font-weight   :   700;
+}
+
 body {
   margin: 0;
   font-family: 'oswald', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -31,6 +71,41 @@ body {
     sans-serif!important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+p, span {
+  font-family: 'pridi';
+}
+
+.font-1{
+  font-family: 'oswald';
+}
+.font-2{
+  font-family: 'rubik';
+}
+.font-3{
+  font-family: 'pridi';
+}
+
+/* Firefox css styling */
+:root{
+  scrollbar-color: rgb(5, 5, 5) rgba(0, 0, 0, 0.5) !important;
+  scrollbar-width: thin;
+  scroll-behavior: smooth!important;
+}
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgb(50, 50, 50);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(9, 9, 9);
+  border-radius: 20px;
+  margin: 4px 4px;
 }
 
 #header {
@@ -74,7 +149,14 @@ body {
 }
 .icon-8 {
   margin-left: 8px;
-  margin-bottom: 3px;
+  margin-bottom: 8px;
+}
+
+.border-none{
+  border: none!important;
+}
+.border-none:hover{
+  border: none!important;
 }
 
 #creator-navbar {

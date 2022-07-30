@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 
 import { Routes, Route } from 'react-router-dom';
@@ -8,7 +9,7 @@ import CreateAccount from './pages/CreateAccount/CreateAccount';
 import Login from './pages/Login/Login';
 import Profile from './pages/Profile/Profile';
 
-import PageLayout from './components/PageLayout/PageLayout';
+// import PageLayout from './components/PageLayout/PageLayout';
 
 import ProtectedRoute from './routes/ProtectedRoute';
 import CreatorRoute from './routes/CreatorRoute';
@@ -41,25 +42,28 @@ import CustomsChat from './pages/Customs/CustomsChat/CustomsChat';
 import CreatorCustoms from './pages/CreatorPortal/Customs/CreatorCustoms';
 import CreatorHeader from './components/Creator/CreatorHeader/CreatorHeader';
 import UserHeader from './components/User/UserHeader/UserHeader';
+// import useAuthCheck from './hooks/useAuthCheck';
 
 function App() {
+  // const authenticated = useAuthCheck();
+
   return (
     <AuthProvider>
       <CartProvider>
         <Routes>
           <Route path="/">
-            {/* index route (home) (transparent nav)  */}
-            <Route
-              index
-              element={(
-                <PageLayout
-                  header={<UserHeader transparent />}
-                  body={<Home />}
-                />
-              )}
-            />
+            <Route index element={<Home/>} />
+            <Route exact path="home" element={<Home/>} />
+            <Route exact path="about" element={<About/>} />
+            <Route exact path="login" element={<Login/>} />
+          </Route>
+
+          {/* <Route path="/:creator">
+            <Route index element={<Shop/>}/>
+            <Route exact path="/shop" element={<Shop/>}/>
+          </Route> */}
             {/* basic routes (non-transparent nav) */}
-            <Route element={<PageLayout header={<UserHeader />} />}>
+            {/* <Route element={<PageLayout header={<UserHeader />} />}>
               <Route path="about" element={<About />} />
               <Route path="shopping-basket" element={<ShoppingBasket />} />
             </Route>
@@ -83,7 +87,7 @@ function App() {
                 element={<PasswordChange />}
               />
             </Route>
-            {/* products routes */}
+
             <Route
               path=":creator"
               element={<PageLayout header={<UserHeader productNav />} />}
@@ -147,7 +151,7 @@ function App() {
             <Route path="customs" element={<CreatorCustoms />} />
           </Route>
           <Route path="insta_fe/redirect" element={<Instagram />} />
-          {/* TODO:: WILDCARD ROUTE */}
+          */}
         </Routes>
       </CartProvider>
     </AuthProvider>
