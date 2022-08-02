@@ -45,7 +45,16 @@ router.post('/login', async (req, res) => {
   if (result) {
     Key.updateOne({ user: user.username }, { $set: { key: b64SigningKey } }, (err) => {
       if (err) return res.status(400).json(err);
-      return res.json({ success: true, token });
+      return res.json({
+        success: true,
+        token,
+        user: {
+          username: user.username,
+          email: user.email,
+          image: user.image,
+          customerID: user.customerID,
+        },
+      });
     });
   } else {
     const newKey = new Key({
@@ -54,7 +63,16 @@ router.post('/login', async (req, res) => {
     });
     newKey.save((err) => {
       if (err) return res.status(400).json(err);
-      return res.json({ success: true, token });
+      return res.json({
+        success: true,
+        token,
+        user: {
+          username: user.username,
+          email: user.email,
+          image: user.image,
+          customerID: user.customerID,
+        },
+      });
     });
   }
 });

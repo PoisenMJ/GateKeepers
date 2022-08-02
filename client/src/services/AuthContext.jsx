@@ -1,43 +1,48 @@
-import React, { useState, useEffect, useContext, useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router';
-import { LogOut } from './auth';
-import { DEVELOPMENT } from '../config';
+import React, { useState, useMemo } from 'react';
+
+const tokenName = 'gatek33pers_token';
+const sessionName = 'gatek33pers_session';
 
 /* eslint-disable no-unused-vars */
 const AuthContext = React.createContext({
   token: null,
-  setToken: (data) => { },
-  username: null,
-  setUsername: (data) => { },
-  loggedIn: null,
-  setLoggedIn: (_data) => { },
+  session: null,
+  onSignIn: (_data) => {},
+  onSignOut: () => {}
 });
-/* eslint-enable no-unused-vars */
 
 // eslint-disable-next-line react/prop-types
 function AuthProvider({ children }) {
-  const localLoggedIn = JSON.parse(localStorage.getItem('auth')) || false;
-  const localToken = localStorage.getItem('token') || null;
-  const localUsername = localStorage.getItem('username') || '';
+  const localToken = localStorage.getItem(tokenName);
+  const localSession = JSON.parse(localStorage.getItem(sessionName));
 
   const [token, setToken] = useState(localToken);
-  const [username, setUsername] = useState(localUsername);
-  const [loggedIn, setLoggedIn] = useState(localLoggedIn);
+  const [session, setSession] = useState(localSession);
 
-  useEffect(() => {
-    localStorage.setItem('auth', loggedIn);
-    localStorage.setItem('token', token);
-    localStorage.setItem('username', username);
-  }, [token, username, loggedIn]);
+  function onSignIn(_data) {
+    if(_data.user && _data.token) {
+      /*
+      * Store token and session (in stringified json format)
+      * in local storage to maintain state between refreshes etc.
+      */      
+      localStorage.setItem(tokenName, _data.token);
+      localStorage.setItem(sessionName, JSON.stringify(_data.user))
+      setToken(_data.token);
+      setSession(JSON.stringify(_data.user));
+      return true;
+    } return false;
+  }
+
+  function onSignOut() {
+
+  }
 
   return (
     <AuthContext.Provider value={useMemo(() => ({
-      loggedIn,
       token,
-      username,
-      setLoggedIn,
-      setToken,
-      setUsername,
+      session,
+      onSignIn,
+      onSignOut
     }), [])}
     >
       {children}
@@ -45,52 +50,4 @@ function AuthProvider({ children }) {
   );
 }
 
-const parseJwt = (token) => {
-  try {
-    return JSON.parse(atob(token.split('.')[1]));
-  } catch (err) {
-    return null;
-  }
-};
-
-function AuthVerify() {
-  const navigate = useNavigate();
-  const {
-    username, token, loggedIn,
-    setUsername, setToken, setLoggedIn,
-  } = useContext(AuthContext);
-  const location = useLocation();
-
-  useEffect(() => {
-    if (username && token && loggedIn) {
-      const decodedJwt = parseJwt(token);
-      if (decodedJwt.exp * 1000 < Date.now()) {
-        setUsername(null);
-        setToken(null);
-        setLoggedIn(false);
-        LogOut();
-      } else {
-        const creator = localStorage.getItem('creator') === true;
-
-        if (!DEVELOPMENT) {
-          const subdoamins = location.hostname.split('.');
-          if (subdoamins[0] !== 'creators' && creator) navigate('/creators/login');
-          else if (subdoamins[0] === 'creators' && !creator) navigate('/');
-        }
-        // console.log('VALID');
-      }
-    } else {
-      setUsername(null);
-      setToken(null);
-      setLoggedIn(false);
-      localStorage.removeItem('token');
-      localStorage.removeItem('username');
-      localStorage.removeItem('auth');
-      localStorage.removeItem('creator');
-    }
-  }, [location]);
-
-  return <div />;
-}
-
-export { AuthProvider, AuthContext, AuthVerify };
+export { AuthProvider, AuthContext };

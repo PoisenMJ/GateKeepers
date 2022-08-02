@@ -12,7 +12,7 @@ import Profile from './pages/Profile/Profile';
 // import PageLayout from './components/PageLayout/PageLayout';
 
 import ProtectedRoute from './routes/ProtectedRoute';
-import CreatorRoute from './routes/CreatorRoute';
+import CreatorRoute from './components/Routing/CreatorRoute';
 import NonCreatorRoute from './routes/NonCreatorRoute';
 import Upload from './pages/CreatorPortal/Upload/Upload';
 import CreatorProducts from './pages/CreatorPortal/Products/Products';
@@ -42,6 +42,7 @@ import CustomsChat from './pages/Customs/CustomsChat/CustomsChat';
 import CreatorCustoms from './pages/CreatorPortal/Customs/CreatorCustoms';
 import CreatorHeader from './components/Creator/CreatorHeader/CreatorHeader';
 import UserHeader from './components/User/UserHeader/UserHeader';
+import Shop from './pages/Shop';
 // import useAuthCheck from './hooks/useAuthCheck';
 
 function App() {
@@ -58,10 +59,17 @@ function App() {
             <Route exact path="login" element={<Login/>} />
           </Route>
 
-          {/* <Route path="/:creator">
+          <Route path="/:gatekeeper">
             <Route index element={<Shop/>}/>
-            <Route exact path="/shop" element={<Shop/>}/>
-          </Route> */}
+            <Route exact path="shop" element={<Shop/>}/>
+          </Route>
+
+          <Route exact path="/creators/login" element={<CreatorLoginPage/>} />
+          <Route path="/creators">
+            <Route exact path="upload" element={<Upload/> } />
+          </Route>
+          {/* <CreatorRoute path="/creators">
+          </CreatorRoute> */}
             {/* basic routes (non-transparent nav) */}
             {/* <Route element={<PageLayout header={<UserHeader />} />}>
               <Route path="about" element={<About />} />

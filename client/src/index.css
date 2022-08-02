@@ -25,42 +25,119 @@
   font-weight  :   700;
 }
 
-/* Rubik */
+/* Alegreya Sans SC */
 @font-face {
-  font-family   :   'rubik';
-  src           :   url('../../public/fonts/Rubik_Mono_One/RubikMonoOne-Regular.ttf') format('truetype');
-  font-weight   :   400
-}
-
-/* Pridi */
-@font-face {
-  font-family   :   'pridi';
-  src           :   url('../../public/fonts/Pridi/Pridi-ExtraLight.ttf') format('truetype');
-  font-weight   :   200;
+  font-family   :   'alegreya sans';
+  src           :   url('../../public/fonts/Alegreya_Sans_SC/AlegreyaSansSC-Thin.ttf') format('truetype');
+  font-weight   :   100
 }
 @font-face {
-  font-family   :   'pridi';
-  src           :   url('../../public/fonts/Pridi/Pridi-Light.ttf') format('truetype');
+  font-family   :   'alegreya sans';
+  src           :   url('../../public/fonts/Alegreya_Sans_SC/AlegreyaSansSC-ThinItalic.ttf') format('truetype');
+  font-weight   :   100;
+  font-style    :   italic;
+}
+@font-face {
+  font-family   :   'alegreya sans';
+  src           :   url('../../public/fonts/Alegreya_Sans_SC/AlegreyaSansSC-Light.ttf') format('truetype');
+  font-weight   :   300
+}
+@font-face {
+  font-family   :   'alegreya sans';
+  src           :   url('../../public/fonts/Alegreya_Sans_SC/AlegreyaSansSC-LightItalic.ttf') format('truetype');
   font-weight   :   300;
+  font-style    :   italic;
 }
 @font-face {
-  font-family   :   'pridi';
-  src           :   url('../../public/fonts/Pridi/Pridi-Regular.ttf') format('truetype');
+  font-family   :   'alegreya sans';
+  src           :   url('../../public/fonts/Alegreya_Sans_SC/AlegreyaSansSC-Regular.ttf') format('truetype');
   font-weight   :   400;
 }
 @font-face {
-  font-family   :   'pridi';
-  src           :   url('../../public/fonts/Pridi/Pridi-Medium.ttf') format('truetype');
+  font-family   :   'alegreya sans';
+  src           :   url('../../public/fonts/Alegreya_Sans_SC/AlegreyaSansSC-Italic.ttf') format('truetype');
+  font-weight   :   400;
+  font-style    :   italic
+}
+@font-face {
+  font-family   :   'alegreya sans';
+  src           :   url('../../public/fonts/Alegreya_Sans_SC/AlegreyaSansSC-Medium.ttf') format('truetype');
   font-weight   :   500;
 }
 @font-face {
-  font-family   :   'pridi';
-  src           :   url('../../public/fonts/Pridi/Pridi-SemiBold.ttf') format('truetype');
+  font-family   :   'alegreya sans';
+  src           :   url('../../public/fonts/Alegreya_Sans_SC/AlegreyaSansSC-MediumItalic.ttf') format('truetype');
+  font-weight   :   500;
+  font-style    :   italic;
+}
+@font-face {
+  font-family   :   'alegreya sans';
+  src           :   url('../../public/fonts/Alegreya_Sans_SC/AlegreyaSansSC-Bold.ttf') format('truetype');
+  font-weight   :   700;
+}
+@font-face {
+  font-family   :   'alegreya sans';
+  src           :   url('../../public/fonts/Alegreya_Sans_SC/AlegreyaSansSC-BoldItalic.ttf') format('truetype');
+  font-weight   :   700;
+  font-style    :   italic;
+}
+@font-face {
+  font-family   :   'alegreya sans';
+  src           :   url('../../public/fonts/Alegreya_Sans_SC/AlegreyaSansSC-ExtraBold.ttf') format('truetype');
+  font-weight   :   800;
+}
+@font-face {
+  font-family   :   'alegreya sans';
+  src           :   url('../../public/fonts/Alegreya_Sans_SC/AlegreyaSansSC-ExtraBoldItalic.ttf') format('truetype');
+  font-weight   :   800;
+  font-style    :   italic;
+}
+@font-face {
+  font-family   :   'alegreya sans';
+  src           :   url('../../public/fonts/Alegreya_Sans_SC/AlegreyaSansSC-Black.ttf') format('truetype');
+  font-weight   :   900;
+}
+@font-face {
+  font-family   :   'alegreya sans';
+  src           :   url('../../public/fonts/Alegreya_Sans_SC/AlegreyaSansSC-BlackItalic.ttf') format('truetype');
+  font-weight   :   900;
+  font-style    :   italic;
+}
+
+/* Palanquin */
+@font-face {
+  font-family   :   'palanquin';
+  src           :   url('../../public/fonts/Palanquin/Palanquin-Thin.ttf') format('truetype');
+  font-weight   :   100;
+}
+@font-face {
+  font-family   :   'palanquin';
+  src           :   url('../../public/fonts/Palanquin/Palanquin-ExtraLight.ttf') format('truetype');
+  font-weight   :   200;
+}
+@font-face {
+  font-family   :   'palanquin';
+  src           :   url('../../public/fonts/Palanquin/Palanquin-Light.ttf') format('truetype');
+  font-weight   :   300;
+}
+@font-face {
+  font-family   :   'palanquin';
+  src           :   url('../../public/fonts/Palanquin/Palanquin-Regular.ttf') format('truetype');
+  font-weight   :   400;
+}
+@font-face {
+  font-family   :   'palanquin';
+  src           :   url('../../public/fonts/Palanquin/Palanquin-Medium.ttf') format('truetype');
+  font-weight   :   500;
+}
+@font-face {
+  font-family   :   'palanquin';
+  src           :   url('../../public/fonts/Palanquin/Palanquin-SemiBold.ttf') format('truetype');
   font-weight   :   600;
 }
 @font-face {
-  font-family   :   'pridi';
-  src           :   url('../../public/fonts/Pridi/Pridi-Bold.ttf') format('truetype');
+  font-family   :   'palanquin';
+  src           :   url('../../public/fonts/Palanquin/Palanquin-Bold.ttf') format('truetype');
   font-weight   :   700;
 }
 
@@ -74,17 +151,17 @@ body {
   overflow-x: hidden;
 }
 p, span {
-  font-family: 'pridi';
+  font-family: 'palanquin';
 }
 
 .font-1{
   font-family: 'oswald';
 }
 .font-2{
-  font-family: 'rubik';
+  font-family: 'alegreya sans';
 }
 .font-3{
-  font-family: 'pridi';
+  font-family: 'palanquin';
 }
 
 /* Firefox css styling */

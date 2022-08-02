@@ -1,0 +1,13 @@
+{
+    "user": {
+        "test_user": {
+            "password": "password",
+            "firstName": "test_user",
+            "lastName": "last_name",
+            "email": "maksjl01@gmail.com",
+            "image": "default.jpg",
+            "accountType": "user",
+            "accountActivated": true
+        }
+    }
+}

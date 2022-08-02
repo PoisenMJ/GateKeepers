@@ -4,7 +4,7 @@ import Compressor from 'compressorjs';
 import heic2any from 'heic2any';
 // eslint-disable-next-line import/no-relative-packages
 import DateTime from "../../../components/react-datetime-picker";
-import { getProduct, updateProduct } from '../../../controllers/gatekeepers';
+import { getProduct, updateProduct } from '../../../controllers/creators';
 import { AuthContext } from '../../../services/AuthContext';
 import { Flash } from '../../../components/FlashMessage/FlashMessage';
 import './EditProduct.css';

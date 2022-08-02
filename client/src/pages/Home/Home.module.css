@@ -1,0 +1,44 @@
+.downArrow {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.upArrow {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.gatekeeperSocial {
+    text-decoration: none;
+    color: black;
+}
+
+.gatekeeperSocial:hover {
+    color: rgb(80, 80, 80);
+}
+
+.home-slide {
+    height: 100vh;
+    position: absolute;
+    width: 100%;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.even-slide {
+    flex-direction: row;
+    top: 50vh;
+}
+.odd-slide {
+    flex-direction: row-reverse;
+    top: 50vh;
+}

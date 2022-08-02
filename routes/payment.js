@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const Stripe = require('../services/stripe');
-const CreatorProduct = require('../models/creatorProduct');
+const Product = require('../models/product');
 const Order = require('../models/order');
 const User = require('../models/user');
 const {
@@ -45,7 +45,7 @@ router.post('/check-products', async (req, res) => {
   try {
     const promises = [];
     for (let i = 0; i < urisAndNames.length; i += 1) {
-      promises.push(CreatorProduct.findOne({
+      promises.push(Product.findOne({
         uri: urisAndNames[i].uri,
         count: { $gte: 1 },
       }));
@@ -92,7 +92,7 @@ router.post('/save-order', async (req, res) => {
         }
 
         // update product count
-        await CreatorProduct.updateMany(
+        await Product.updateMany(
           { uri: { $in: req.body.items.map((i) => i.uri) } },
           { $inc: { count: -1 } },
         );

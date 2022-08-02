@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router';
 import { Navigate } from 'react-router-dom';
-import { Spinner } from 'react-bootstrap';
+import Loading from '../components/Loading';
 
 import { checkCreatorToken } from '../services/auth';
 
@@ -21,18 +21,8 @@ function CreatorRoute() {
     });
   }, []);
 
-  if (!isTokenValidated) {
-    return (
-      <div className="loading">
-        <Spinner animation="border" role="status" size="sm">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      </div>
-    );
-  }
-  return (
-    (isCreator) ? <Outlet /> : <Navigate to="/creators/login" />
-  );
+  if (!isTokenValidated) return ( <Loading/> );
+  return (isCreator) ? <Outlet /> : <Navigate to="/creators/login" />
 }
 
 export default CreatorRoute;

@@ -1,0 +1,28 @@
+{
+    "creator": {
+        "maksie_aki": {
+            "name": "Maksie",
+            "user": "",
+            "email": "maksie.aki@gmail.com",
+            "tag": "maksie_aki",
+            "links": {
+                "instagram": "https://www.instagram.com/maksie_aki",
+                "tiktok": "https://www.tiktok.com/@maksie_aki",
+                "twitter": "",
+                "twitch": "https://www.twitch.tv/maksie_aki"
+            },
+            "image": "maksie_aki.gif"
+        }
+    },
+    "user": {
+        "maksie_aki": {
+            "password": "maksiemaksie123",
+            "firstName": "maksie",
+            "lastName": "aki",
+            "email": "maksie.aki@gmail.com",
+            "image": "maksie_aki.jpg",
+            "accountType": "creator",
+            "accountActivated": true
+        }
+    }
+}

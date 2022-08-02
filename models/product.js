@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const creatorProductSchema = mongoose.Schema({
+const ProductSchema = mongoose.Schema({
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'creator',
@@ -29,10 +29,6 @@ const creatorProductSchema = mongoose.Schema({
     type: [Number],
     required: true,
   },
-  type: {
-    type: String,
-    required: true,
-  },
   uri: {
     type: String,
     required: true,
@@ -40,10 +36,6 @@ const creatorProductSchema = mongoose.Schema({
   sizes: {
     type: [String],
     default: [],
-  },
-  customSize: {
-    type: Boolean,
-    default: false,
   },
   color: {
     type: String,
@@ -54,6 +46,6 @@ const creatorProductSchema = mongoose.Schema({
   },
 });
 
-const creatorProduct = mongoose.model('creatorProduct', creatorProductSchema);
+const Product = mongoose.model('creatorProduct', ProductSchema);
 
-module.exports = creatorProduct;
+module.exports = Product;
