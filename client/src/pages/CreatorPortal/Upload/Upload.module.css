@@ -1,0 +1,31 @@
+.imageOrderParent{
+    display: grid;
+    grid-template-columns: 55px;
+    grid-template-rows: 55px;
+    grid-template-areas: "content";
+}
+.imageOrderInput{
+    grid-area: content;
+    background-color: rgba(200,200,200,0.5);
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    border-radius: 0;
+}
+.imageOrderImage{ 
+    grid-area: content;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+.datePicker{
+    border-radius: 0.5rem;
+}
+.description{
+    transition: .15s;
+}
+.description:focus, .description:active{
+    outline-width: 2px!important;
+    outline-color: black!important;
+    outline-style: solid!important;
+}

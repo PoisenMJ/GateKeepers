@@ -172,7 +172,6 @@ router.post(
         type: req.body.type,
         dateToPost: req.body.dateToPost,
         sizes: req.body.sizes,
-        customSize: req.body.customSizeAccept,
         imageOrder: req.body.imageOrder.split(','),
       });
       newProduct.save((err) => {
@@ -254,7 +253,6 @@ router.post(
             type: req.body.type,
             sizes,
             dateToPost: req.body.dateToPost,
-            customSize: req.body.customSize,
             imageOrder: req.body.imageOrder.split(','),
           },
         },

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Flash } from '../components/FlashMessage/FlashMessage';
 
 const tokenName = 'gatek33pers_token';
 const sessionName = 'gatek33pers_session';
@@ -34,7 +35,11 @@ function AuthProvider({ children }) {
   }
 
   function onSignOut() {
-
+    localStorage.removeItem(tokenName);
+    localStorage.removeItem(sessionName);
+    setToken(null);
+    setSession(null);
+    Flash("Signed Out.", "info");
   }
 
   return (
@@ -43,7 +48,7 @@ function AuthProvider({ children }) {
       session,
       onSignIn,
       onSignOut
-    }), [])}
+    }), [session, token])}
     >
       {children}
     </AuthContext.Provider>

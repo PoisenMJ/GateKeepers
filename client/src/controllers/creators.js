@@ -11,13 +11,14 @@ async function login(username, password) {
   return json;
 }
 
-async function addOutfit(username, token, name, items, image) {
+async function addOutfit(username, token, name, items, image, date) {
   const formData = new FormData();
   formData.append('username', username);
   formData.append('token', token);
   formData.append('name', name);
   formData.append('items', JSON.stringify(items));
   formData.append('outfitImg', image);
+  formData.append('dateToPost', date);
   console.log(...formData);
 
   const res = await fetch('/creator/outfit/create', {
@@ -48,12 +49,11 @@ async function getOutfits(username) {
   return json;
 }
 
-async function addProduct(formData, username, token, order, images, customSize, sizes) {
+async function addProduct(formData, username, token, order, images, sizes) {
   const data = new FormData(formData);
   data.append('username', username);
   data.append('token', token);
   data.append('imageOrder', order);
-  data.append('customSizeAccept', customSize);
   data.append('sizes', sizes);
 
   for (let i = 0; i < images.length; i += 1) {

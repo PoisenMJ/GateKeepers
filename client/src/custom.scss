@@ -1,0 +1,44 @@
+$primary: #2D2E2E;
+$secondary: #716969;
+$success: #ACF39D;
+$info: #BCABAE;
+$warning: #A4161A;
+$danger: #A4161A;
+$light: #FBFBFB;
+$dark: #0F0F0F;
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "info": $info,
+  "warning": $warning,
+  "danger": $danger,
+  "light": $light,
+  "dark": $dark
+);
+
+.carousel-inner {
+  height: 100%;
+}
+
+.form-control:focus{
+  outline-width: 2px!important;
+  outline-color: black;
+  outline-style: solid!important;
+  border-color: rgba(0,0,0,0.5)!important;
+  box-shadow: 0px 0px 8px 2px #000000!important;
+  -webkit-box-shadow: 0px 0px 8px 2px #000000!important;
+  -moz-box-shadow: 0px 0px 8px 2px #000000!important;
+}
+.form-control.no-outline:focus{
+  outline: none!important;
+}
+
+.is-invalid{
+  border: none!important;
+  outline: 3px solid red!important;
+}
+
+/* import bootstrap to set changes */
+@import "~bootstrap/scss/bootstrap";

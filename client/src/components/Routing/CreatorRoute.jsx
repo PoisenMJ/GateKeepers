@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet, Route } from 'react-router';
 import PropTypes from 'prop-types';
-import { checkCreatorToken } from '../../services/auth';
 import Loading from '../Loading';
+import { checkCreatorToken } from '../../services/auth';
 
 function CreatorRoute({ component: Component, path, ...rest }) {
   const [isCreator, setIsCreator] = useState(false);

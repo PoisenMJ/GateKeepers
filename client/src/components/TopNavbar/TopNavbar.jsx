@@ -1,47 +1,55 @@
-import React, {  useId } from "react";
-import { Container, Dropdown, Nav, Navbar } from "react-bootstrap";
+import React, { useContext, useState , useLayoutEffect } from "react";
+import { Button, Container, Dropdown, Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import PropTypes from "prop-types";
+import { FaSignOutAlt } from "react-icons/fa";
 import { Home, Shop } from "./Links";
 import styles from "./TopNavbar.module.css";
-// import { AuthContext } from "../../services/AuthContext";
 // import { useNavigate } from "react-router";
-// import { AuthContext } from "../../services/AuthContext";
+import { AuthContext } from "../../services/AuthContext";
 
 function TopNavbar({ type }) {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
-  // const { loggedIn } = useContext(AuthContext);
-  const links = type === 'Home' ? Home.unauthenticated : Shop.unauthenticated;
-
-  const topNavbarContentId = useId();
+  const { session, onSignOut } = useContext(AuthContext);
+  const [links, setLinks] = useState([]);
+  
+  // layout effect triggers before DOM is painted
+  // stops flash when changing between navbar content
+  useLayoutEffect(() => {
+    if(type === 'Home') setLinks(Home);
+    else if(type === 'Shop') setLinks(Shop);
+  }, [session]);
 
   const getActive = (path) => {
     if (path.replace('/', '') === location.pathname.replace('/', '')) return "";
     return styles.inactive;
   };
 
+  const signOut = () => {
+    onSignOut();
+    navigate("/");
+  }
+
   return (
     <Navbar bg="primary" variant="dark" expand="md" className="h-100 w-100" style={{ zIndex: 1 }}>
       <Container>
-        <Navbar.Toggle aria-controls={topNavbarContentId} />
-        <Navbar.Collapse id={topNavbarContentId}>
+        <Navbar.Toggle/>
+        <Navbar.Collapse>
           <Nav className="mx-auto">
             {links.map((link) => {
-              const dropDownId = useId();
               if (!Array.isArray(link))
                 return (
-                  <NavLink
-                    key={link.text}
-                    className={`text-light fw-bold px-5 ${getActive(
-                      link.link
-                    )} ${styles.link}`}
-                    to={`${link.link}`}
-
-                  >
-                    {link.text}
-                  </NavLink>
+                    <NavLink
+                      key={link.text}
+                      className={`text-light px-5 ${getActive(
+                        link.link
+                      )} ${styles.link}`}
+                      to={`${link.link}`}
+                    >
+                      {link.text}
+                    </NavLink>
                 );
               return (
                 <Dropdown key={link.text}>
@@ -50,20 +58,24 @@ function TopNavbar({ type }) {
                       "/gatekeeper"
                     )}  ${styles.link}`}
                     variant="transparent"
-                    id={dropDownId}
                   >
                     {link[0]}
                   </Dropdown.Toggle>
                   <Dropdown.Menu className={["w-100 text-center bg-primary", styles.dropdownMenu]}>
                     {link.slice(1).map((sublink) => (
-                      <Dropdown.Item className={styles.dropdownItemDiv} key={sublink.text}>
-                        <NavLink className={styles.dropdownItem} to={sublink.link}>{sublink.text}</NavLink>
-                      </Dropdown.Item>
+                          <NavLink to={sublink.link} className={styles.dropdownItem}>{sublink.text}</NavLink>
+                      // <Dropdown.Item className={styles.dropdownItemDiv} key={sublink.text}>
+                      // </Dropdown.Item>
                     ))}
                   </Dropdown.Menu>
                 </Dropdown>
               );
             })}
+            {session &&
+              <Button variant="transparent" className={['text-light fw-bold px-5', styles.signOutButton]} onClick={signOut}>
+                <FaSignOutAlt size={30} className={styles.signOutIcon}/>
+              </Button>
+            }
           </Nav>
         </Navbar.Collapse>
       </Container>
@@ -76,4 +88,4 @@ TopNavbar.propTypes = {
   type: PropTypes.string.isRequired,
 };
 
-export default TopNavbar;
+export default React.memo(TopNavbar);

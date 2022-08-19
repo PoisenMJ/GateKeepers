@@ -1,6 +1,6 @@
 .link {
   font-family: 'oswald';
-  font-weight: 400!important;
+  font-weight: 600!important;
   text-decoration: none;
   font-size: 2rem;
 }
@@ -26,10 +26,28 @@
   color: rgb(240,240,240);
   text-decoration: none;
   transition: .2s;
+  width: 100%;
+  display: block;
+  padding: 4px 0 6px 0;
 }
-.dropdownItemDiv{
+.dropdownItem:hover{
+  color: rgb(40,40,40)!important;
+  background-color: rgb(230,230,230);
+}
+
+.signOutIcon{
+  position: relative;
+  top: 2px;
+  color: rgb(210,210,210);
   transition: .2s;
 }
-.dropdownItemDiv:hover .dropdownItem{
-  color: rgb(40,40,40)!important;
+.signOutButton:hover .signOutIcon{
+  color: rgb(245,245,245);
+}
+.signOutButton:hover{
+  outline: none!important;
+  border: none!important;
+}
+.signOutButton{
+  border:none!important;
 }

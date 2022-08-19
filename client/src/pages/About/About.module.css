@@ -1,0 +1,13 @@
+.item{
+    border-radius: 0!important;
+}
+.header, .header > *{
+    background-color: white!important;
+    color: black!important;
+    border-radius: 0!important;
+    box-shadow: none!important;
+}
+.body{
+    background-color: black;
+    color: white;
+}

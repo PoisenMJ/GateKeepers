@@ -2,17 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router';
 import { Navigate } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
-import { checkCreatorToken } from '../services/auth';
+import { checkToken } from '../../services/auth';
 
-function NonCreatorRoute() {
-  const [isCreator, setIsCreator] = useState(false);
+function ProtectedRoute() {
+  const [auth, setAuth] = useState(false);
+  // const [isCreator, setCreator] = useState(false);
   const [isTokenValidated, setIsTokenValidated] = useState(false);
 
   useEffect(() => {
-    checkCreatorToken().then((result) => {
+    checkToken().then((result) => {
       if (result) {
-        setIsCreator(true);
+        setAuth(true);
       }
+      // if (result.message) setCreator(true);
     }).then(() => {
       setIsTokenValidated(true);
     });
@@ -27,9 +29,10 @@ function NonCreatorRoute() {
       </div>
     );
   }
+
   return (
-    (!isCreator) ? <Outlet /> : <Navigate to="/creators" />
+    (auth) ? <Outlet /> : <Navigate to="/login" />
   );
 }
 
-export default NonCreatorRoute;
+export default ProtectedRoute;

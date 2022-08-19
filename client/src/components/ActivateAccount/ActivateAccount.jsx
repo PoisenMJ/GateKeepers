@@ -14,6 +14,7 @@ function ActivateAccount({
   handleClose
 }) {
   const [code, setCode] = useState('');
+  const [error, setError] = useState(null);
 
   const handleCodeChange = (event) => {
     setCode(event.target.value.toUpperCase());
@@ -24,9 +25,11 @@ function ActivateAccount({
     const res = await submitActivationToken(code, username);
     if (res.success) {
       activationSuccess();
-    } else if (res.message) Flash(res.message);
+    } else if (res.message) setError(res.message);
       else Flash("Error", "danger");
   };
+
+  const inputClass = error ? "is-invalid" : "";
 
   return (
     <Modal
@@ -36,11 +39,14 @@ function ActivateAccount({
     keyboard={false}
   >
       <Modal.Header closeButton>
-        <Modal.Title>ActivationCode</Modal.Title>
+        <Modal.Title>Activation Code</Modal.Title>
       </Modal.Header>
       <Modal.Body className={styles.mainBody}>
         <Form className='text-center' onSubmit={checkActivationToken}>
-          <FormControl autoFocus type="text" placeholder='ACTIVATION CODE' className='black-custom-input mb-2' onChange={handleCodeChange} value={code}/>
+          <FormControl autoFocus type="text" placeholder='ACTIVATION CODE' className={inputClass} onChange={handleCodeChange} value={code}/>
+          {error &&
+            <div className="invalid-feedback my-0 text-left mb-2">{error}</div>
+          }
           <Button type="submit" variant="dark" className='w-100'>Submit</Button> 
         </Form>
       </Modal.Body>

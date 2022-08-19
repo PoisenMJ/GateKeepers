@@ -11,9 +11,9 @@ import Profile from './pages/Profile/Profile';
 
 // import PageLayout from './components/PageLayout/PageLayout';
 
-import ProtectedRoute from './routes/ProtectedRoute';
+import ProtectedRoute from './components/routes/ProtectedRoute';
 import CreatorRoute from './components/Routing/CreatorRoute';
-import NonCreatorRoute from './routes/NonCreatorRoute';
+import NonCreatorRoute from './components/routes/NonCreatorRoute';
 import Upload from './pages/CreatorPortal/Upload/Upload';
 import CreatorProducts from './pages/CreatorPortal/Products/Products';
 import CreatorProfile from './pages/CreatorPortal/Profile/CreatorProfile';
@@ -43,6 +43,8 @@ import CreatorCustoms from './pages/CreatorPortal/Customs/CreatorCustoms';
 import CreatorHeader from './components/Creator/CreatorHeader/CreatorHeader';
 import UserHeader from './components/User/UserHeader/UserHeader';
 import Shop from './pages/Shop';
+import {TopNavbar} from './components/TopNavbar';
+import Router from './routes';
 // import useAuthCheck from './hooks/useAuthCheck';
 
 function App() {
@@ -51,15 +53,16 @@ function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <Routes>
-          <Route path="/">
-            <Route index element={<Home/>} />
+        <Router/>
+        {/* <Routes> */}
+          {/* <Route path="/">
+            <Route index exact element={<Home/>}/>
             <Route exact path="home" element={<Home/>} />
             <Route exact path="about" element={<About/>} />
             <Route exact path="login" element={<Login/>} />
-          </Route>
+          </Route> */}
 
-          <Route path="/:gatekeeper">
+          {/* <Route path="/:gatekeeper">
             <Route index element={<Shop/>}/>
             <Route exact path="shop" element={<Shop/>}/>
           </Route>
@@ -67,7 +70,9 @@ function App() {
           <Route exact path="/creators/login" element={<CreatorLoginPage/>} />
           <Route path="/creators">
             <Route exact path="upload" element={<Upload/> } />
-          </Route>
+          </Route> */}
+
+
           {/* <CreatorRoute path="/creators">
           </CreatorRoute> */}
             {/* basic routes (non-transparent nav) */}
@@ -160,7 +165,10 @@ function App() {
           </Route>
           <Route path="insta_fe/redirect" element={<Instagram />} />
           */}
-        </Routes>
+
+
+
+        {/* </Routes> */}
       </CartProvider>
     </AuthProvider>
   );

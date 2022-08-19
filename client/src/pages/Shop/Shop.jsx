@@ -4,7 +4,6 @@ import { Dropdown } from 'react-bootstrap';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import PageTemplate from '../../components/PageTemplate';
-import TopNavbar from '../../components/TopNavbar/TopNavbar';
 import { getShop } from '../../controllers/gatekeepers';
 
 const Header = styled.div`
@@ -44,7 +43,6 @@ function Shop(){
 
   return (
     <PageTemplate>
-      <TopNavbar type="Shop"/>
       <Header>
         <HeaderContent>
           <p className="fw-bold text-muted text-center my-0">

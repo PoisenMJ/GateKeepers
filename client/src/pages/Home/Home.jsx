@@ -13,7 +13,6 @@ import { Button, Col, Row } from "react-bootstrap";
 import styles from "./Home.module.css"; 
 import PageTemplate from "../../components/PageTemplate";
 import { getGatekeeperPosts } from "../../controllers/gatekeepers";
-import TopNavbar from "../../components/TopNavbar/TopNavbar";
 import Divider from "../../components/Divider";
 import { MAX_BREAKPOINTS } from "../../utils/breakpoints";
 
@@ -118,8 +117,7 @@ function Home() {
   // };
 
   return (
-    <PageTemplate>
-      <TopNavbar type="Home" />
+    <PageTemplate navbarType="Home">
       {/* <BackgroundImage src="/images/backgrounddark.jpg" /> */}
       <Slide top={0} id="slide_0">
         <HomeTextParent className="bg-primary">
