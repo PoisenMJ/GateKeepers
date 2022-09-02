@@ -10,6 +10,7 @@ import useWindowDimensions from '../../hooks/useWindowDimensions';
 import OffscreenNav from '../../components/OffscreenNav';
 import { useNavigate } from 'react-router';
 import Container from '../../components/Container';
+import { TriggerFlashMessage } from '../../components/FlashMessage/flashMessage';
 
 const GateKeeper = styled(animated.h1)`
     font-size: 12rem;
@@ -204,7 +205,7 @@ const Home = () => {
         <Spring from={{ transform: getTitleTransformAnimVal('FROM') }} to={{ transform: getTitleTransformAnimVal('TO') }} delay={500}>
           {styles => (
             <animated.div style={styles}>
-              <GateKeeper>K33PERS</GateKeeper>
+              <GateKeeper onClick={() => TriggerFlashMessage({ text: "HI" })}>K33PERS</GateKeeper>
               <SubHeading>Fashion Collection</SubHeading>
             </animated.div>
           )}

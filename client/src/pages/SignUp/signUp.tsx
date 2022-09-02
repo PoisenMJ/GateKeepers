@@ -10,6 +10,8 @@ import TextInput from "../../components/TextInput";
 import { LG, MD } from "../../util/breakpoints";
 import colors from "../../util/colors";
 
+import { createUser } from '../../controllers/user';
+
 const BackButton = styled.div`
   position: absolute;
   top: 5%;
@@ -80,6 +82,11 @@ const SignUp = () => {
   const onChangePassword = (newPassword: string) => setPassword(newPassword);
 
   const navigate = useNavigate();
+
+  const onSubmit = async () => {
+    const success = await createUser(username, email, password);
+    if(success) navigate("/login")
+  }
 
   const goBack = () => navigate("/login");
 
