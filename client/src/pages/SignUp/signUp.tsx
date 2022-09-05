@@ -11,6 +11,7 @@ import { LG, MD } from "../../util/breakpoints";
 import colors from "../../util/colors";
 
 import { createUser } from '../../controllers/user';
+import { TriggerFlashMessage } from "../../components/FlashMessage/flashMessage";
 
 const BackButton = styled.div`
   position: absolute;
@@ -29,7 +30,7 @@ const BackButton = styled.div`
   }
 `;
 
-const FormWrapper = styled(animated.form)`
+const FormWrapper = styled(animated.div)`
   margin: auto;
   width: 30%;
   background-color: ${colors.almostWhite};
@@ -85,7 +86,11 @@ const SignUp = () => {
 
   const onSubmit = async () => {
     const success = await createUser(username, email, password);
-    if(success) navigate("/login")
+    console.log("Success:", success);
+    if(success) {
+      TriggerFlashMessage({ text: "Account Created" });
+      navigate("/login"); 
+    }
   }
 
   const goBack = () => navigate("/login");
@@ -116,8 +121,9 @@ const SignUp = () => {
           onChange={onChangePassword}
           value={password}
           width={"100%"}
+          type="password"
         />
-        <SignupButton>SIGN-UP</SignupButton>
+        <SignupButton onClick={onSubmit}>SIGN-UP</SignupButton>
         <Divider />
       </FormWrapper>
     </Container>

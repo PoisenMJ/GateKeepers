@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import colors from '../../util/colors';
 import { IoCaretForward, IoLogoInstagram, IoLogoTwitter, IoMailOutline, IoLogIn } from 'react-icons/io5';
@@ -10,7 +10,7 @@ import useWindowDimensions from '../../hooks/useWindowDimensions';
 import OffscreenNav from '../../components/OffscreenNav';
 import { useNavigate } from 'react-router';
 import Container from '../../components/Container';
-import { TriggerFlashMessage } from '../../components/FlashMessage/flashMessage';
+import { AuthContext } from '../../contexts/auth';
 
 const GateKeeper = styled(animated.h1)`
     font-size: 12rem;
@@ -155,6 +155,7 @@ const NavbarToggle = styled.div`
 
 const Home = () => {
   const { width } = useWindowDimensions();
+  const authContext = useContext(AuthContext);
 
   const [showOffscreenNav, setShowOffscreenNav] = useState(false);
   const toggleOffscreenNav = (show: boolean) => setShowOffscreenNav(show);
@@ -182,7 +183,7 @@ const Home = () => {
   }
 
   const navigateToLogin = () => navigate("/login");
-
+  console.log(authContext);
   return (
     <div style={{backgroundColor: colors.lightBgColor}} className="overflow-x-hidden overflow-y-hidden absolute w-full h-full">
       <NavbarToggle className="lg:hidden" onClick={() => toggleOffscreenNav(true)}>
@@ -191,10 +192,15 @@ const Home = () => {
       <div className="lg:hidden">
         <OffscreenNav show={showOffscreenNav} onHide={() => toggleOffscreenNav(false)} />
       </div>
-      <LoginButton onClick={navigateToLogin}>
-        <LoginText>Login</LoginText>
-        <IoLogIn size={40} color={colors.darkerGrey}/>
-      </LoginButton>
+      {!authContext.token ?
+        <LoginButton onClick={navigateToLogin}>
+          <LoginText>Login</LoginText>
+          <IoLogIn size={40} color={colors.darkerGrey}/>
+        </LoginButton>:
+        <div className="absolute top-[5%] right-[5%] cursor-pointer">
+          <span className="font-bold text-xl">{authContext.user!.username}</span>
+        </div>
+      }
       <Title>
         <Spring from={{ transform: getTitleTransformAnimVal('FROM') }} to={{ transform: getTitleTransformAnimVal('TO') }}>
           {styles => (
@@ -205,7 +211,7 @@ const Home = () => {
         <Spring from={{ transform: getTitleTransformAnimVal('FROM') }} to={{ transform: getTitleTransformAnimVal('TO') }} delay={500}>
           {styles => (
             <animated.div style={styles}>
-              <GateKeeper onClick={() => TriggerFlashMessage({ text: "HI" })}>K33PERS</GateKeeper>
+              <GateKeeper>K33PERS</GateKeeper>
               <SubHeading>Fashion Collection</SubHeading>
             </animated.div>
           )}

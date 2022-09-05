@@ -1,7 +1,20 @@
 import mongoose from 'mongoose';
 import crypto from 'crypto';
 
-const userSchema = new mongoose.Schema({
+interface UserSchema {
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  lastPasswordChange: Date;
+  key?: string;
+  fullName: string;
+  checkPassword: (inputString: string) => boolean;
+  changePassword: (newPassword: string) => void;
+}
+
+const schema = new mongoose.Schema<UserSchema>({
   username: {
     type: String,
     require: true
@@ -25,7 +38,8 @@ const userSchema = new mongoose.Schema({
   lastPasswordChange: {
     type: Date,
     require: false
-  }
+  },
+  key: String
 }, {
   virtuals: {
     fullName: {
@@ -49,13 +63,15 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-userSchema.pre('save', async function(next) {
+schema.pre('save', async function(next) {
   const inputPassword = this.password;
   const hashedInputPassword = crypto.createHash("md5").update(inputPassword).digest("hex");
   this.password = hashedInputPassword;
   return next();
 });
 
-const User = mongoose.model('Users', userSchema);
+const User = mongoose.model<UserSchema>('Users', schema);
+
+export { UserSchema };
 
 export default User;

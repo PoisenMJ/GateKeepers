@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import colors from "../../util/colors";
 import { IoChevronBack, IoEllipse, IoLogoInstagram } from "react-icons/io5";
@@ -8,6 +8,9 @@ import SlideIn from "../../animations/slideIn";
 import { animated } from "react-spring";
 import Container from "../../components/Container";
 import { LG, MD } from "../../util/breakpoints";
+import { login } from "../../controllers/user";
+import { TriggerFlashMessage } from "../../components/FlashMessage/flashMessage";
+import { AuthContext } from "../../contexts/auth";
 
 const BackButton = styled.div`
   position: absolute;
@@ -26,7 +29,7 @@ const BackButton = styled.div`
   }
 `;
 
-const FormWrapper = styled(animated.form)`
+const FormWrapper = styled(animated.div)`
   margin: auto;
   width: 30%;
   background-color: ${colors.almostWhite};
@@ -106,6 +109,8 @@ const CreateAccount = styled.button`
 `;
 
 const Login = () => {
+  const authContext = useContext(AuthContext);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -116,6 +121,18 @@ const Login = () => {
 
   const goBack = () => navigate("/home");
   const goToSignup = () => navigate("/sign-up");
+
+  const onSubmit = async () => {
+    const response = await login(username, password);
+    // console.log("Token:", token);
+    if (response) {
+      authContext.onLogin(response.token, response.user);
+      TriggerFlashMessage({ text: "Login Successful" });
+      navigate("/home");
+    } else {
+      TriggerFlashMessage({ text: "Username or password is incorrect" });
+    }
+  }
 
   return (
     <Container className="flex">
@@ -136,8 +153,9 @@ const Login = () => {
           onChange={onChangePassword}
           value={password}
           width={"100%"}
+          type="password"
         />
-        <LoginButton>LOGIN</LoginButton>
+        <LoginButton onClick={onSubmit}>LOGIN</LoginButton>
         <Divider>
           <IoEllipse size={15} className="mx-1" />
           <IoEllipse size={15} className="mx-1" />

@@ -82,8 +82,11 @@ const Items = new Array(12).fill({ name: "Product Name", price: "$5" });
 
 const Shop = () => {
   const trail = useTrail(Items.length, {
-    from: { opacity: 0, y: 0.4 },
+    from: { opacity: 0, y: 0.9 },
     to: { opacity: 1, y: 1 },
+    config: {
+      duration: 150
+    }
   });
 
   const navigate = useNavigate();

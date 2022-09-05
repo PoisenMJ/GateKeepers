@@ -9,6 +9,7 @@ interface Props {
   width?: CSSProperties["width"];
   className?: string;
   disabled?: boolean;
+  type?: string;
 }
 
 const InputElement = styled.input<{ width: CSSProperties["width"] }>`
@@ -38,6 +39,7 @@ const TextInput = ({
   width,
   className,
   disabled,
+  type = "text"
 }: Props) => {
   const onInputValChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (onChange) onChange(event.target.value);
@@ -45,7 +47,7 @@ const TextInput = ({
 
   return (
     <InputElement
-      type="text"
+      type={type}
       placeholder={placeholder}
       onChange={onInputValChange}
       value={value}
